@@ -3,10 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CURRENT_USER } from '../data/mockData';
 import { Heart, ChevronLeft } from 'lucide-react';
+import WobbleLogo from '../components/shared/WobbleLogo';
 import './AuthPage.css';
+
+const INTRO_DURATION = 1900; // keep in sync with .logo-intro-* timings in AuthPage.css
 
 const AuthPage = () => {
   const [step, setStep] = useState(1);
+  const [introPlaying, setIntroPlaying] = useState(false);
+  const introTimer = useRef(null);
   const [isSignIn, setIsSignIn] = useState(false);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -17,9 +22,16 @@ const AuthPage = () => {
   const { dispatch } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => () => clearTimeout(introTimer.current), []);
+
   const handleGetStarted = () => {
+    if (introPlaying) return;
     setIsSignIn(false);
-    setStep(2);
+    setIntroPlaying(true);
+    introTimer.current = setTimeout(() => {
+      setIntroPlaying(false);
+      setStep(2);
+    }, INTRO_DURATION);
   };
 
   const handleHaveAccount = () => {
@@ -84,6 +96,13 @@ const AuthPage = () => {
 
   return (
     <div className="auth-page">
+      {introPlaying && (
+        <div className="logo-intro-overlay">
+          <WobbleLogo animated className="logo-intro-mark" />
+          <h1 className="logo-intro-name">Wobble Date</h1>
+        </div>
+      )}
+
       {step === 3 && (
         <div className="dev-banner">
           Dev OTP: <span>{generatedOtp}</span>
@@ -100,7 +119,7 @@ const AuthPage = () => {
         <div className="step-container step-1 fade-in">
           <div className="brand-header">
             <div className="logo-container">
-              <img src="/logo.png" alt="Wobble Date" className="logo-icon-img" />
+              <WobbleLogo className="logo-icon-img" />
             </div>
             <h1 className="brand-name">Wobble Date</h1>
             <p className="brand-tagline">Find your perfect match in the dark.</p>
