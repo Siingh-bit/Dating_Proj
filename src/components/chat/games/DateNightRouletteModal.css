@@ -1,0 +1,233 @@
+.date-night-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 10, 16, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+
+.date-night-modal {
+  flex: 1;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.date-night-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.date-night-header h2 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.close-btn:active {
+  transform: scale(0.95);
+}
+
+.date-night-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wheel-container {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin-bottom: 40px;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 25px solid var(--text-primary);
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--bg-elevated) 0deg 45deg,
+    var(--bg-card) 45deg 90deg,
+    var(--bg-elevated) 90deg 135deg,
+    var(--bg-card) 135deg 180deg,
+    var(--bg-elevated) 180deg 225deg,
+    var(--bg-card) 225deg 270deg,
+    var(--bg-elevated) 270deg 315deg,
+    var(--bg-card) 315deg 360deg
+  );
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.wheel-segment-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60px;
+  height: 50%;
+  transform-origin: bottom center;
+  margin-left: -30px;
+  text-align: center;
+  padding-top: 15px;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.wheel-center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: var(--bg-primary);
+  border: 4px solid var(--accent);
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.spin-btn {
+  background: var(--accent-gradient, linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%));
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: var(--radius-full);
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  box-shadow: 0 4px 15px rgba(232, 96, 76, 0.3);
+}
+
+.spin-btn:active {
+  transform: scale(0.95);
+}
+
+.spin-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.result-card {
+  background: var(--bg-elevated);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+  animation: bounceIn 0.6s cubic-bezier(0.17, 0.67, 0.12, 1.2) forwards;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-activity {
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.result-modifiers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.modifier {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.modifier strong {
+  color: var(--text-primary);
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-lock-in {
+  background: var(--accent-gradient, linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%));
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-spin-again {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}

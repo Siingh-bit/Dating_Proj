@@ -1,0 +1,113 @@
+.lyric-modal {
+  width: 90%;
+  max-width: 360px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lyric-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lyric-gameplay {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lyric-progress {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s;
+}
+
+.progress-dot.active {
+  background: var(--accent);
+}
+
+.lyric-card {
+  background: var(--bg-card);
+  padding: 24px 16px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lyric-prompt {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.lyric-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lyric-option-btn {
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lyric-option-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lyric-option-btn.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.lyric-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.lyric-score {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.score-number {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--accent);
+}
+
+.score-total {
+  font-size: 24px;
+  color: var(--text-secondary);
+}
+
+.score-text {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}

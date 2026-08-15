@@ -1,0 +1,233 @@
+.emoji-modal {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 430px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+.emoji-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.score-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 193, 7, 0.1);
+  color: #FFC107;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.emoji-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+.emoji-puzzle-container {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.emoji-display {
+  font-size: 48px;
+  letter-spacing: 8px;
+  margin-bottom: 32px;
+  background: var(--bg-elevated);
+  padding: 24px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.emoji-display.correct {
+  border-color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+  animation: bounce 0.5s;
+}
+
+.emoji-display.wrong {
+  border-color: #F44336;
+  background: rgba(244, 67, 54, 0.1);
+  animation: shake 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.emoji-hint {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s;
+}
+
+.hint-label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.emoji-input-group {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.emoji-input {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.emoji-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.feedback-message {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  height: 20px;
+}
+
+.feedback-message.correct { color: #4CAF50; }
+.feedback-message.wrong { color: #F44336; }
+
+.emoji-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.hint-btn {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hint-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hint-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.check-btn {
+  flex: 2;
+  background: var(--accent-gradient, linear-gradient(135deg, #E8604C 0%, #D84530 100%));
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.check-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.check-btn:disabled {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.skip-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.skip-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.emoji-results {
+  padding: 48px 24px 32px;
+  text-align: center;
+}
+
+.score-summary {
+  display: flex;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.score-box {
+  flex: 1;
+  background: var(--bg-elevated);
+  padding: 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.score-value {
+  color: var(--text-primary);
+  font-size: 32px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}

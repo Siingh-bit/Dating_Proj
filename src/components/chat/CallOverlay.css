@@ -1,0 +1,224 @@
+.call-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #0f0f15;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.video-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.remote-video-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+.video-feed-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.8) 100%);
+}
+
+.local-video-pip {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  width: 110px;
+  height: 160px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1a1a24;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 5;
+}
+
+.pip-video-feed {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2d2b42 0%, #1a1829 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+}
+
+.pip-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.audio-background {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #2d1f3d 0%, #0f0f15 80%);
+}
+
+.avatar-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.audio-call-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  z-index: 3;
+}
+
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--accent-color, #e8604c);
+  opacity: 0;
+}
+
+.is-ringing .ring-1 {
+  width: 160px;
+  height: 160px;
+  animation: pulse-out 2s infinite ease-out;
+}
+
+.is-ringing .ring-2 {
+  width: 160px;
+  height: 160px;
+  animation: pulse-out 2s infinite ease-out 0.6s;
+}
+
+.is-connected .ring-1 {
+  width: 170px;
+  height: 170px;
+  border-color: #4cd964;
+  animation: pulse-soft 3s infinite ease-in-out;
+}
+
+@keyframes pulse-out {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.6;
+  }
+}
+
+.call-header {
+  position: relative;
+  z-index: 10;
+  margin-top: 60px;
+  text-align: center;
+}
+
+.call-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.call-status-badge {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ringing-pulse {
+  animation: fade-pulse 1.5s infinite;
+}
+
+@keyframes fade-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.connected-time {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #4cd964;
+}
+
+.call-actions-bar {
+  position: relative;
+  z-index: 10;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.call-action-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.call-action-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.05);
+}
+
+.call-action-btn.active-off {
+  background: #e74c3c;
+  color: #ffffff;
+}
+
+.end-call-btn {
+  background: #ff3b30;
+  width: 60px;
+  height: 60px;
+}
+
+.end-call-btn:hover {
+  background: #d7281d;
+  transform: scale(1.08);
+}

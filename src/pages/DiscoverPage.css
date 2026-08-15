@@ -1,0 +1,97 @@
+.discover-page {
+  width: 100%;
+  height: 100dvh;
+  position: relative;
+  background: var(--bg-deepest);
+  display: flex;
+  flex-direction: column;
+}
+
+.top-area {
+  position: absolute;
+  top: env(safe-area-inset-top, 16px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.likes-counter {
+  background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 5%, transparent);
+  font-weight: 500;
+}
+
+.card-wrapper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: opacity 0.4s var(--ease-out),
+              transform 0.4s var(--ease-out);
+}
+
+.animating-out {
+  opacity: 0;
+  transform: translateX(100px) rotate(8deg) scale(0.9);
+}
+
+.empty-state {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-tertiary);
+}
+
+.empty-icon {
+  margin-bottom: var(--space-lg);
+  background: linear-gradient(135deg, var(--text-secondary) 0%, var(--accent) 50%, var(--text-secondary) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmerPulse 3s infinite ease-in-out;
+}
+
+@keyframes shimmerPulse {
+  0% { transform: scale(1); background-position: 0% 50%; opacity: 0.7; }
+  50% { transform: scale(1.1); background-position: 100% 50%; opacity: 1; }
+  100% { transform: scale(1); background-position: 0% 50%; opacity: 0.7; }
+}
+
+.empty-state h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state p {
+  font-size: 15px;
+}
+
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+}

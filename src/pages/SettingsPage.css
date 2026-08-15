@@ -1,0 +1,164 @@
+.settings-page {
+  background: var(--bg-primary);
+  min-height: 100dvh;
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + var(--space-2xl));
+  overflow-y: auto;
+}
+
+.settings-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: var(--app-max-width);
+  height: var(--top-bar-height);
+  background: rgba(18, 16, 24, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-lg);
+  z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-back {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  padding: var(--space-sm) 0;
+  margin-right: var(--space-md);
+  transition: color var(--duration-fast);
+}
+
+.btn-back:active {
+  color: var(--text-primary);
+}
+
+.settings-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  font-weight: normal;
+}
+
+.settings-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.settings-group-title {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-left: var(--space-sm);
+  font-weight: 600;
+}
+
+.settings-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.settings-card.danger-zone {
+  background: rgba(232, 76, 94, 0.05);
+  border-color: rgba(232, 76, 94, 0.2);
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row.clickable {
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+
+.settings-row.clickable:hover {
+  background: var(--bg-hover);
+}
+
+.settings-row.clickable:active {
+  background: var(--bg-elevated);
+}
+
+.settings-row.text-center {
+  justify-content: center;
+}
+
+.settings-label {
+  font-size: var(--text-base);
+  color: var(--text-primary);
+}
+
+.settings-value {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.gold-text {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.danger-text {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.chevron {
+  font-size: var(--text-xl);
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.toggle-switch {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  position: relative;
+  transition: background var(--duration-normal) var(--ease-out);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.toggle-switch.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  transition: transform var(--duration-normal) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-switch.active .toggle-knob {
+  transform: translateX(20px);
+}

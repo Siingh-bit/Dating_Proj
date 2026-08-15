@@ -1,0 +1,446 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-deepest);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.dev-banner {
+  background-color: #f59e0b; /* Amber/Yellow */
+  color: #000;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  font-family: monospace;
+}
+
+.dev-banner span {
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.back-button {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  z-index: 10;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: var(--bg-elevated);
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px 24px;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Step 1: Welcome */
+.brand-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.logo-container {
+  margin-bottom: 24px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.brand-name {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 48px;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.brand-tagline {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin: 0;
+}
+
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-social {
+  width: 100%;
+  padding: 16px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-primary:active, .btn-secondary:active, .btn-social:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent, #E8604C);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+/* Step 2: Forms */
+.auth-form-header {
+  margin-bottom: 40px;
+}
+
+.auth-form-header h2 {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 32px;
+  margin: 0 0 8px 0;
+}
+
+.auth-form-header p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.input-group {
+  margin-bottom: 24px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: var(--bg-card, #1A1626);
+  border: 1px solid var(--bg-elevated);
+  color: var(--text-primary);
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--accent, #E8604C);
+  box-shadow: 0 0 0 1px var(--accent, #E8604C);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 32px 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--bg-elevated);
+}
+
+.divider span {
+  padding: 0 16px;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.btn-google {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.btn-apple {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: 1px solid #333;
+}
+
+.auth-toggle {
+  margin-top: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.auth-toggle:hover {
+  color: var(--text-primary);
+}
+
+/* Step 3: OTP */
+.otp-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 10px;
+}
+
+.otp-input {
+  width: 48px;
+  height: 56px;
+  background-color: var(--bg-elevated, #1E1A2C);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--accent, #E8604C);
+  box-shadow: 0 0 12px rgba(232, 96, 76, 0.3);
+}
+
+.otp-input.filled {
+  border-color: var(--text-secondary);
+}
+
+.otp-input.error {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.otp-error-text {
+  color: #ef4444;
+  text-align: center;
+  margin-top: -16px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.verify-btn {
+  margin-bottom: 24px;
+}
+
+.resend-link {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.resend-link span {
+  color: var(--accent, #E8604C);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Step 4: Heart Animation */
+.step-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.heart-animation-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Digits that fly to center and dissolve --- */
+.flying-digit {
+  position: absolute;
+  font-size: 32px;
+  font-weight: 800;
+  color: #E8604C;
+  z-index: 2;
+  animation: digitFlyIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes digitFlyIn {
+  0% {
+    opacity: 1;
+    transform: translate(var(--start-x), 60px) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+}
+
+/* --- Real SVG Heart that appears after digits converge --- */
+.heart-svg {
+  width: 180px;
+  height: 180px;
+  opacity: 0;
+  transform: scale(0);
+  filter: drop-shadow(0 0 0 transparent);
+  animation: 
+    heartAppear 0.8s 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    heartGlow 0.6s 1.2s forwards,
+    heartPulse 0.8s 1.4s ease-in-out 3,
+    heartFadeOut 0.7s 3.0s forwards;
+}
+
+@keyframes heartAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-15deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes heartGlow {
+  to {
+    filter: 
+      drop-shadow(0 0 15px rgba(232, 96, 76, 0.8))
+      drop-shadow(0 0 40px rgba(232, 96, 76, 0.5))
+      drop-shadow(0 0 80px rgba(232, 96, 76, 0.3));
+  }
+}
+
+@keyframes heartPulse {
+  0%  { transform: scale(1); }
+  25% { transform: scale(1.18); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartFadeOut {
+  to { 
+    opacity: 0; 
+    transform: scale(0.7);
+    filter: 
+      drop-shadow(0 0 60px rgba(232, 96, 76, 0))
+      blur(8px);
+  }
+}
+
+/* --- Welcome Message --- */
+.welcome-message {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: welcomeFadeIn 0.7s 3.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.welcome-message h2 {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 36px;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #E8604C, #FF8A7A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-message p {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin: 0;
+}
+
+@keyframes welcomeFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

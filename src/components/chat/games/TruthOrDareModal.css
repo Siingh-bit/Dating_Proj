@@ -1,0 +1,140 @@
+.tod-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.tod-modal {
+  width: 100%;
+  max-width: 430px;
+  background: var(--bg-primary, #121018);
+  border-radius: var(--radius-lg, 14px) var(--radius-lg, 14px) 0 0;
+  padding: 24px 20px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+  color: var(--text-primary, #F5F0EB);
+}
+
+.tod-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.tod-header h2 { font-family: var(--font-display); margin: 0; }
+
+.tod-categories {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+.cat-btn {
+  background: var(--bg-elevated, #231E32);
+  color: var(--text-secondary, #9B95A5);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cat-btn.active {
+  background: var(--accent, #E8604C);
+  color: #fff;
+}
+
+.tod-mode-toggle {
+  display: flex;
+  background: var(--bg-card, #1A1626);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.mode-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #9B95A5);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.mode-btn.active {
+  background: var(--bg-elevated, #231E32);
+  color: #fff;
+}
+
+.tod-card {
+  flex: 1;
+  background: linear-gradient(135deg, #2A1B38, #1A1626);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+.tod-card.mode-dare { background: linear-gradient(135deg, #3A1B28, #1A1626); }
+
+.tod-card.flipping {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+
+.card-icon {
+  color: var(--accent, #E8604C);
+  margin-bottom: 20px;
+}
+.card-text {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.tod-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.shuffle-btn {
+  flex: 1;
+  background: var(--bg-elevated, #231E32);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.send-btn {
+  flex: 2;
+  background: var(--accent, #E8604C);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.shuffle-btn:active, .send-btn:active { transform: scale(0.98); }

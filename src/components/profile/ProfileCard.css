@@ -1,0 +1,214 @@
+.profile-card {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-progress-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 4px;
+  padding: 12px 8px;
+  z-index: 50;
+  background: linear-gradient(to bottom, rgba(12, 10, 16, 0.8) 0%, rgba(12, 10, 16, 0) 100%);
+  pointer-events: none;
+}
+
+.photo-progress-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.photo-progress-bar.active {
+  background: #fff;
+}
+
+.profile-scroll {
+  padding-bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+}
+
+.profile-item {
+  position: relative;
+  width: 100%;
+}
+
+.photo-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.name-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-xl) var(--space-md) var(--space-md);
+  background: linear-gradient(to top, rgba(12, 10, 16, 0.9) 0%, rgba(12, 10, 16, 0) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.name-overlay h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+.verified-badge {
+  background: var(--accent);
+  border-radius: 50%;
+  padding: 2px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.item-heart-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(35, 30, 50, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.item-heart-btn:active {
+  transform: scale(0.9);
+}
+
+.prompt-container {
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.prompt-question {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin: 0 0 8px 0;
+}
+
+.prompt-answer {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.4;
+  padding-right: 48px; /* space for heart btn */
+}
+
+.comment-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 64px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+  animation: fadeIn var(--duration-fast) var(--ease-out);
+}
+
+.comment-overlay input {
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  width: 200px;
+}
+.comment-overlay input::placeholder {
+  color: var(--text-secondary);
+}
+
+.vitals-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: var(--space-sm) 0;
+}
+
+.vital-chip {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.intention-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-elevated);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 15px;
+  margin-top: var(--space-sm);
+}
+
+.intention-icon {
+  color: var(--phase-liking);
+}
