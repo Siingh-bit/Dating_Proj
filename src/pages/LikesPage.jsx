@@ -26,7 +26,7 @@ export default function LikesPage() {
       <div className="likes-page empty-state">
         <Heart size={64} className="empty-icon-likes" />
         <h2>No likes yet</h2>
-        <p>Keep using Solely to discover matches</p>
+        <p>Keep using Wobble Date to discover matches</p>
       </div>
     );
   }

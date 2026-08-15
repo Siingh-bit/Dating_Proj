@@ -14,7 +14,7 @@ export default function TopBar({ title }) {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
-        <h1 className="top-bar-title">{title || 'Solely'}</h1>
+        <h1 className="top-bar-title">{title || 'Wobble Date'}</h1>
       </div>
       <div className="top-bar-right">
         {isDiscover && (

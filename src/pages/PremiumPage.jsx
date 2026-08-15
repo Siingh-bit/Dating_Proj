@@ -44,7 +44,7 @@ export default function PremiumPage() {
       </header>
       
       <div className="premium-header">
-        <h1 className="premium-title">Upgrade to Solely Premium</h1>
+        <h1 className="premium-title">Upgrade to Wobble Date Premium</h1>
         <p className="premium-subtitle">More conversations. More connections. More possibilities.</p>
       </div>
       
@@ -168,7 +168,7 @@ export default function PremiumPage() {
       <div className="womens-bonus-card">
         <div className="bonus-icon">🎉</div>
         <div className="bonus-content">
-          <h4>New to Solely?</h4>
+          <h4>New to Wobble Date?</h4>
           <p>Women get Elite features free for their first month!</p>
         </div>
       </div>

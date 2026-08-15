@@ -102,7 +102,7 @@ const AuthPage = () => {
             <div className="logo-container">
               <Heart className="logo-icon" fill="#E8604C" color="#E8604C" size={48} />
             </div>
-            <h1 className="brand-name">Solely</h1>
+            <h1 className="brand-name">Wobble Date</h1>
             <p className="brand-tagline">Find your perfect match in the dark.</p>
           </div>
           <div className="auth-actions">
@@ -223,7 +223,7 @@ const AuthPage = () => {
             </svg>
           </div>
           <div className="welcome-message">
-            <h2>Welcome to Solely</h2>
+            <h2>Welcome to Wobble Date</h2>
             <p>Let's find your match</p>
           </div>
         </div>
