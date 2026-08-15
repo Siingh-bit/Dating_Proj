@@ -14,6 +14,7 @@ export default function TopBar({ title }) {
   return (
     <header className="top-bar">
       <div className="top-bar-left">
+        <img src="/logo.png" alt="Wobble Date" className="top-bar-logo" />
         <h1 className="top-bar-title">{title || 'Wobble Date'}</h1>
       </div>
       <div className="top-bar-right">

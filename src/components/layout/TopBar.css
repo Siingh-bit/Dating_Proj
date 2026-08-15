@@ -10,6 +10,19 @@
   z-index: 10;
 }
 
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-bar-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
 .top-bar-title {
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 24px;

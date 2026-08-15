@@ -96,6 +96,14 @@
   animation: float 3s ease-in-out infinite;
 }
 
+.logo-icon-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 20px;
+  filter: drop-shadow(0 4px 24px rgba(232, 96, 76, 0.3));
+}
+
 @keyframes float {
   0% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

@@ -100,7 +100,7 @@ const AuthPage = () => {
         <div className="step-container step-1 fade-in">
           <div className="brand-header">
             <div className="logo-container">
-              <Heart className="logo-icon" fill="#E8604C" color="#E8604C" size={48} />
+              <img src="/logo.png" alt="Wobble Date" className="logo-icon-img" />
             </div>
             <h1 className="brand-name">Wobble Date</h1>
             <p className="brand-tagline">Find your perfect match in the dark.</p>

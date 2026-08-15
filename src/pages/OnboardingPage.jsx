@@ -15,6 +15,7 @@ export default function OnboardingPage() {
       
       <div className="onboarding-content">
         <div className="onboarding-brand animate-fade-in-up">
+          <img src="/logo.png" alt="Wobble Date" className="onboarding-logo-img" />
           <h1 className="onboarding-logo">Wobble Date</h1>
           <p className="onboarding-tagline">One person. Full attention.</p>
         </div>

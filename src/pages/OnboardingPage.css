@@ -69,6 +69,15 @@
   text-align: center;
 }
 
+.onboarding-logo-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 20px rgba(232, 96, 76, 0.25));
+}
+
 .onboarding-logo {
   font-family: var(--font-display);
   font-size: 4rem;
