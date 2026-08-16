@@ -932,8 +932,24 @@ export const CONVERSATIONS = {
   m8: {
     matchId: "m8",
     messages: [
-      { id: "msg801", sender: "user-self", text: "Indiranagar boba tea & Cubbon Park stroll is elite! Up for Date Night Roulette?", timestamp: "2026-08-08T16:45:00Z" },
-      { id: "msg802", sender: "p8", text: "Always up for Date Night Roulette! Let's spin the wheel 🎰", timestamp: "2026-08-08T17:00:00Z" },
+      { id: "msg801", sender: "user-self", text: "Indiranagar boba tea & Cubbon Park stroll is elite! Up for a curated date?", timestamp: "2026-08-08T16:45:00Z" },
+      { id: "msg802", sender: "p8", text: "Always up for that! Boba + indie vinyl cafes are literally my weakness 🧋✨", timestamp: "2026-08-08T17:00:00Z" },
+      { id: "msg803", sender: "user-self", text: "I found this amazing sunset rooftop with acoustic jazz in Indiranagar. Check this out:", timestamp: "2026-08-08T17:15:00Z" },
+      { 
+        id: "msg804", 
+        sender: "user-self", 
+        text: "✨ Proposed Date #1: 🌅 Sunset Rooftop & Drinks (This Saturday at 6:00 PM)",
+        gameData: {
+          type: "date_itinerary",
+          vibe: "🌅 Sunset Rooftop & Drinks",
+          location: "Indiranagar, Bangalore",
+          day: "This Saturday",
+          time: "6:00 PM",
+          note: "Hey Sanjana! Let's catch the sunset breeze over craft mocktails 🥂"
+        },
+        timestamp: "2026-08-08T17:20:00Z" 
+      },
+      { id: "msg805", sender: "p8", text: "Oh I love this vibe so much! Count me in for Saturday 🥂✨", timestamp: "2026-08-08T17:30:00Z" },
     ],
   },
 };

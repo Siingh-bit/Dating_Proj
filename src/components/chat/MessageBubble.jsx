@@ -8,6 +8,31 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
   const [showMenu, setShowMenu] = useState(false);
 
   const media = message.media;
+  const dateData = message.gameData?.type === 'date_itinerary' ? message.gameData : (
+    message.text?.startsWith('✨ Proposed Date #1:') ? {
+      type: 'date_itinerary',
+      vibe: message.text.replace('✨ Proposed Date #1:', '').trim(),
+      note: "Hey! What do you think of this for Date #1? 🥂",
+      day: "This Weekend",
+      time: "Evening",
+    } : null
+  );
+
+  const musicData = message.gameData?.type === 'music_swap' ? message.gameData : (
+    message.text?.startsWith('🎵 Shared track:') ? {
+      type: 'music_swap',
+      track: message.text.replace('🎵 Shared track:', '').trim(),
+      artist: 'Spotify Track',
+      note: "Thought you'd love this track! 🎵",
+    } : null
+  );
+
+  const closureData = message.gameData?.type === 'graceful_closure' ? message.gameData : (
+    message.text?.startsWith('🕊️') ? {
+      type: 'graceful_closure',
+      note: message.text.replace('🕊️', '').trim(),
+    } : null
+  );
 
   const handleViewOnceClick = () => {
     if (media?.mode === 'view_once' && !media.viewed) {
@@ -61,8 +86,58 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
             </div>
           )}
 
-          {/* Game Content */}
-          {message.gameData && (
+          {/* Special Feature Cards (Date Itinerary, Music Swap, Graceful Closure) */}
+          {dateData && (
+            <div className="chat-itinerary-card">
+              <div className="itinerary-header-badge">
+                <span>✨ First Date Invitation</span>
+              </div>
+              <h4 className="itinerary-vibe-title">{dateData.vibe || 'Curated Date Night'}</h4>
+              <div className="itinerary-details">
+                {dateData.location && <p>📍 {dateData.location}</p>}
+                {(dateData.day || dateData.time) && (
+                  <p>📅 {dateData.day || 'This Weekend'} • {dateData.time || 'Evening'}</p>
+                )}
+              </div>
+              {dateData.note && <p className="itinerary-note">"{dateData.note}"</p>}
+              <div className="itinerary-rsvp-row">
+                <button className="rsvp-btn accepted" onClick={() => alert("Date invitation accepted! 🥂")}>
+                  I'm In! 🥂
+                </button>
+                <button className="rsvp-btn tweak" onClick={() => alert("Shared tweak request ✨")}>
+                  Suggest Tweak ✨
+                </button>
+              </div>
+            </div>
+          )}
+
+          {musicData && (
+            <div className="chat-music-card">
+              <div className="music-header-badge">
+                <span>🟢 Spotify Track Swap</span>
+              </div>
+              <div className="music-body-box">
+                <div className="music-note-icon">🎵</div>
+                <div className="music-text-meta">
+                  <h4>{musicData.track}</h4>
+                  <p>{musicData.artist}</p>
+                </div>
+              </div>
+              {musicData.note && <p className="music-shared-note">"{musicData.note}"</p>}
+            </div>
+          )}
+
+          {closureData && (
+            <div className="chat-closure-card">
+              <div className="closure-badge-pill">
+                <span>🕊️ Respectful Closure</span>
+              </div>
+              <p className="closure-note-body">{closureData.note}</p>
+            </div>
+          )}
+
+          {/* Mini-Games Content */}
+          {message.gameData && !['date_itinerary', 'music_swap', 'graceful_closure'].includes(message.gameData.type) && (
             <div className="game-content-block">
               <div className="game-badge">
                 <Gamepad2 size={14} /> {message.gameData.type?.replace(/_/g, ' ').toUpperCase()}
@@ -141,61 +216,13 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
                   <span className="game-score">Love Song Quiz Score: {message.gameData.score}/{message.gameData.total}</span>
                 </div>
               )}
-
-              {/* Date Itinerary Card */}
-              {message.gameData.type === 'date_itinerary' && (
-                <div className="chat-itinerary-card">
-                  <div className="itinerary-header-badge">
-                    <span>✨ First Date Invitation</span>
-                  </div>
-                  <h4 className="itinerary-vibe-title">{message.gameData.vibe}</h4>
-                  <div className="itinerary-details">
-                    <p>📍 {message.gameData.location}</p>
-                    <p>📅 {message.gameData.day} • {message.gameData.time}</p>
-                  </div>
-                  {message.gameData.note && <p className="itinerary-note">"{message.gameData.note}"</p>}
-                  <div className="itinerary-rsvp-row">
-                    <button className="rsvp-btn accepted" onClick={() => alert("Date invitation accepted! 🥂")}>
-                      I'm In! 🥂
-                    </button>
-                    <button className="rsvp-btn tweak" onClick={() => alert("Shared tweak request ✨")}>
-                      Suggest Tweak ✨
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Music Swap Card */}
-              {message.gameData.type === 'music_swap' && (
-                <div className="chat-music-card">
-                  <div className="music-header-badge">
-                    <span>🟢 Spotify Track Swap</span>
-                  </div>
-                  <div className="music-body-box">
-                    <div className="music-note-icon">🎵</div>
-                    <div className="music-text-meta">
-                      <h4>{message.gameData.track}</h4>
-                      <p>{message.gameData.artist}</p>
-                    </div>
-                  </div>
-                  {message.gameData.note && <p className="music-shared-note">"{message.gameData.note}"</p>}
-                </div>
-              )}
-
-              {/* Graceful Closure Card */}
-              {message.gameData.type === 'graceful_closure' && (
-                <div className="chat-closure-card">
-                  <div className="closure-badge-pill">
-                    <span>🕊️ Respectful Closure</span>
-                  </div>
-                  <p className="closure-note-body">{message.gameData.note}</p>
-                </div>
-              )}
             </div>
           )}
 
-          {/* Text Content */}
-          {message.text && (!media || (media.mode === 'view_once' && media.viewed) ? null : <div className="message-text">{message.text}</div>)}
+          {/* Normal Text Content: Always render if present and not a viewed view-once */}
+          {message.text && !message.gameData && !(media?.mode === 'view_once' && media?.viewed) && (
+            <div className="message-text">{message.text}</div>
+          )}
         </div>
       </div>
 

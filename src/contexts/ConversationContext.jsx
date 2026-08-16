@@ -36,11 +36,12 @@ function conversationReducer(state, action) {
     }
 
     case "SEND_MESSAGE": {
-      const { matchId, text } = action.payload;
+      const { matchId, text, gameData } = action.payload;
       const newMessage = {
         id: `msg-${Date.now()}`,
         sender: "user-self",
         text,
+        gameData,
         timestamp: new Date().toISOString(),
       };
       const existing = state.conversations[matchId] || { matchId, messages: [] };
