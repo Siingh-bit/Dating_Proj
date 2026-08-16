@@ -125,13 +125,246 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  transition: opacity 0.4s var(--ease-out),
-              transform 0.4s var(--ease-out);
+  position: relative;
+  touch-action: pan-y;
+  cursor: grab;
+  transition: opacity 0.38s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1),
+              filter 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.animating-out {
-  opacity: 0;
-  transform: translateX(100px) rotate(8deg) scale(0.9);
+.card-wrapper.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* 1. REJECT / PASS: SWIPE TO LEFT */
+.animating-out-left {
+  opacity: 0 !important;
+  transform: translate3d(-135%, 20px, 0) rotate(-22deg) scale(0.82) !important;
+  filter: blur(4px) grayscale(0.5);
+  pointer-events: none;
+}
+
+/* 2. LIKE: SWIPE TO RIGHT */
+.animating-out-right {
+  opacity: 0 !important;
+  transform: translate3d(135%, 20px, 0) rotate(22deg) scale(0.82) !important;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* 3. SUPERLIKE / ROSE: SWIPE UPWARDS */
+.animating-out-up {
+  opacity: 0 !important;
+  transform: translate3d(0, -145%, 0) scale(1.15) rotate(-2deg) !important;
+  filter: brightness(1.35) blur(3px);
+  pointer-events: none;
+}
+
+/* SWIPE DIRECTION STAMPS */
+.swipe-stamp {
+  position: absolute;
+  z-index: 60;
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.like-stamp {
+  top: 40px;
+  left: 24px;
+  color: #00E676;
+  border: 3.5px solid #00E676;
+  background: rgba(0, 230, 118, 0.2);
+  transform: rotate(-16deg);
+}
+
+.nope-stamp {
+  top: 40px;
+  right: 24px;
+  color: #FF5252;
+  border: 3.5px solid #FF5252;
+  background: rgba(255, 82, 82, 0.2);
+  transform: rotate(16deg);
+}
+
+.superlike-stamp {
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) rotate(0deg);
+  color: #00E5FF;
+  border: 3.5px solid #00E5FF;
+  background: rgba(0, 229, 255, 0.25);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+}
+
+/* ==========================================================================
+   SUPERLIKE / ROSE CELESTIAL CELEBRATION OVERLAY
+   ========================================================================== */
+.superlike-celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(12, 10, 26, 0.75) 0%, rgba(5, 3, 10, 0.92) 100%);
+  backdrop-filter: blur(16px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cosmic-light-column {
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 140%;
+  background: radial-gradient(ellipse at bottom, rgba(0, 210, 255, 0.45) 0%, rgba(124, 77, 255, 0.3) 40%, transparent 80%);
+  filter: blur(24px);
+  animation: beam-pulse 1.2s ease-out infinite alternate;
+}
+
+@keyframes beam-pulse {
+  0% { opacity: 0.6; transform: translateX(-50%) scaleX(0.8); }
+  100% { opacity: 1; transform: translateX(-50%) scaleX(1.2); }
+}
+
+.particles-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.celebration-particle {
+  position: absolute;
+  font-size: 28px;
+  user-select: none;
+  animation: particle-burst 1.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.p-1  { --tx: -130px; --ty: -180px; --rot: -45deg; animation-delay: 0.02s; }
+.p-2  { --tx: 120px;  --ty: -190px; --rot: 35deg;  animation-delay: 0.05s; }
+.p-3  { --tx: -160px; --ty: -60px;  --rot: -80deg; animation-delay: 0.08s; }
+.p-4  { --tx: 170px;  --ty: -50px;  --rot: 70deg;  animation-delay: 0.04s; }
+.p-5  { --tx: -110px; --ty: 120px;  --rot: -30deg; animation-delay: 0.1s; }
+.p-6  { --tx: 130px;  --ty: 110px;  --rot: 60deg;  animation-delay: 0.06s; }
+.p-7  { --tx: 0px;    --ty: -230px; --rot: 15deg;  animation-delay: 0.03s; }
+.p-8  { --tx: -70px;  --ty: -210px; --rot: -60deg; animation-delay: 0.07s; }
+.p-9  { --tx: 80px;   --ty: -200px; --rot: 45deg;  animation-delay: 0.09s; }
+.p-10 { --tx: -150px; --ty: 40px;   --rot: -90deg; animation-delay: 0.12s; }
+.p-11 { --tx: 150px;  --ty: 40px;   --rot: 90deg;  animation-delay: 0.11s; }
+.p-12 { --tx: 0px;    --ty: 180px;  --rot: -15deg; animation-delay: 0.05s; }
+
+@keyframes particle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.2) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(calc(var(--tx) * 0.7), calc(var(--ty) * 0.7)) scale(1.4) rotate(var(--rot));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.8) rotate(calc(var(--rot) * 2));
+  }
+}
+
+.superlike-badge-card {
+  background: linear-gradient(135deg, rgba(30, 24, 50, 0.95), rgba(18, 14, 30, 0.95));
+  border: 2px solid rgba(0, 210, 255, 0.6);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 32px rgba(0, 210, 255, 0.4), 0 0 60px rgba(124, 77, 255, 0.3);
+  border-radius: 28px;
+  padding: 30px 24px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  position: relative;
+  z-index: 10;
+}
+
+.superlike-icon-halo {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.star-icon-main {
+  font-size: 52px;
+  animation: star-pulse 1s infinite alternate ease-in-out;
+}
+
+.rose-icon-sub {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 26px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+}
+
+@keyframes star-pulse {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.18) rotate(8deg); }
+}
+
+.superlike-banner-title {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 1.6rem;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #FFFFFF 0%, #00E5FF 50%, #FFD700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.04em;
+}
+
+.superlike-banner-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary, #C8C2D4);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.superlike-banner-desc strong {
+  color: #fff;
+}
+
+.animate-scale-up-bounce {
+  animation: scaleUpBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes scaleUpBounce {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .empty-state {
@@ -185,3 +418,4 @@
   box-shadow: var(--shadow-lg);
   border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
+

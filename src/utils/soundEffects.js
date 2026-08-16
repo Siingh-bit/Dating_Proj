@@ -213,3 +213,33 @@ export function playVoiceMelody(durationSec = 5, onEnd) {
     return () => {};
   }
 }
+
+// 7. Celestial Superlike / Rose fanfare (cosmic shimmering arpeggio)
+export function playSuperlikeFanfare() {
+  if (!isSoundEnabled()) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    
+    // Glittering golden chords: E5, G#5, B5, E6, G#6 with sparkling bell overtone
+    const notes = [659.25, 830.61, 987.77, 1318.51, 1661.22, 1975.53];
+    notes.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+
+      gain.gain.setValueAtTime(0.28, ctx.currentTime + idx * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.55);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime + idx * 0.06);
+      osc.stop(ctx.currentTime + idx * 0.06 + 0.55);
+    });
+  } catch (e) {}
+}
+
+

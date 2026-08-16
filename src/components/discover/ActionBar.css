@@ -29,29 +29,96 @@
 }
 
 .btn-skip {
-  width: 52px;
-  height: 52px;
-  background: var(--bg-elevated);
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: var(--shadow-sm);
+  width: 54px;
+  height: 54px;
+  background: var(--bg-elevated, #231E32);
+  color: #9B95A5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-skip:hover {
+  color: #FF5A5F;
+  border-color: rgba(255, 90, 95, 0.4);
+  background: rgba(255, 90, 95, 0.12);
+  transform: scale(1.08);
 }
 
 .btn-like {
-  width: 64px;
-  height: 64px;
-  background: var(--accent-gradient);
+  width: 66px;
+  height: 66px;
+  background: var(--accent-gradient, linear-gradient(135deg, #E8604C, #FF7B6B));
   color: #fff;
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 6px 24px rgba(232, 96, 76, 0.45);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.btn-rose {
-  width: 52px;
-  height: 52px;
-  background: var(--bg-elevated);
-  color: var(--gold);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: var(--shadow-sm);
+.btn-like:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(232, 96, 76, 0.65);
+}
+
+.btn-superlike {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #2A2440, #1E1A2C);
+  color: #00D2FF;
+  border: 1.5px solid rgba(0, 210, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.3), 0 0 12px rgba(124, 77, 255, 0.25);
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-superlike:hover {
+  transform: scale(1.12);
+  color: #00F0FF;
+  border-color: #00F0FF;
+  box-shadow: 0 6px 28px rgba(0, 210, 255, 0.55), 0 0 18px rgba(255, 215, 0, 0.4);
+}
+
+.superlike-glow-ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00D2FF, #7C4DFF, #FFD700, #00D2FF);
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(4px);
+  animation: superlike-spin 4s linear infinite;
+}
+
+@keyframes superlike-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.superlike-sparkle-dot {
+  position: absolute;
+  font-size: 10px;
+  color: #FFD700;
+  pointer-events: none;
+  animation: sparkle-float 1.8s infinite ease-in-out;
+}
+
+.dot-1 {
+  top: 2px;
+  right: 6px;
+  animation-delay: 0s;
+}
+
+.dot-2 {
+  bottom: 4px;
+  left: 6px;
+  animation-delay: 0.9s;
+}
+
+@keyframes sparkle-float {
+  0%, 100% { opacity: 0.2; transform: scale(0.8) translateY(0); }
+  50% { opacity: 1; transform: scale(1.3) translateY(-3px); }
 }
 
 .likes-badge {

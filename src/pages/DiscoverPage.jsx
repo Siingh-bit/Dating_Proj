@@ -20,6 +20,10 @@ export default function DiscoverPage() {
   const [animatingOut, setAnimatingOut] = useState(false);
   const [toast, setToast] = useState(null);
 
+  const [exitDirection, setExitDirection] = useState(null); // null | 'left' | 'right' | 'up'
+  const [superlikeCelebration, setSuperlikeCelebration] = useState(null);
+  const [touchState, setTouchState] = useState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+
   // New Feature States
   const [activeStory, setActiveStory] = useState(null);
   const [showWobbleHour, setShowWobbleHour] = useState(false);
@@ -44,49 +48,110 @@ export default function DiscoverPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleNext = () => {
-    playWhoosh();
-    setAnimatingOut(true);
+  const advanceProfile = (direction, delayMs = 380) => {
+    setExitDirection(direction);
     setTimeout(() => {
       if (isDuoMode) {
         setDuoIndex(prev => prev + 1);
       } else {
         setCurrentIndex(prev => prev + 1);
       }
-      setAnimatingOut(false);
-    }, 400); // match exit animation duration
+      setExitDirection(null);
+      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+    }, delayMs);
+  };
+
+  const handleSkip = () => {
+    if (exitDirection) return;
+    playWhoosh();
+    advanceProfile('left', 380);
   };
 
   const handleLike = () => {
+    if (exitDirection) return;
     playPop();
     if (user.daily_likes_remaining > 0) {
       authDispatch({ type: 'USE_DAILY_LIKE' });
-      handleNext();
+      advanceProfile('right', 380);
       showToast(isDuoMode ? "Liked double date profile! 👥" : "Liked profile! 💖");
     } else {
       showToast("No likes remaining today!");
     }
   };
 
-  const handleSkip = () => {
-    handleNext();
-  };
-
   const handleRose = () => {
-    playMatchChime();
-    handleNext();
-    showToast("Rose sent! 🌹");
+    if (exitDirection) return;
+    playSuperlikeFanfare();
+    const targetName = isDuoMode ? currentDuo?.person1?.name : currentProfile?.name;
+    
+    // Trigger majestic cosmic celebration
+    setSuperlikeCelebration({
+      name: targetName || 'Date',
+      type: 'superlike',
+    });
+
+    advanceProfile('up', 750);
+
+    setTimeout(() => {
+      setSuperlikeCelebration(null);
+    }, 1800);
   };
 
   const handleComment = (itemType, itemIndex, text) => {
+    if (exitDirection) return;
     if (user.daily_likes_remaining > 0) {
       authDispatch({ type: 'USE_DAILY_LIKE' });
-      handleNext();
+      advanceProfile('right', 380);
       showToast("Like sent with comment!");
     } else {
       showToast("No likes remaining today!");
     }
   };
+
+  // Touch / Mouse Drag Swipe Gestures
+  const handleDragStart = (e) => {
+    if (exitDirection) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    setTouchState({ startX: clientX, startY: clientY, currentX: clientX, currentY: clientY, isDragging: true });
+  };
+
+  const handleDragMove = (e) => {
+    if (!touchState.isDragging || exitDirection) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    setTouchState(prev => ({ ...prev, currentX: clientX, currentY: clientY }));
+  };
+
+  const handleDragEnd = () => {
+    if (!touchState.isDragging || exitDirection) return;
+    const deltaX = touchState.currentX - touchState.startX;
+    const deltaY = touchState.currentY - touchState.startY;
+
+    // Check gesture thresholds
+    if (deltaY < -90 && Math.abs(deltaX) < 70) {
+      // Swiped UP -> Superlike / Rose
+      handleRose();
+    } else if (deltaX > 80) {
+      // Swiped RIGHT -> Like
+      handleLike();
+    } else if (deltaX < -80) {
+      // Swiped LEFT -> Reject / Pass
+      handleSkip();
+    } else {
+      // Reset position smoothly
+      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+    }
+  };
+
+  const deltaX = touchState.isDragging ? touchState.currentX - touchState.startX : 0;
+  const deltaY = touchState.isDragging ? touchState.currentY - touchState.startY : 0;
+  const dragRotation = deltaX * 0.08;
+
+  const dragStyle = touchState.isDragging && !exitDirection ? {
+    transform: `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(${dragRotation}deg)`,
+    transition: 'none',
+  } : {};
 
   const handleAddVibeSnap = () => {
     playPop();
@@ -191,10 +256,35 @@ export default function DiscoverPage() {
         </span>
       </div>
 
-      {/* Main Card View */}
+      {/* Main Card View with Interactive Swipe Gestures & Directions */}
       {isDuoMode ? (
         currentDuo ? (
-          <div className={`card-wrapper ${animatingOut ? 'animating-out' : 'animate-scale-in'}`}>
+          <div 
+            className={`card-wrapper ${
+              exitDirection === 'left' ? 'animating-out-left' :
+              exitDirection === 'right' ? 'animating-out-right' :
+              exitDirection === 'up' ? 'animating-out-up' :
+              touchState.isDragging ? 'is-dragging' : 'animate-scale-in'
+            }`}
+            style={dragStyle}
+            onTouchStart={handleDragStart}
+            onTouchMove={handleDragMove}
+            onTouchEnd={handleDragEnd}
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+          >
+            {/* Visual Swipe Direction Stamps */}
+            {(deltaX > 40 || exitDirection === 'right') && (
+              <div className="swipe-stamp like-stamp animate-pop">LIKE 💖</div>
+            )}
+            {(deltaX < -40 || exitDirection === 'left') && (
+              <div className="swipe-stamp nope-stamp animate-pop">PASS ✕</div>
+            )}
+            {(deltaY < -50 || exitDirection === 'up') && (
+              <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKE ⭐</div>
+            )}
+
             <DuoCard 
               duoProfile={currentDuo}
               onLike={handleLike}
@@ -209,7 +299,32 @@ export default function DiscoverPage() {
           </div>
         )
       ) : currentProfile ? (
-        <div className={`card-wrapper ${animatingOut ? 'animating-out' : 'animate-scale-in'}`}>
+        <div 
+          className={`card-wrapper ${
+            exitDirection === 'left' ? 'animating-out-left' :
+            exitDirection === 'right' ? 'animating-out-right' :
+            exitDirection === 'up' ? 'animating-out-up' :
+            touchState.isDragging ? 'is-dragging' : 'animate-scale-in'
+          }`}
+          style={dragStyle}
+          onTouchStart={handleDragStart}
+          onTouchMove={handleDragMove}
+          onTouchEnd={handleDragEnd}
+          onMouseDown={handleDragStart}
+          onMouseMove={handleDragMove}
+          onMouseUp={handleDragEnd}
+        >
+          {/* Visual Swipe Direction Stamps */}
+          {(deltaX > 40 || exitDirection === 'right') && (
+            <div className="swipe-stamp like-stamp animate-pop">LIKE 💖</div>
+          )}
+          {(deltaX < -40 || exitDirection === 'left') && (
+            <div className="swipe-stamp nope-stamp animate-pop">PASS ✕</div>
+          )}
+          {(deltaY < -50 || exitDirection === 'up') && (
+            <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKE ⭐</div>
+          )}
+
           <ProfileCard 
             profile={currentProfile}
             onLike={handleLike}
@@ -234,6 +349,36 @@ export default function DiscoverPage() {
           onRose={handleRose}
           likesRemaining={user.daily_likes_remaining}
         />
+      )}
+
+      {/* Superlike / Rose Fullscreen Cosmic Celebration Effect */}
+      {superlikeCelebration && (
+        <div className="superlike-celebration-overlay animate-fade-in">
+          <div className="cosmic-light-column" />
+          
+          {/* Shimmering floating particles burst */}
+          <div className="particles-container">
+            {['🌹', '⭐', '✨', '💖', '💫', '🌹', '🌟', '✨', '⭐', '🌹', '💫', '💖'].map((emoji, idx) => (
+              <span 
+                key={idx} 
+                className={`celebration-particle p-${idx + 1}`}
+              >
+                {emoji}
+              </span>
+            ))}
+          </div>
+
+          <div className="superlike-badge-card animate-scale-up-bounce">
+            <div className="superlike-icon-halo">
+              <span className="star-icon-main">⭐</span>
+              <span className="rose-icon-sub">🌹</span>
+            </div>
+            <h2 className="superlike-banner-title">SUPERLIKE SENT!</h2>
+            <p className="superlike-banner-desc">
+              Your profile will be highlighted at the top of <strong>{superlikeCelebration.name}</strong>'s deck ✨
+            </p>
+          </div>
+        </div>
       )}
 
       {/* 24h Vibe Snap Fullscreen Story Viewer */}
