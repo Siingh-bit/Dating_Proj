@@ -1,0 +1,104 @@
+.stories-bar-container {
+  width: 100%;
+  padding: 10px 12px 6px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background: var(--bg-deepest, #0C0A10);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stories-bar-track {
+  display: inline-flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  width: 64px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.story-item:active {
+  transform: scale(0.93);
+}
+
+.story-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 2.5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card, #1A1626);
+}
+
+.story-ring.has-story {
+  background: linear-gradient(45deg, #E8604C, #FF7B6B, #7C4DFF, #1DB954);
+  background-size: 300% 300%;
+  animation: gradient-rotate 4s ease infinite;
+}
+
+@keyframes gradient-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.story-ring.self-add {
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  background: transparent;
+}
+
+.story-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bg-deepest, #0C0A10);
+}
+
+.add-story-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent, #E8604C);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-deepest, #0C0A10);
+  box-shadow: 0 2px 6px rgba(232, 96, 76, 0.4);
+}
+
+.story-glow-dot {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1DB954;
+  border: 2px solid var(--bg-deepest, #0C0A10);
+}
+
+.story-username {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #9B95A5);
+  max-width: 62px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-weight: 500;
+}

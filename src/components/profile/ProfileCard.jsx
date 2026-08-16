@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Heart, MapPin, Briefcase, GraduationCap, Home, Check, Ruler, Wine, Cigarette } from 'lucide-react';
+import { Heart, MapPin, Briefcase, GraduationCap, Home, Check, Ruler, Wine, Cigarette, Eye, EyeOff } from 'lucide-react';
+import VoicePromptCard from './VoicePromptCard';
+import SpotifyAnthemCard from './SpotifyAnthemCard';
+import { playPop } from '../../utils/soundEffects';
 import './ProfileCard.css';
 
-export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
+export default function ProfileCard({ profile, onLike, onSkip, onComment, isBlindMode = false }) {
   const [commentInput, setCommentInput] = useState(null); // { type, index }
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [revealedPhotos, setRevealedPhotos] = useState(false);
   const photoRefs = useRef([]);
 
   useEffect(() => {
     setActivePhotoIndex(0);
+    setRevealedPhotos(!isBlindMode);
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -29,11 +34,12 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
     });
 
     return () => observer.disconnect();
-  }, [profile]);
+  }, [profile, isBlindMode]);
   
   if (!profile) return null;
   
   const handleCommentOpen = (itemType, itemIndex) => {
+    playPop();
     setCommentInput({ itemType, itemIndex });
   };
   
@@ -42,6 +48,11 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
       if (onComment) onComment({ itemType: commentInput.itemType, itemIndex: commentInput.itemIndex, comment: text });
     }
     setCommentInput(null);
+  };
+
+  const handleReveal = () => {
+    playPop();
+    setRevealedPhotos(true);
   };
 
   const vitalsList = profile.vitals ? [
@@ -77,7 +88,7 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
   const photoCount = photos.length;
 
   return (
-    <div className="profile-card">
+    <div className={`profile-card ${isBlindMode && !revealedPhotos ? 'is-blind-mode' : ''}`}>
       {photoCount > 0 && (
         <div className="photo-progress-container">
           {Array.from({ length: photoCount }).map((_, i) => (
@@ -88,16 +99,42 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
           ))}
         </div>
       )}
+
+      {isBlindMode && !revealedPhotos && (
+        <div className="blind-mode-banner">
+          <span>🎭 Blind Impression Mode</span>
+          <button className="reveal-btn" onClick={handleReveal}>
+            <Eye size={14} /> Reveal Photos
+          </button>
+        </div>
+      )}
+
       <div className="profile-scroll">
+        {/* Voice Prompt Showcase (placed right at top if available) */}
+        {profile.voicePrompt && (
+          <div className="profile-item voice-item">
+            <VoicePromptCard voicePrompt={profile.voicePrompt} name={profile.name} />
+          </div>
+        )}
+
         {items.map((item, idx) => (
           <div key={`${item.type}-${idx}`} className={`profile-item ${item.type}-item`}>
             {item.type === 'photo' ? (
               <div 
-                className="photo-container"
+                className={`photo-container ${isBlindMode && !revealedPhotos ? 'blurred' : ''}`}
                 ref={(el) => (photoRefs.current[item.originalIndex] = el)}
                 data-index={item.originalIndex}
               >
                 <img src={item.data} alt="" className="profile-photo" />
+                
+                {isBlindMode && !revealedPhotos && (
+                  <div className="photo-blur-overlay" onClick={handleReveal}>
+                    <EyeOff size={32} />
+                    <p>Photos Blurred in Blind Mode</p>
+                    <span className="tap-hint">Tap to Reveal</span>
+                  </div>
+                )}
+
                 {idx === 0 && (
                   <div className="name-overlay">
                     <h2>{profile.name}, {profile.age} {profile.verified && <span className="verified-badge"><Check size={12} /></span>}</h2>
@@ -138,6 +175,13 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
           </div>
         ))}
 
+        {/* Spotify Anthem Card */}
+        {profile.spotify && (
+          <div className="profile-item spotify-item">
+            <SpotifyAnthemCard spotify={profile.spotify} name={profile.name} />
+          </div>
+        )}
+
         {vitalsList.length > 0 && (
           <div className="vitals-section">
             {vitalsList.map((v, i) => (
@@ -157,3 +201,4 @@ export default function ProfileCard({ profile, onLike, onSkip, onComment }) {
     </div>
   );
 }
+

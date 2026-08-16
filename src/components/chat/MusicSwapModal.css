@@ -1,0 +1,189 @@
+.music-swap-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(12, 10, 16, 0.88);
+  backdrop-filter: blur(14px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.music-swap-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: 88vh;
+  background: var(--bg-card, #1A1626);
+  border: 1px solid rgba(29, 185, 84, 0.3);
+  border-radius: var(--radius-xl, 24px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+  color: var(--text-primary);
+}
+
+.music-swap-header {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.music-swap-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1DB954;
+  margin-bottom: 4px;
+}
+
+.music-swap-title-box h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  font-family: var(--font-display);
+}
+
+.music-swap-close-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.music-swap-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.track-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-tertiary);
+}
+
+.track-search-input {
+  width: 100%;
+  background: var(--bg-elevated, #231E32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px 10px 34px;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-elevated, #231E32);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.track-item.active {
+  background: rgba(29, 185, 84, 0.15);
+  border-color: #1DB954;
+}
+
+.track-disc {
+  color: #1DB954;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.track-info h4 {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.track-info p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+}
+
+.track-vibe {
+  color: #FFD700;
+}
+
+.music-note-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.music-note-box label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.music-note-input {
+  background: var(--bg-elevated, #231E32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.music-swap-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.send-track-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #1DB954, #1ed760);
+  color: #121018;
+  border: none;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(29, 185, 84, 0.35);
+}

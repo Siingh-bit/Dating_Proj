@@ -141,6 +141,56 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
                   <span className="game-score">Love Song Quiz Score: {message.gameData.score}/{message.gameData.total}</span>
                 </div>
               )}
+
+              {/* Date Itinerary Card */}
+              {message.gameData.type === 'date_itinerary' && (
+                <div className="chat-itinerary-card">
+                  <div className="itinerary-header-badge">
+                    <span>✨ First Date Invitation</span>
+                  </div>
+                  <h4 className="itinerary-vibe-title">{message.gameData.vibe}</h4>
+                  <div className="itinerary-details">
+                    <p>📍 {message.gameData.location}</p>
+                    <p>📅 {message.gameData.day} • {message.gameData.time}</p>
+                  </div>
+                  {message.gameData.note && <p className="itinerary-note">"{message.gameData.note}"</p>}
+                  <div className="itinerary-rsvp-row">
+                    <button className="rsvp-btn accepted" onClick={() => alert("Date invitation accepted! 🥂")}>
+                      I'm In! 🥂
+                    </button>
+                    <button className="rsvp-btn tweak" onClick={() => alert("Shared tweak request ✨")}>
+                      Suggest Tweak ✨
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Music Swap Card */}
+              {message.gameData.type === 'music_swap' && (
+                <div className="chat-music-card">
+                  <div className="music-header-badge">
+                    <span>🟢 Spotify Track Swap</span>
+                  </div>
+                  <div className="music-body-box">
+                    <div className="music-note-icon">🎵</div>
+                    <div className="music-text-meta">
+                      <h4>{message.gameData.track}</h4>
+                      <p>{message.gameData.artist}</p>
+                    </div>
+                  </div>
+                  {message.gameData.note && <p className="music-shared-note">"{message.gameData.note}"</p>}
+                </div>
+              )}
+
+              {/* Graceful Closure Card */}
+              {message.gameData.type === 'graceful_closure' && (
+                <div className="chat-closure-card">
+                  <div className="closure-badge-pill">
+                    <span>🕊️ Respectful Closure</span>
+                  </div>
+                  <p className="closure-note-body">{message.gameData.note}</p>
+                </div>
+              )}
             </div>
           )}
 

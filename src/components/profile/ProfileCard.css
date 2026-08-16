@@ -33,6 +33,83 @@
   background: #fff;
 }
 
+.blind-mode-banner {
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.9), rgba(232, 96, 76, 0.9));
+  color: #fff;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 12px;
+  margin: 4px 8px 10px 8px;
+  box-shadow: 0 4px 16px rgba(124, 77, 255, 0.35);
+  animation: slide-in-top 0.3s ease;
+}
+
+.reveal-btn {
+  background: #fff;
+  color: #121018;
+  border: none;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.reveal-btn:active {
+  transform: scale(0.95);
+}
+
+.photo-container.blurred .profile-photo {
+  filter: blur(28px) brightness(0.65);
+  transform: scale(1.1);
+}
+
+.photo-blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fff;
+  background: rgba(12, 10, 16, 0.4);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  z-index: 5;
+  text-align: center;
+  padding: 20px;
+}
+
+.photo-blur-overlay p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.photo-blur-overlay .tap-hint {
+  font-size: 0.75rem;
+  background: var(--accent, #E8604C);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-weight: 700;
+  margin-top: 4px;
+  box-shadow: 0 4px 12px rgba(232, 96, 76, 0.4);
+}
+
 .profile-scroll {
   padding-bottom: 120px;
   display: flex;

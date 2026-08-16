@@ -39,7 +39,13 @@ import CupidsArrowModal from '../components/chat/games/CupidsArrowModal';
 import TwoLineTangoModal from '../components/chat/games/TwoLineTangoModal';
 import OddOneOutModal from '../components/chat/games/OddOneOutModal';
 import LoveBetsModal from '../components/chat/games/LoveBetsModal';
-import { ArrowLeft, Lock, X, Sparkles, User, Phone, Video } from 'lucide-react';
+import WobbleMeter from '../components/chat/WobbleMeter';
+import FirstDatePlannerModal from '../components/chat/FirstDatePlannerModal';
+import MusicSwapModal from '../components/chat/MusicSwapModal';
+import GracefulCloserModal from '../components/chat/GracefulCloserModal';
+import SmartReviver from '../components/chat/SmartReviver';
+import { playPop, playMatchChime, playFanfare, playWhoosh } from '../utils/soundEffects';
+import { ArrowLeft, Lock, X, Sparkles, User, Phone, Video, HeartHandshake, Calendar, Music } from 'lucide-react';
 import './ChatPage.css';
 
 export default function ChatPage() {
@@ -52,6 +58,9 @@ export default function ChatPage() {
   const [showPhaseModal, setShowPhaseModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showEndConfirmModal, setShowEndConfirmModal] = useState(false);
+  const [showGracefulCloser, setShowGracefulCloser] = useState(false);
+  const [showDatePlanner, setShowDatePlanner] = useState(false);
+  const [showMusicSwap, setShowMusicSwap] = useState(false);
   const [activeCallType, setActiveCallType] = useState(null); // null | 'audio' | 'video'
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [paywallFeature, setPaywallFeature] = useState(null); // null | 'Photo Sharing' | 'Message Unsending'
@@ -81,6 +90,7 @@ export default function ChatPage() {
   const isAvailableToStart = !isActive && !slotsFull;
 
   const handleSend = (text) => {
+    playPop();
     if (!isActive) {
       dispatch({ type: 'START_CONVERSATION', payload: { matchId } });
     }
@@ -88,6 +98,7 @@ export default function ChatPage() {
   };
 
   const handleSendGameResult = (gamePayload) => {
+    playFanfare();
     if (!isActive) dispatch({ type: 'START_CONVERSATION', payload: { matchId } });
     dispatch({
       type: 'SEND_MESSAGE',
@@ -95,6 +106,34 @@ export default function ChatPage() {
     });
     setActiveGameId(null);
     setShowGameLounge(false);
+  };
+
+  const handleSendDateItinerary = (itineraryPayload) => {
+    if (!isActive) dispatch({ type: 'START_CONVERSATION', payload: { matchId } });
+    dispatch({
+      type: 'SEND_MESSAGE',
+      payload: { matchId, text: `✨ Proposed Date #1: ${itineraryPayload.vibe} (${itineraryPayload.day} at ${itineraryPayload.time})`, gameData: itineraryPayload }
+    });
+  };
+
+  const handleSendMusicTrack = (musicPayload) => {
+    if (!isActive) dispatch({ type: 'START_CONVERSATION', payload: { matchId } });
+    dispatch({
+      type: 'SEND_MESSAGE',
+      payload: { matchId, text: `🎵 Shared track: ${musicPayload.track} by ${musicPayload.artist}`, gameData: musicPayload }
+    });
+  };
+
+  const handleGracefulEndConfirm = (farewellNote) => {
+    dispatch({
+      type: 'SEND_MESSAGE',
+      payload: { matchId, text: `🕊️ ${farewellNote}`, gameData: { type: 'graceful_closure', note: farewellNote } }
+    });
+    setTimeout(() => {
+      dispatch({ type: 'END_CONVERSATION', payload: { matchId } });
+      authDispatch({ type: 'USE_WEEKLY_END' });
+      navigate('/app/matches');
+    }, 800);
   };
 
   const handleOpenMediaPicker = () => {
@@ -106,6 +145,7 @@ export default function ChatPage() {
   };
 
   const handleSendMedia = ({ photoUrl, mode, caption }) => {
+    playPop();
     if (!isActive) {
       dispatch({ type: 'START_CONVERSATION', payload: { matchId } });
     }
@@ -186,17 +226,29 @@ export default function ChatPage() {
         </div>
 
         <div className="chat-header-actions">
+          <button className="icon-btn" onClick={() => setShowDatePlanner(true)} title="Plan Date #1">
+            <Calendar size={18} />
+          </button>
+          <button className="icon-btn" onClick={() => setShowMusicSwap(true)} title="Music Swap">
+            <Music size={18} />
+          </button>
           <button className="icon-btn call-btn" onClick={() => setActiveCallType('audio')} title="Audio Call">
-            <Phone size={20} />
+            <Phone size={18} />
           </button>
           <button className="icon-btn call-btn" onClick={() => setActiveCallType('video')} title="Video Call">
-            <Video size={20} />
+            <Video size={18} />
           </button>
-          <button className="icon-btn" onClick={() => setShowProfileModal(true)}>
-            <User size={20} />
+          <button className="icon-btn closer-trigger-btn" onClick={() => setShowGracefulCloser(true)} title="End Conversation with Kindness">
+            <HeartHandshake size={18} />
           </button>
         </div>
       </header>
+
+      {/* Wobble Chemistry Meter */}
+      <WobbleMeter 
+        messageCount={messages.length} 
+        onTriggerDatePlanner={() => setShowDatePlanner(true)} 
+      />
 
       <div className="chat-phase-banner" onClick={() => setShowPhaseModal(true)}>
         <div className="phase-indicator" style={{ color: phaseInfo.color, background: phaseInfo.color + '15' }}>
@@ -228,6 +280,14 @@ export default function ChatPage() {
           );
         })}
       </div>
+
+      {/* Smart Conversation Reviver Suggestions */}
+      {!isLocked && (
+        <SmartReviver 
+          matchProfile={profile} 
+          onSelectPrompt={(text) => handleSend(text)} 
+        />
+      )}
 
       {isLocked ? (
         <div className="locked-input-bar">
@@ -387,6 +447,33 @@ export default function ChatPage() {
       {activeGameId === 'two_line_tango' && <TwoLineTangoModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
       {activeGameId === 'odd_one_out' && <OddOneOutModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
       {activeGameId === 'love_bets' && <LoveBetsModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+
+      {/* First Date Planner Modal */}
+      {showDatePlanner && (
+        <FirstDatePlannerModal 
+          matchProfile={profile} 
+          onClose={() => setShowDatePlanner(false)} 
+          onSendItinerary={handleSendDateItinerary} 
+        />
+      )}
+
+      {/* Music Swap Modal */}
+      {showMusicSwap && (
+        <MusicSwapModal 
+          matchProfile={profile} 
+          onClose={() => setShowMusicSwap(false)} 
+          onSendTrack={handleSendMusicTrack} 
+        />
+      )}
+
+      {/* Graceful Closer Modal */}
+      {showGracefulCloser && (
+        <GracefulCloserModal 
+          matchProfile={profile} 
+          onClose={() => setShowGracefulCloser(false)} 
+          onConfirmEnd={handleGracefulEndConfirm} 
+        />
+      )}
     </div>
   );
 }

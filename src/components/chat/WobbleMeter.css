@@ -1,0 +1,123 @@
+.wobble-meter-container {
+  background: rgba(26, 22, 38, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.wobble-meter-container.is-max-chemistry {
+  background: linear-gradient(135deg, rgba(35, 30, 50, 0.95), rgba(45, 25, 35, 0.95));
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.wobble-meter-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meter-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flame-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-flame 1.5s infinite alternate;
+}
+
+@keyframes pulse-flame {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.meter-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary, #F5F0EB);
+}
+
+.meter-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meter-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.meter-pct {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary, #9B95A5);
+  font-variant-numeric: tabular-nums;
+}
+
+.meter-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.max-chemistry-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 6px 12px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+.max-chem-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #FFD700;
+  font-weight: 600;
+}
+
+.sparkle-gold {
+  color: #FFD700;
+  animation: spin 3s linear infinite;
+}
+
+.plan-date-trigger-btn {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #121018;
+  border: none;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.plan-date-trigger-btn:active {
+  transform: scale(0.92);
+}

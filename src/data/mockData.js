@@ -106,6 +106,23 @@ export const PROFILES = [
     },
     intention: "Long-term relationship",
     verified: true,
+    voicePrompt: {
+      question: "My simple pleasures in life ☕",
+      duration: 11,
+      durationLabel: "0:11",
+      caption: "Watching Mumbai rain with piping hot ginger chai and zero notifications.",
+    },
+    spotify: {
+      anthem: "Kho Gaye Hum Kahan",
+      artist: "Jasleen Royal & Prateek Kuhad",
+      albumArt: "🌧️",
+      topArtists: ["Prateek Kuhad", "Jasleen Royal", "Lauv"],
+    },
+    smartSparks: [
+      "Ask her about her favorite rainy day café in Mumbai ☕",
+      "Ask about her UX design research at Flipkart 💻",
+      "Ask what 2am topic she never gets tired of discussing 🌙",
+    ],
   },
   {
     id: "p2",
@@ -136,6 +153,23 @@ export const PROFILES = [
     },
     intention: "Life partner",
     verified: true,
+    voicePrompt: {
+      question: "The dream bookshop café vibe 📚",
+      duration: 13,
+      durationLabel: "0:13",
+      caption: "Picture this: floor-to-ceiling wooden bookshelves, the smell of fresh espresso, and soft vinyl records spinning.",
+    },
+    spotify: {
+      anthem: "Liggi",
+      artist: "Ritviz",
+      albumArt: "⚡",
+      topArtists: ["Ritviz", "Nucleya", "Chhavi Sodhani"],
+    },
+    smartSparks: [
+      "Ask what dish she loves having cooked for her the most 🍳",
+      "Ask for her top 3 books that would be in her dream bookshop 📚",
+      "Ask about her graphic design work at Zomato 🎨",
+    ],
   },
   {
     id: "p3",
@@ -346,6 +380,23 @@ export const PROFILES = [
     },
     intention: "Life partner",
     verified: true,
+    voicePrompt: {
+      question: "How to pronounce my name properly 🎙️",
+      duration: 14,
+      durationLabel: "0:14",
+      caption: "Hey! It's pronounced EEE-shaa, soft on the 'sh'. Most people get it wrong on the first try! ✨",
+    },
+    spotify: {
+      anthem: "Kasoor",
+      artist: "Prateek Kuhad",
+      albumArt: "🎵",
+      topArtists: ["Prateek Kuhad", "Tame Impala", "Cigarettes After Sex"],
+    },
+    smartSparks: [
+      "Ask her about the vintage vinyl store she found in Bandra 🎶",
+      "Ask what her go-to iced matcha spot is in Mumbai 🍵",
+      "Ask where she loves to go for spontaneous 1am drives 🚗",
+    ],
   },
   {
     id: "p10",
@@ -376,6 +427,23 @@ export const PROFILES = [
     },
     intention: "Long-term relationship",
     verified: true,
+    voicePrompt: {
+      question: "My most controversial food opinion 🍝",
+      duration: 12,
+      durationLabel: "0:12",
+      caption: "Authentic handmade cacio e pepe beats fancy truffle pizza any day of the week, hands down.",
+    },
+    spotify: {
+      anthem: "Baarishein",
+      artist: "Anuv Jain",
+      albumArt: "🌧️",
+      topArtists: ["Anuv Jain", "The Local Train", "Coldplay"],
+    },
+    smartSparks: [
+      "Ask for her top handmade pasta recommendation in Indiranagar 🍝",
+      "Ask about her favorite morning walk route in Cubbon Park 🌿",
+      "Ask what book she's currently reading at the bookstore café 📖",
+    ],
   },
   {
     id: "p11",
@@ -406,6 +474,23 @@ export const PROFILES = [
     },
     intention: "Long-term relationship",
     verified: true,
+    voicePrompt: {
+      question: "The sound of my laugh after bad jokes 😂",
+      duration: 15,
+      durationLabel: "0:15",
+      caption: "Fair warning: I have zero poker face and will laugh at literally the worst puns in existence.",
+    },
+    spotify: {
+      anthem: "Chaand Baaliyan",
+      artist: "Aditya A",
+      albumArt: "🌙",
+      topArtists: ["Aditya A", "When Chai Met Toast", "Leon Bridges"],
+    },
+    smartSparks: [
+      "Ask what ceramic piece she's making next at the pottery studio 🏺",
+      "Ask about the sunset rooftop spot in Hauz Khas she loves ☕",
+      "Ask for her #1 indie song recommendation right now 🎧",
+    ],
   },
   {
     id: "p12",
@@ -951,4 +1036,202 @@ export const PHASE_CONFIG = {
   dating: { label: "Dating", emoji: "🌹", color: "var(--phase-dating)", description: "Going on dates" },
   serious: { label: "Getting Serious", emoji: "💍", color: "var(--phase-serious)", description: "Building a future" },
 };
+
+export const STORIES = [
+  {
+    id: "story_self",
+    userId: "user-self",
+    userName: "Your Vibe",
+    avatar: "/profiles/ananya/1.jpg",
+    isSelf: true,
+    hasStory: false,
+    storyCount: 0,
+    stories: [],
+  },
+  {
+    id: "story_isha",
+    userId: "p9",
+    userName: "Isha",
+    avatar: "/profiles/isha/1.jpg",
+    location: "Bandra, Mumbai",
+    storyCount: 2,
+    stories: [
+      {
+        id: "s_isha_1",
+        photo: "/profiles/isha/1.jpg",
+        timestamp: "2h ago",
+        caption: "Bandra morning brew & finding vintage vinyl records ☕🎶",
+        vibe: "Cozy Morning",
+      },
+      {
+        id: "s_isha_2",
+        photo: "/profiles/isha/3.jpg",
+        timestamp: "5h ago",
+        caption: "Street craft market walk in the sunshine 🌻✨",
+        vibe: "Golden Hour",
+      },
+    ],
+  },
+  {
+    id: "story_harshita",
+    userId: "p10",
+    userName: "Harshita",
+    avatar: "/profiles/harshita/1.jpg",
+    location: "Indiranagar, Bangalore",
+    storyCount: 2,
+    stories: [
+      {
+        id: "s_harshita_1",
+        photo: "/profiles/harshita/3.jpg",
+        timestamp: "3h ago",
+        caption: "Morning 6km run in Cubbon Park before the heat kicks in 🌿🏃‍♀️",
+        vibe: "Fresh & Energized",
+      },
+      {
+        id: "s_harshita_2",
+        photo: "/profiles/harshita/4.jpg",
+        timestamp: "7h ago",
+        caption: "Handmade pasta & wine night with the girls 🍷🍝",
+        vibe: "Dinner Vibe",
+      },
+    ],
+  },
+  {
+    id: "story_ishika",
+    userId: "p11",
+    userName: "Ishika",
+    avatar: "/profiles/ishika/1.jpg",
+    location: "Hauz Khas, Delhi",
+    storyCount: 2,
+    stories: [
+      {
+        id: "s_ishika_1",
+        photo: "/profiles/ishika/3.jpg",
+        timestamp: "1h ago",
+        caption: "Total mess at the pottery studio today but made my first vase! 🏺🤎",
+        vibe: "Art Studio",
+      },
+      {
+        id: "s_ishika_2",
+        photo: "/profiles/ishika/1.jpg",
+        timestamp: "4h ago",
+        caption: "Rooftop sunset chai in Hauz Khas overlooking the lake 🌅☕",
+        vibe: "Sunset Glow",
+      },
+    ],
+  },
+  {
+    id: "story_ananya",
+    userId: "p1",
+    userName: "Ananya",
+    avatar: "/profiles/ananya/1.jpg",
+    location: "Mumbai",
+    storyCount: 1,
+    stories: [
+      {
+        id: "s_ananya_1",
+        photo: "/profiles/ananya/2.jpg",
+        timestamp: "6h ago",
+        caption: "Monsoon evening coffee watching the Arabian Sea 🌧️🌊",
+        vibe: "Monsoon Serenade",
+      },
+    ],
+  },
+  {
+    id: "story_meera",
+    userId: "p2",
+    userName: "Meera",
+    avatar: "/profiles/meera/1.jpg",
+    location: "Delhi",
+    storyCount: 1,
+    stories: [
+      {
+        id: "s_meera_1",
+        photo: "/profiles/meera/3.jpg",
+        timestamp: "8h ago",
+        caption: "New indie bookstore discovery in South Delhi 📚✨",
+        vibe: "Bookworm",
+      },
+    ],
+  },
+];
+
+export const DUO_PROFILES = [
+  {
+    id: "duo_1",
+    duoName: "Isha & Rhea",
+    city: "Mumbai & Pune",
+    headline: "Designers, concert goers & rooftop lovers ✨",
+    person1: {
+      name: "Isha",
+      age: 24,
+      role: "UX Designer",
+      photo: "/profiles/isha/1.jpg",
+      vibe: "Iced matcha & vinyl records",
+    },
+    person2: {
+      name: "Rhea",
+      age: 24,
+      role: "Architect",
+      photo: "/profiles/rhea/1.jpg",
+      vibe: "Cold brew & loud indie rock",
+    },
+    jointPrompt: {
+      question: "Our ideal double date is",
+      answer: "A competitive board games & craft cocktails night followed by late-night street food!",
+    },
+    interests: ["Live Music", "Board Games", "Art Galleries", "Rooftops", "Coffee"],
+  },
+  {
+    id: "duo_2",
+    duoName: "Harshita & Tanvi",
+    city: "Bangalore & Mumbai",
+    headline: "Strategy minds, cafe hoppers & weekend roadtrippers 🚗",
+    person1: {
+      name: "Harshita",
+      age: 25,
+      role: "Brand Strategist",
+      photo: "/profiles/harshita/1.jpg",
+      vibe: "Cubbon Park & pasta dinners",
+    },
+    person2: {
+      name: "Tanvi",
+      age: 23,
+      role: "Marketing Lead",
+      photo: "/profiles/tanvi/1.jpg",
+      vibe: "Mirror selfies & comedy gigs",
+    },
+    jointPrompt: {
+      question: "You should swipe right if you and your friend",
+      answer: "Can handle witty banter, love spontaneous weekend trips, and have great playlist taste!",
+    },
+    interests: ["Standup Comedy", "Road Trips", "Italian Food", "Indie Music", "Fitness"],
+  },
+  {
+    id: "duo_3",
+    duoName: "Ishika & Ananya",
+    city: "Delhi & Mumbai",
+    headline: "Creative souls: Pottery, rain & deep 2am talks 🎨",
+    person1: {
+      name: "Ishika",
+      age: 23,
+      role: "Visual Artist",
+      photo: "/profiles/ishika/1.jpg",
+      vibe: "Pottery studio & sunset chai",
+    },
+    person2: {
+      name: "Ananya",
+      age: 24,
+      role: "UX Researcher",
+      photo: "/profiles/ananya/1.jpg",
+      vibe: "Rainy cafe windows & books",
+    },
+    jointPrompt: {
+      question: "Best double date activity",
+      answer: "A pottery painting workshop followed by trying the best wood-fired pizza spot in town.",
+    },
+    interests: ["Pottery", "Art Workshops", "Sunset Chilling", "Craft Beer", "Boba"],
+  },
+];
+
 

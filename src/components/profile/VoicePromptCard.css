@@ -1,0 +1,153 @@
+.voice-prompt-card {
+  background: linear-gradient(135deg, rgba(35, 30, 50, 0.95), rgba(26, 22, 38, 0.98));
+  border: 1px solid rgba(232, 96, 76, 0.25);
+  border-radius: var(--radius-lg, 16px);
+  padding: 16px 18px;
+  margin: 12px 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-prompt-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #E8604C, #FF7B6B, #7C4DFF);
+}
+
+.voice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.voice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--accent, #E8604C);
+  background: rgba(232, 96, 76, 0.12);
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+.voice-duration {
+  font-size: 0.8rem;
+  color: var(--text-tertiary, #9B95A5);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.voice-question {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 1.15rem;
+  color: var(--text-primary, #F5F0EB);
+  margin: 6px 0 14px 0;
+  font-weight: normal;
+  line-height: 1.3;
+}
+
+.voice-player-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(18, 16, 24, 0.7);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.voice-play-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-gradient, linear-gradient(135deg, #E8604C, #FF7B6B));
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(232, 96, 76, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.voice-play-btn:active {
+  transform: scale(0.92);
+}
+
+.voice-play-btn.playing {
+  animation: pulse-glow 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 96, 76, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(232, 96, 76, 0); }
+}
+
+.waveform-container {
+  position: relative;
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.waveform-bars {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  gap: 3px;
+}
+
+.wave-bar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  transition: background 0.15s ease, height 0.15s ease;
+  min-height: 4px;
+}
+
+.wave-bar.filled {
+  background: var(--accent-light, #FF7B6B);
+}
+
+.wave-bar.animating {
+  animation: wave-bounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes wave-bounce {
+  0% { transform: scaleY(0.5); }
+  100% { transform: scaleY(1.2); }
+}
+
+.waveform-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent, #E8604C);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.voice-caption {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #C8C2D4);
+  font-style: italic;
+  margin: 10px 0 0 0;
+  line-height: 1.4;
+}

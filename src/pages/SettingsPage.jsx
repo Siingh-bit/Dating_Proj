@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { isSoundEnabled, setSoundEnabled, playPop } from '../utils/soundEffects';
 import './SettingsPage.css';
 
 export default function SettingsPage() {
@@ -10,6 +11,14 @@ export default function SettingsPage() {
   const [matchNotifs, setMatchNotifs] = useState(true);
   const [messageNotifs, setMessageNotifs] = useState(true);
   const [likeNotifs, setLikeNotifs] = useState(false);
+  const [soundEffectsActive, setSoundEffectsActive] = useState(isSoundEnabled());
+
+  const handleToggleSound = () => {
+    const nextState = !soundEffectsActive;
+    setSoundEffectsActive(nextState);
+    setSoundEnabled(nextState);
+    if (nextState) playPop();
+  };
 
   return (
     <div className="settings-page animate-fade-in page-with-topbar">
@@ -83,6 +92,30 @@ export default function SettingsPage() {
               <button 
                 className={`toggle-switch ${likeNotifs ? 'active' : ''}`}
                 onClick={() => setLikeNotifs(!likeNotifs)}
+              >
+                <div className="toggle-knob"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="settings-group">
+          <h2 className="settings-group-title">Audio & Experience</h2>
+          <div className="settings-card">
+            <div className="settings-row">
+              <span className="settings-label">Tactile Sound Effects (Web Audio SFX)</span>
+              <button 
+                className={`toggle-switch ${soundEffectsActive ? 'active' : ''}`}
+                onClick={handleToggleSound}
+              >
+                <div className="toggle-knob"></div>
+              </button>
+            </div>
+            <div className="settings-row">
+              <span className="settings-label">The Wobble Hour Notifications</span>
+              <button 
+                className="toggle-switch active"
+                onClick={() => {}}
               >
                 <div className="toggle-knob"></div>
               </button>
