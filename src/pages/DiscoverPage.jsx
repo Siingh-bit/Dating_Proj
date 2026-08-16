@@ -9,7 +9,7 @@ import WobbleHourModal from '../components/wobble/WobbleHourModal';
 import { PROFILES, STORIES, DUO_PROFILES } from '../data/mockData';
 import { useAuth } from '../contexts/AuthContext';
 import { useConversations } from '../contexts/ConversationContext';
-import { playPop, playWhoosh, playMatchChime } from '../utils/soundEffects';
+import { playPop, playWhoosh, playMatchChime, playSuperlikeFanfare } from '../utils/soundEffects';
 import './DiscoverPage.css';
 
 export default function DiscoverPage() {
@@ -63,13 +63,17 @@ export default function DiscoverPage() {
 
   const handleSkip = () => {
     if (exitDirection) return;
-    playWhoosh();
+    try {
+      playWhoosh();
+    } catch (e) {}
     advanceProfile('left', 380);
   };
 
   const handleLike = () => {
     if (exitDirection) return;
-    playPop();
+    try {
+      playPop();
+    } catch (e) {}
     if (user.daily_likes_remaining > 0) {
       authDispatch({ type: 'USE_DAILY_LIKE' });
       advanceProfile('right', 380);
@@ -81,7 +85,9 @@ export default function DiscoverPage() {
 
   const handleRose = () => {
     if (exitDirection) return;
-    playSuperlikeFanfare();
+    try {
+      playSuperlikeFanfare();
+    } catch (e) {}
     const targetName = isDuoMode ? currentDuo?.person1?.name : currentProfile?.name;
     
     // Trigger majestic cosmic celebration
@@ -90,11 +96,11 @@ export default function DiscoverPage() {
       type: 'superlike',
     });
 
-    advanceProfile('up', 750);
+    advanceProfile('up', 800);
 
     setTimeout(() => {
       setSuperlikeCelebration(null);
-    }, 1800);
+    }, 2200);
   };
 
   const handleComment = (itemType, itemIndex, text) => {
@@ -353,7 +359,11 @@ export default function DiscoverPage() {
 
       {/* Superlike / Rose Fullscreen Cosmic Celebration Effect */}
       {superlikeCelebration && (
-        <div className="superlike-celebration-overlay animate-fade-in">
+        <div 
+          className="superlike-celebration-overlay animate-fade-in"
+          onClick={() => setSuperlikeCelebration(null)}
+          title="Tap to dismiss"
+        >
           <div className="cosmic-light-column" />
           
           {/* Shimmering floating particles burst */}

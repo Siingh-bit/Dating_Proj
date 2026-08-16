@@ -224,22 +224,28 @@ export function playSuperlikeFanfare() {
     // Glittering golden chords: E5, G#5, B5, E6, G#6 with sparkling bell overtone
     const notes = [659.25, 830.61, 987.77, 1318.51, 1661.22, 1975.53];
     notes.forEach((freq, idx) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const startTime = ctx.currentTime + idx * 0.06;
+        const stopTime = startTime + 0.5;
 
-      osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+        osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(freq, startTime);
 
-      gain.gain.setValueAtTime(0.28, ctx.currentTime + idx * 0.06);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.55);
+        gain.gain.setValueAtTime(0.01, ctx.currentTime);
+        gain.gain.setValueAtTime(0.25, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, stopTime);
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
 
-      osc.start(ctx.currentTime + idx * 0.06);
-      osc.stop(ctx.currentTime + idx * 0.06 + 0.55);
+        osc.start(startTime);
+        osc.stop(stopTime);
+      } catch (err) {}
     });
   } catch (e) {}
 }
+
 
 
