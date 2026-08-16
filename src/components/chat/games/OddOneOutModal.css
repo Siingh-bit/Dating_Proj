@@ -1,0 +1,84 @@
+/* --- Intro demo --- */
+.ooo-demo {
+  display: grid;
+  grid-template-columns: repeat(2, 62px);
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.ooo-demo-tile {
+  height: 62px;
+  border-radius: 10px;
+}
+
+.ooo-intro-note {
+  color: var(--text-secondary, #9B95A5);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+}
+
+/* --- Grid --- */
+.ooo-stage { justify-content: center; }
+
+.ooo-grid {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1;
+  animation: oooIn 0.25s ease-out;
+}
+
+@keyframes oooIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.ooo-tile {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ooo-tile:active { transform: scale(0.94); }
+
+.ooo-tile.shake {
+  animation: oooShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  box-shadow: inset 0 0 0 2px var(--error, #E84C5E);
+}
+
+@keyframes oooShake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+
+.ooo-difficulty {
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary, #5A5465);
+  font-variant-numeric: tabular-nums;
+}
+
+.ooo-urgent { color: var(--error, #E84C5E); }
+
+.ooo-detail {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-tertiary, #5A5465);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ooo-grid { animation: none; }
+  .ooo-tile.shake { animation: none; }
+}

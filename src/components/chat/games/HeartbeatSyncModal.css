@@ -1,0 +1,112 @@
+/* --- Tempo picker --- */
+.hb-tempo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.hb-tempo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  text-align: left;
+  background: var(--bg-card, #1A1626);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: var(--text-primary, #F5F0EB);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.hb-tempo.active {
+  border-color: var(--accent, #E8604C);
+  background: rgba(232, 96, 76, 0.12);
+}
+
+.hb-tempo-name { font-size: 16px; font-weight: 600; }
+.hb-tempo-bpm  { font-size: 13px; color: var(--accent, #E8604C); font-weight: 700; font-variant-numeric: tabular-nums; }
+.hb-tempo-note { grid-column: 1 / -1; font-size: 12px; color: var(--text-secondary, #9B95A5); }
+
+/* --- Play field --- */
+.hb-stage {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overflow: hidden;
+}
+
+/* Static ring showing where the beat lands */
+.hb-target {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px dashed rgba(245, 240, 235, 0.25);
+}
+
+/* Contracting ring driven by requestAnimationFrame */
+.hb-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--accent, #E8604C);
+  box-shadow: 0 0 24px rgba(232, 96, 76, 0.45);
+  will-change: transform;
+}
+
+.hb-heart {
+  font-size: 56px;
+  line-height: 1;
+  transition: transform 0.12s ease-out;
+  pointer-events: none;
+}
+
+.hb-heart.thump { transform: scale(1.35); }
+
+/* Floating judgement text */
+.hb-judge {
+  position: absolute;
+  top: 22%;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  animation: hbJudge 0.6s ease-out forwards;
+}
+
+.hb-judge.perfect { color: #FFD700; text-shadow: 0 0 16px rgba(255, 215, 0, 0.6); }
+.hb-judge.great   { color: #5CB87A; }
+.hb-judge.ok      { color: #9B95A5; }
+.hb-judge.miss    { color: #E84C5E; }
+
+@keyframes hbJudge {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.8); }
+  30%  { opacity: 1; transform: translateY(0) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-22px) scale(1); }
+}
+
+.hb-hint {
+  position: absolute;
+  bottom: 12px;
+  font-size: 12px;
+  color: var(--text-tertiary, #5A5465);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hb-detail {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-tertiary, #5A5465);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-judge { animation-duration: 0.01s; }
+  .hb-heart { transition: none; }
+}

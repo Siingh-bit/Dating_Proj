@@ -1,0 +1,95 @@
+/* --- Intro preview --- */
+.lsq-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 66px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+
+.lsq-preview-pad {
+  height: 66px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  opacity: 0.55;
+}
+
+.lsq-intro-note {
+  color: var(--text-secondary, #9B95A5);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+}
+
+/* --- Status line --- */
+.lsq-status {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  height: 22px;
+  margin: 6px 0 14px;
+  color: var(--text-secondary, #9B95A5);
+  flex: 0 0 auto;
+}
+
+.lsq-status.input   { color: var(--accent, #E8604C); }
+.lsq-status.failing { color: var(--error, #E84C5E); }
+
+/* --- Pads --- */
+.lsq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  align-content: center;
+  padding: 0 4px;
+}
+
+.lsq-pad {
+  aspect-ratio: 1;
+  max-height: 150px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: var(--pad-color);
+  filter: brightness(0.42) saturate(0.75);
+  font-size: 34px;
+  cursor: default;
+  transition: filter 0.14s ease, transform 0.14s ease, box-shadow 0.14s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.lsq-grid.active .lsq-pad { cursor: pointer; }
+
+.lsq-pad.lit {
+  filter: brightness(1.18) saturate(1.15);
+  transform: scale(1.04);
+  box-shadow: 0 0 34px var(--pad-color);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.lsq-pad.wrong {
+  animation: lsqWrong 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  filter: brightness(1) saturate(0.4);
+  border-color: var(--error, #E84C5E);
+}
+
+@keyframes lsqWrong {
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.lsq-pad:disabled { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lsq-pad { transition-duration: 0.01s; }
+  .lsq-pad.wrong { animation: none; }
+}

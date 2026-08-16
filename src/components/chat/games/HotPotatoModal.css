@@ -1,0 +1,146 @@
+/* --- Intro --- */
+.hp-intro { text-align: center; }
+
+.hp-intro-note {
+  color: var(--text-secondary, #9B95A5);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 24px 0 0;
+}
+
+.hp-intro-note strong { color: var(--accent, #E8604C); }
+
+/* --- Play field: background heats up as the fuse burns --- */
+.hp-stage {
+  border-radius: 16px;
+  transition: background 0.6s ease;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hp-stage.stage-cool     { background: radial-gradient(circle at 50% 45%, rgba(59, 124, 168, 0.10), transparent 65%); }
+.hp-stage.stage-warm     { background: radial-gradient(circle at 50% 45%, rgba(232, 169, 76, 0.14), transparent 65%); }
+.hp-stage.stage-hot      { background: radial-gradient(circle at 50% 45%, rgba(232, 96, 76, 0.22), transparent 68%); }
+.hp-stage.stage-critical { background: radial-gradient(circle at 50% 45%, rgba(232, 76, 94, 0.34), transparent 72%); }
+
+.hp-holder { text-align: center; margin-bottom: 6px; }
+
+.hp-holder-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary, #5A5465);
+}
+
+.hp-holder-name {
+  display: block;
+  font-family: var(--font-display, serif);
+  font-size: 30px;
+  color: var(--text-primary, #F5F0EB);
+}
+
+/* --- The potato --- */
+.hp-potato {
+  font-size: 92px;
+  line-height: 1;
+  animation-name: hpPulse;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  will-change: transform;
+}
+
+.hp-potato.hp-idle {
+  font-size: 76px;
+  animation-duration: 2.4s;
+}
+
+.hp-potato.stage-hot      { filter: drop-shadow(0 0 22px rgba(232, 96, 76, 0.7)); }
+.hp-potato.stage-critical {
+  filter: drop-shadow(0 0 30px rgba(232, 76, 94, 0.95));
+  animation-name: hpShake;
+}
+
+@keyframes hpPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.12); }
+}
+
+@keyframes hpShake {
+  0%, 100% { transform: scale(1.06) rotate(0deg); }
+  25%      { transform: scale(1.14) rotate(-7deg); }
+  75%      { transform: scale(1.14) rotate(7deg); }
+}
+
+.hp-sparks {
+  font-size: 22px;
+  letter-spacing: 6px;
+  height: 30px;
+  margin-top: 4px;
+}
+
+.hp-status {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #9B95A5);
+  margin: 4px 0 0;
+}
+
+.stage-critical .hp-status {
+  color: var(--error, #E84C5E);
+  animation: hpBlink 0.4s steps(2) infinite;
+}
+
+@keyframes hpBlink { 50% { opacity: 0.35; } }
+
+.hp-passes {
+  margin-top: 14px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary, #5A5465);
+}
+
+/* --- Pass button escalates too --- */
+.hp-pass-btn {
+  font-size: 18px;
+  padding: 20px;
+  transition: background 0.4s ease, transform 0.15s ease;
+}
+
+.hp-pass-btn.stage-hot      { background: #E8604C; }
+.hp-pass-btn.stage-critical { background: var(--error, #E84C5E); animation: hpUrge 0.45s ease-in-out infinite; }
+
+@keyframes hpUrge {
+  50% { transform: scale(1.035); }
+}
+
+/* --- Boom --- */
+.hp-boom {
+  font-size: 78px;
+  line-height: 1;
+  animation: hpBoom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes hpBoom {
+  0%  { transform: scale(0.2) rotate(-20deg); opacity: 0; }
+  60% { transform: scale(1.3) rotate(6deg); opacity: 1; }
+  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.hp-forfeit {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.hp-forfeit strong {
+  color: var(--accent, #E8604C);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-potato, .hp-pass-btn, .hp-boom, .stage-critical .hp-status { animation: none; }
+}

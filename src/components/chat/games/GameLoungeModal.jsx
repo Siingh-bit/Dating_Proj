@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Flame, Scale, UserCheck, Heart, Puzzle, Trophy, HelpCircle, PenTool, Sparkles, Music, Brain, Zap, BookHeart, Dice5 } from 'lucide-react';
+import { X, Flame, Scale, UserCheck, Heart, Puzzle, Trophy, HelpCircle, PenTool, Sparkles, Music, Brain, Zap, BookHeart, Dice5, HeartPulse, Grip, Grid3X3, Type, Target, Blocks, Bomb, ListOrdered, Crosshair, Feather, Eye, Coins } from 'lucide-react';
 import './GameLoungeModal.css';
 
 const games = [
@@ -18,9 +18,23 @@ const games = [
   { id: 'this_or_that_blitz', title: 'This or That Blitz ⚡', icon: Zap, category: 'Party & Fun', tag: 'Speed' },
   { id: 'our_story', title: 'Our Love Story 📖', icon: BookHeart, category: 'Deep Connection', tag: 'New' },
   { id: 'date_night_roulette', title: 'Date Night Roulette 🎰', icon: Dice5, category: 'Party & Fun', tag: 'New' },
+
+  /* --- Skill-based games: these are played, not answered --- */
+  { id: 'heartbeat_sync', title: 'Heartbeat Sync 💓', icon: HeartPulse, category: 'Arcade', tag: 'Rhythm' },
+  { id: 'tug_of_love', title: 'Tug of Love 🪢', icon: Grip, category: 'Arcade', tag: 'Duel' },
+  { id: 'memory_lane', title: 'Memory Lane 🃏', icon: Grid3X3, category: 'Arcade', tag: 'Memory' },
+  { id: 'love_scramble', title: 'Love Scramble 🔤', icon: Type, category: 'Arcade', tag: 'Word' },
+  { id: 'stack_of_us', title: 'Stack of Us 🧱', icon: Blocks, category: 'Arcade', tag: 'Skill' },
+  { id: 'read_my_mind', title: 'Read My Mind 🎯', icon: Target, category: 'Deep Connection', tag: '2 Player' },
+  { id: 'hot_potato', title: 'Hot Potato 🥔', icon: Bomb, category: 'Party & Fun', tag: 'Chaos' },
+  { id: 'love_sequence', title: 'Love Sequence 🎶', icon: ListOrdered, category: 'Arcade', tag: 'Recall' },
+  { id: 'cupids_arrow', title: "Cupid's Arrow 🏹", icon: Crosshair, category: 'Arcade', tag: 'Aim' },
+  { id: 'odd_one_out', title: 'Odd One Out 👁️', icon: Eye, category: 'Arcade', tag: 'Eyes' },
+  { id: 'two_line_tango', title: 'Two-Line Tango 📝', icon: Feather, category: 'Deep Connection', tag: 'Creative' },
+  { id: 'love_bets', title: 'Love Bets 🃏', icon: Coins, category: 'Party & Fun', tag: 'Wager' },
 ];
 
-const categories = ['All', 'Icebreakers', 'Deep Connection', 'Party & Fun'];
+const categories = ['All', 'Arcade', 'Icebreakers', 'Deep Connection', 'Party & Fun'];
 
 export default function GameLoungeModal({ onClose, onSelectGame }) {
   const [activeTab, setActiveTab] = useState('All');

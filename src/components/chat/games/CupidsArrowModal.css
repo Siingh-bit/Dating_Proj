@@ -1,0 +1,153 @@
+/* --- Intro --- */
+.ca-intro { text-align: center; }
+.ca-intro-icon { font-size: 54px; margin-bottom: 20px; }
+
+.ca-intro-note {
+  color: var(--text-secondary, #9B95A5);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.ca-intro-note strong { color: var(--accent, #E8604C); }
+
+/* --- Board --- */
+.ca-board {
+  position: relative;
+  align-self: center;
+  background: linear-gradient(180deg, #171320 0%, #221A2E 70%, #2A1B38 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: crosshair;
+  flex: 0 0 auto;
+  max-width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ca-ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(232, 96, 76, 0.10), rgba(232, 96, 76, 0.02));
+  border-top: 1px solid rgba(232, 96, 76, 0.22);
+}
+
+.ca-bow {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Aim guide line */
+.ca-aim {
+  position: absolute;
+  height: 3px;
+  transform-origin: 0 50%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(245, 240, 235, 0.75) 0 7px,
+    transparent 7px 13px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ca-power-bar {
+  position: absolute;
+  left: 12px; right: 12px; bottom: 10px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.10);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.ca-power-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5CB87A, #C4A265 55%, #E84C5E);
+  transition: width 0.05s linear;
+}
+
+/* Target */
+.ca-target {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ca-target-ring {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px dashed rgba(232, 96, 76, 0.45);
+  animation: caSpin 6s linear infinite;
+}
+
+.ca-target-heart {
+  font-size: 30px;
+  filter: drop-shadow(0 0 12px rgba(232, 96, 76, 0.6));
+}
+
+@keyframes caSpin { to { transform: rotate(360deg); } }
+
+/* Arrow in flight */
+.ca-arrow {
+  position: absolute;
+  font-size: 26px;
+  color: var(--text-primary, #F5F0EB);
+  pointer-events: none;
+  z-index: 5;
+  line-height: 1;
+}
+
+/* Hit / miss flash */
+.ca-flash {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  z-index: 6;
+  animation: caFlash 0.7s ease-out forwards;
+}
+
+.ca-flash.hit  { color: #FFD700; text-shadow: 0 0 18px rgba(255, 215, 0, 0.7); }
+.ca-flash.miss { color: var(--text-tertiary, #5A5465); }
+
+@keyframes caFlash {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.7); }
+  25%  { opacity: 1; transform: translateX(-50%) scale(1.15); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1); }
+}
+
+.ca-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary, #5A5465);
+  pointer-events: none;
+}
+
+.ca-of { font-size: 26px; opacity: 0.55; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-target-ring { animation: none; }
+  .ca-flash { animation-duration: 0.01s; }
+}

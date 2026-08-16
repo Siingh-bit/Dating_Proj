@@ -27,6 +27,18 @@ import MindMeldModal from '../components/chat/games/MindMeldModal';
 import ThisOrThatBlitzModal from '../components/chat/games/ThisOrThatBlitzModal';
 import OurStoryModal from '../components/chat/games/OurStoryModal';
 import DateNightRouletteModal from '../components/chat/games/DateNightRouletteModal';
+import HeartbeatSyncModal from '../components/chat/games/HeartbeatSyncModal';
+import TugOfLoveModal from '../components/chat/games/TugOfLoveModal';
+import MemoryLaneModal from '../components/chat/games/MemoryLaneModal';
+import LoveScrambleModal from '../components/chat/games/LoveScrambleModal';
+import ReadMyMindModal from '../components/chat/games/ReadMyMindModal';
+import StackOfUsModal from '../components/chat/games/StackOfUsModal';
+import HotPotatoModal from '../components/chat/games/HotPotatoModal';
+import LoveSequenceModal from '../components/chat/games/LoveSequenceModal';
+import CupidsArrowModal from '../components/chat/games/CupidsArrowModal';
+import TwoLineTangoModal from '../components/chat/games/TwoLineTangoModal';
+import OddOneOutModal from '../components/chat/games/OddOneOutModal';
+import LoveBetsModal from '../components/chat/games/LoveBetsModal';
 import { ArrowLeft, Lock, X, Sparkles, User, Phone, Video } from 'lucide-react';
 import './ChatPage.css';
 
@@ -361,6 +373,20 @@ export default function ChatPage() {
       {activeGameId === 'this_or_that_blitz' && <ThisOrThatBlitzModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
       {activeGameId === 'our_story' && <OurStoryModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
       {activeGameId === 'date_night_roulette' && <DateNightRouletteModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+
+      {/* Skill-based games */}
+      {activeGameId === 'heartbeat_sync' && <HeartbeatSyncModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'tug_of_love' && <TugOfLoveModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'memory_lane' && <MemoryLaneModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'love_scramble' && <LoveScrambleModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'read_my_mind' && <ReadMyMindModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'stack_of_us' && <StackOfUsModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'hot_potato' && <HotPotatoModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'love_sequence' && <LoveSequenceModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'cupids_arrow' && <CupidsArrowModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'two_line_tango' && <TwoLineTangoModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'odd_one_out' && <OddOneOutModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
+      {activeGameId === 'love_bets' && <LoveBetsModal onClose={() => setActiveGameId(null)} onSendToChat={handleSendGameResult} />}
     </div>
   );
 }

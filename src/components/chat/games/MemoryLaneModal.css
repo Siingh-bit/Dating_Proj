@@ -1,0 +1,99 @@
+.ml-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.ml-card {
+  position: relative;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 600px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ml-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 28px;
+}
+
+.ml-back {
+  background: linear-gradient(135deg, #2A1B38, #1A1626);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transform: rotateY(0deg);
+}
+
+/* subtle heart watermark on the card back */
+.ml-back::after {
+  content: '♥';
+  color: rgba(232, 96, 76, 0.28);
+  font-size: 22px;
+}
+
+.ml-front {
+  background: var(--bg-elevated, #231E32);
+  border: 1px solid rgba(232, 96, 76, 0.35);
+  transform: rotateY(-180deg);
+}
+
+.ml-card.up .ml-back  { transform: rotateY(180deg); }
+.ml-card.up .ml-front { transform: rotateY(0deg); }
+
+.ml-card.solved .ml-front {
+  border-color: var(--success, #5CB87A);
+  background: rgba(92, 184, 122, 0.14);
+  animation: mlSolved 0.45s ease-out;
+}
+
+@keyframes mlSolved {
+  40% { transform: rotateY(0deg) scale(1.12); }
+}
+
+.ml-card.solved { cursor: default; }
+
+/* --- Prompt revealed by each match --- */
+.ml-prompt-slot {
+  flex: 1;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.ml-prompt-emoji { font-size: 18px; margin-right: 4px; }
+
+.ml-prompt-empty {
+  color: var(--text-tertiary, #5A5465);
+  font-size: 13px;
+  text-align: center;
+  margin: 0;
+}
+
+/* --- Result --- */
+.ml-stars {
+  font-size: 40px;
+  letter-spacing: 4px;
+}
+
+.ml-unlocked {
+  margin-top: 10px;
+  color: var(--success, #5CB87A);
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ml-face { transition-duration: 0.01s; }
+  .ml-card.solved .ml-front { animation: none; }
+}
