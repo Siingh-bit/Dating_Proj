@@ -10,24 +10,37 @@
   margin: 0 auto;
 }
 
-.dev-banner {
-  background-color: #f59e0b; /* Amber/Yellow */
-  color: #000;
-  text-align: center;
-  padding: 8px 0;
-  font-size: 14px;
-  font-weight: 600;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  font-family: monospace;
+/* Demo-mode code hint. Replaces what used to be a bright amber "Dev OTP"
+   debug bar pinned to the top of the screen — same information, presented
+   as part of the product instead of leftover scaffolding. */
+.demo-code-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md) var(--space-base);
+  border-radius: var(--radius-lg);
+  background: rgba(196, 162, 101, 0.10);
+  border: 1px solid rgba(196, 162, 101, 0.25);
 }
 
-.dev-banner span {
-  font-size: 16px;
-  letter-spacing: 2px;
+.demo-code-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.demo-code-value {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--gold-light);
+  font-variant-numeric: tabular-nums;
+  /* trailing letter-spacing would push the number off-centre */
+  padding-left: 0.28em;
 }
 
 .back-button {
@@ -284,7 +297,7 @@
 .btn-primary, .btn-secondary, .btn-social {
   width: 100%;
   padding: 16px;
-  border-radius: 30px;
+  border-radius: var(--radius-2xl);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -301,7 +314,7 @@
 }
 
 .btn-primary {
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
 }
 
@@ -338,8 +351,8 @@
 .input-group input {
   width: 100%;
   padding: 16px 20px;
-  border-radius: 12px;
-  background-color: var(--bg-card, #1A1626);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-card);
   border: 1px solid var(--bg-elevated);
   color: var(--text-primary);
   font-size: 16px;
@@ -348,8 +361,8 @@
 
 .input-group input:focus {
   outline: none;
-  border-color: var(--accent, #E8604C);
-  box-shadow: 0 0 0 1px var(--accent, #E8604C);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .divider {
@@ -414,7 +427,7 @@
   height: 56px;
   background-color: var(--bg-elevated, #1E1A2C);
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 24px;
   font-weight: 600;
@@ -424,7 +437,7 @@
 
 .otp-input:focus {
   outline: none;
-  border-color: var(--accent, #E8604C);
+  border-color: var(--accent);
   box-shadow: 0 0 12px rgba(232, 96, 76, 0.3);
 }
 
@@ -433,12 +446,12 @@
 }
 
 .otp-input.error {
-  border-color: #ef4444;
-  color: #ef4444;
+  border-color: var(--error);
+  color: var(--error);
 }
 
 .otp-error-text {
-  color: #ef4444;
+  color: var(--error);
   text-align: center;
   margin-top: -16px;
   margin-bottom: 24px;
@@ -467,7 +480,7 @@
 }
 
 .resend-link span {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   cursor: pointer;
   font-weight: 600;
 }
@@ -497,7 +510,7 @@
   position: absolute;
   font-size: 32px;
   font-weight: 800;
-  color: #E8604C;
+  color: var(--accent);
   z-index: 2;
   animation: digitFlyIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -584,7 +597,7 @@
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 36px;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #E8604C, #FF8A7A);
+  background: linear-gradient(135deg, var(--accent), #FF8A7A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

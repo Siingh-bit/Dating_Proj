@@ -2,17 +2,17 @@
 .hp-intro { text-align: center; }
 
 .hp-intro-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.65;
   margin: 24px 0 0;
 }
 
-.hp-intro-note strong { color: var(--accent, #E8604C); }
+.hp-intro-note strong { color: var(--accent); }
 
 /* --- Play field: background heats up as the fuse burns --- */
 .hp-stage {
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   transition: background 0.6s ease;
   justify-content: center;
   gap: 4px;
@@ -30,14 +30,14 @@
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .hp-holder-name {
   display: block;
   font-family: var(--font-display, serif);
   font-size: 30px;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 /* --- The potato --- */
@@ -83,12 +83,12 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   margin: 4px 0 0;
 }
 
 .stage-critical .hp-status {
-  color: var(--error, #E84C5E);
+  color: var(--error);
   animation: hpBlink 0.4s steps(2) infinite;
 }
 
@@ -99,7 +99,7 @@
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 /* --- Pass button escalates too --- */
@@ -109,8 +109,8 @@
   transition: background 0.4s ease, transform 0.15s ease;
 }
 
-.hp-pass-btn.stage-hot      { background: #E8604C; }
-.hp-pass-btn.stage-critical { background: var(--error, #E84C5E); animation: hpUrge 0.45s ease-in-out infinite; }
+.hp-pass-btn.stage-hot      { background: var(--accent); }
+.hp-pass-btn.stage-critical { background: var(--error); animation: hpUrge 0.45s ease-in-out infinite; }
 
 @keyframes hpUrge {
   50% { transform: scale(1.035); }
@@ -135,7 +135,7 @@
 }
 
 .hp-forfeit strong {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;

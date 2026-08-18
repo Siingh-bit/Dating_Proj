@@ -61,7 +61,7 @@ export default function PhotoShareModal({ onSendMedia, onClose }) {
             >
               <Eye size={18} className="perm-icon" />
               <div className="perm-text">
-                <span className="perm-title">View Once 👁️</span>
+                <span className="perm-title">View once</span>
                 <span className="perm-desc">Disappears after viewing once</span>
               </div>
             </button>
@@ -72,7 +72,7 @@ export default function PhotoShareModal({ onSendMedia, onClose }) {
             >
               <ImageIcon size={18} className="perm-icon" />
               <div className="perm-text">
-                <span className="perm-title">Keep in Chat 🖼️</span>
+                <span className="perm-title">Keep in chat</span>
                 <span className="perm-desc">Stays permanently in chat</span>
               </div>
             </button>

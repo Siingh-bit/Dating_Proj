@@ -8,11 +8,11 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans, 'Inter', sans-serif);
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 .mind-meld-modal {
-  background-color: var(--bg-card, #1A1626);
+  background-color: var(--bg-card);
   width: 100%;
   max-width: 430px;
   height: 100%;
@@ -30,14 +30,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: var(--bg-primary, #121018);
-  border-bottom: 1px solid var(--bg-elevated, #231E32);
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--bg-elevated);
 }
 
 .mm-close {
   background: none;
   border: none;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 8px;
   border-radius: var(--radius-full, 9999px);
@@ -48,8 +48,8 @@
 }
 
 .mm-close:hover {
-  background-color: var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
   transform: scale(0.98);
 }
 
@@ -62,7 +62,7 @@
 .mm-counter {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   letter-spacing: 1px;
   text-transform: uppercase;
 }
@@ -70,14 +70,14 @@
 .mm-progress-bar {
   width: 100px;
   height: 4px;
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   border-radius: var(--radius-full, 9999px);
   overflow: hidden;
 }
 
 .mm-progress-fill {
   height: 100%;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   transition: width 0.3s ease;
 }
 
@@ -87,7 +87,7 @@
   gap: 6px;
   font-size: 1rem;
   font-weight: 800;
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   background: rgba(232, 96, 76, 0.1);
   padding: 6px 14px;
   border-radius: var(--radius-full, 9999px);
@@ -117,7 +117,7 @@
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 2.2rem;
   line-height: 1.2;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
@@ -130,9 +130,9 @@
   width: 100%;
   padding: 16px 20px;
   border-radius: var(--radius-lg, 14px);
-  background: var(--bg-primary, #121018);
-  border: 1px solid var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  background: var(--bg-primary);
+  border: 1px solid var(--bg-elevated);
+  color: var(--text-primary);
   font-size: 1.2rem;
   text-align: center;
   font-family: var(--font-sans, 'Inter', sans-serif);
@@ -141,11 +141,11 @@
 }
 
 .mm-input:focus {
-  border-color: var(--accent, #E8604C);
+  border-color: var(--accent);
 }
 
 .mm-input::placeholder {
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .mm-actions {
@@ -166,8 +166,8 @@
 }
 
 .mm-btn-lock {
-  background: var(--bg-elevated, #231E32);
-  color: var(--text-secondary, #9B95A5);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
 }
 
 .mm-btn-lock.active {
@@ -181,8 +181,8 @@
 }
 
 .mm-btn-next {
-  background: var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .mm-btn-next:hover {
@@ -227,7 +227,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   animation: bounceDot 1.4s infinite ease-in-out both;
 }
 .mm-dot:nth-child(1) { animation-delay: -0.32s; }
@@ -243,8 +243,8 @@
   font-family: var(--font-display, 'DM Serif Display', serif);
   margin-bottom: 20px;
 }
-.mm-result-title.match { color: #4CAF50; text-shadow: 0 0 20px rgba(76,175,80,0.5); }
-.mm-result-title.miss { color: var(--accent, #E8604C); }
+.mm-result-title.match { color: var(--success); text-shadow: 0 0 20px rgba(76,175,80,0.5); }
+.mm-result-title.miss { color: var(--accent); }
 
 .mm-answers-display {
   display: flex;
@@ -253,7 +253,7 @@
 }
 
 .mm-answer-box {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   padding: 16px;
   border-radius: var(--radius-lg, 14px);
   font-size: 1.3rem;
@@ -352,7 +352,7 @@
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: var(--accent, #E8604C);
+  color: var(--accent);
 }
 
 .mm-stats {
@@ -362,7 +362,7 @@
 }
 
 .mm-stat-box {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   padding: 20px;
   border-radius: var(--radius-lg, 14px);
   min-width: 120px;
@@ -392,7 +392,7 @@
 
 .mm-rating-label {
   font-size: 0.9rem;
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 5px;

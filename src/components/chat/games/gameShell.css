@@ -19,14 +19,14 @@
 .gs-modal {
   width: 100%;
   max-width: 430px;
-  background: var(--bg-primary, #121018);
+  background: var(--bg-primary);
   border-radius: var(--radius-lg, 14px) var(--radius-lg, 14px) 0 0;
   padding: 20px;
   height: 85vh;
   display: flex;
   flex-direction: column;
   animation: gsSlideUp 0.3s ease-out;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   overflow: hidden;
 }
 
@@ -52,14 +52,14 @@
 .gs-header .close-btn {
   background: none;
   border: none;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 4px;
   display: flex;
 }
 
 .gs-sub {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 13px;
   margin: 0 0 14px;
   flex: 0 0 auto;
@@ -86,9 +86,9 @@
 
 .gs-stat {
   flex: 1;
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 8px 6px;
   text-align: center;
 }
@@ -98,7 +98,7 @@
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .gs-stat-value {
@@ -120,7 +120,7 @@
   flex: 1;
   border: none;
   padding: 15px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -136,12 +136,12 @@
 .gs-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .gs-btn-ghost {
-  background: var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
 }
 
 .gs-btn-primary {
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   flex: 2;
 }
@@ -175,7 +175,7 @@
 }
 
 .gs-result-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
   margin: 0;
@@ -183,9 +183,9 @@
 
 /* A tappable prompt card revealed by the arcade games */
 .gs-prompt-card {
-  background: linear-gradient(135deg, #2A1B38, #1A1626);
+  background: linear-gradient(135deg, var(--surface-raised), var(--bg-card));
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: 14px 16px;
   font-size: 15px;
   line-height: 1.45;

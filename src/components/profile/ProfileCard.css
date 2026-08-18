@@ -42,7 +42,7 @@
   align-items: center;
   font-size: 0.82rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   margin: 4px 8px 10px 8px;
   box-shadow: 0 4px 16px rgba(124, 77, 255, 0.35);
   animation: slide-in-top 0.3s ease;
@@ -50,9 +50,9 @@
 
 .reveal-btn {
   background: #fff;
-  color: #121018;
+  color: var(--bg-primary);
   border: none;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 700;
@@ -101,10 +101,10 @@
 
 .photo-blur-overlay .tap-hint {
   font-size: 0.75rem;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   padding: 4px 12px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-weight: 700;
   margin-top: 4px;
   box-shadow: 0 4px 12px rgba(232, 96, 76, 0.4);

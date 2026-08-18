@@ -259,7 +259,7 @@ export default function ChatPage() {
       {isAvailableToStart && (
         <div className="start-conversation-banner animate-fade-in-up">
           <p>Start talking to {profile.name}?</p>
-          <button className="btn-say-hi" onClick={() => handleSend("Hi!")}>Say Hi 👋</button>
+          <button className="btn-say-hi" onClick={() => handleSend("Hi!")}>Say hi</button>
         </div>
       )}
 

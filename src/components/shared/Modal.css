@@ -56,14 +56,14 @@
 .modal-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   margin: 0;
 }
 
 .modal-close-btn {
   background: none;
   border: none;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 4px;
   margin-left: auto;
@@ -76,7 +76,7 @@
 
 .modal-close-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 .modal-body {

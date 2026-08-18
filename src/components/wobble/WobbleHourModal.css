@@ -16,7 +16,7 @@
 .wobble-hour-modal {
   width: 100%;
   max-width: 420px;
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
   border: 1px solid rgba(232, 96, 76, 0.3);
   border-radius: var(--radius-xl, 24px);
   padding: 24px;
@@ -48,10 +48,10 @@
   align-items: center;
   gap: 8px;
   background: rgba(232, 96, 76, 0.15);
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   border: 1px solid rgba(232, 96, 76, 0.3);
   padding: 6px 14px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -62,7 +62,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #E8604C;
+  background: var(--accent);
   animation: live-blink 1.2s infinite;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .radar-core-icon {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   animation: pulse-heart 1s infinite alternate;
   z-index: 5;
 }
@@ -123,9 +123,9 @@
   align-items: center;
   gap: 6px;
   background: rgba(232, 96, 76, 0.2);
-  color: var(--accent-light, #FF7B6B);
+  color: var(--accent-light);
   padding: 4px 12px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 0.85rem;
 }
@@ -141,7 +141,7 @@
   gap: 14px;
   background: rgba(12, 10, 16, 0.6);
   padding: 10px 14px;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 16px;
   text-align: left;
@@ -192,9 +192,9 @@
 }
 
 .speed-opt-btn {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: 14px 16px;
   color: var(--text-primary);
   font-size: 0.92rem;
@@ -214,7 +214,7 @@
 
 .partner-matched-tag {
   font-size: 0.72rem;
-  color: #FFD700;
+  color: var(--phase-serious);
   font-weight: 700;
 }
 
@@ -222,7 +222,7 @@
   margin-top: 16px;
   width: 100%;
   padding: 12px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background: var(--accent-gradient);
   color: #fff;
   border: none;
@@ -307,7 +307,7 @@
   margin-top: 20px;
   width: 100%;
   padding: 14px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   background: var(--accent-gradient);
   color: #fff;
   border: none;

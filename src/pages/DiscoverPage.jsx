@@ -22,7 +22,7 @@ export default function DiscoverPage() {
 
   const [exitDirection, setExitDirection] = useState(null); // null | 'left' | 'right' | 'up'
   const [superlikeCelebration, setSuperlikeCelebration] = useState(null);
-  const [touchState, setTouchState] = useState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+  const [touchState, setTouchState] = useState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
 
   // New Feature States
   const [activeStory, setActiveStory] = useState(null);
@@ -57,7 +57,7 @@ export default function DiscoverPage() {
         setCurrentIndex(prev => prev + 1);
       }
       setExitDirection(null);
-      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
     }, delayMs);
   };
 
@@ -114,48 +114,80 @@ export default function DiscoverPage() {
     }
   };
 
-  // Touch / Mouse Drag Swipe Gestures
+  /* ---------------------------------------------------------------
+     Swipe gestures.
+
+     Only two gestures exist: swipe RIGHT to like, swipe LEFT to pass.
+     Superlike is deliberately NOT a gesture — it is the star button only,
+     because it spends a scarce daily resource and used to fire by accident
+     whenever someone scrolled up to see more of a profile.
+
+     To make scrolling reliable we lock to an axis on the first few pixels
+     of movement. A mostly-vertical drag releases the card immediately so
+     the browser scrolls the profile natively; a mostly-horizontal drag
+     takes over as a swipe.
+  --------------------------------------------------------------- */
+  const AXIS_LOCK_THRESHOLD = 8;   // px of movement before we commit to an axis
+  const SWIPE_COMMIT = 80;         // px needed to actually like / pass
+
   const handleDragStart = (e) => {
     if (exitDirection) return;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    setTouchState({ startX: clientX, startY: clientY, currentX: clientX, currentY: clientY, isDragging: true });
+    setTouchState({
+      startX: clientX, startY: clientY,
+      currentX: clientX, currentY: clientY,
+      isDragging: true,
+      axis: null,               // null = undecided, 'x' = swiping, 'y' = scrolling
+    });
   };
 
   const handleDragMove = (e) => {
     if (!touchState.isDragging || exitDirection) return;
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    setTouchState(prev => ({ ...prev, currentX: clientX, currentY: clientY }));
+
+    setTouchState(prev => {
+      if (!prev.isDragging) return prev;
+      const dx = clientX - prev.startX;
+      const dy = clientY - prev.startY;
+      let axis = prev.axis;
+
+      if (axis === null && Math.hypot(dx, dy) > AXIS_LOCK_THRESHOLD) {
+        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+
+      // Vertical intent: hand the gesture back to the scroll container.
+      if (axis === 'y') {
+        return { startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null };
+      }
+
+      return { ...prev, currentX: clientX, currentY: clientY, axis };
+    });
   };
 
   const handleDragEnd = () => {
     if (!touchState.isDragging || exitDirection) return;
-    const deltaX = touchState.currentX - touchState.startX;
-    const deltaY = touchState.currentY - touchState.startY;
+    const dx = touchState.currentX - touchState.startX;
 
-    // Check gesture thresholds
-    if (deltaY < -90 && Math.abs(deltaX) < 70) {
-      // Swiped UP -> Superlike / Rose
-      handleRose();
-    } else if (deltaX > 80) {
-      // Swiped RIGHT -> Like
+    if (touchState.axis === 'x' && dx > SWIPE_COMMIT) {
       handleLike();
-    } else if (deltaX < -80) {
-      // Swiped LEFT -> Reject / Pass
+    } else if (touchState.axis === 'x' && dx < -SWIPE_COMMIT) {
       handleSkip();
     } else {
-      // Reset position smoothly
-      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false });
+      // Not far enough, or never became a swipe — spring back.
+      setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
     }
   };
 
-  const deltaX = touchState.isDragging ? touchState.currentX - touchState.startX : 0;
-  const deltaY = touchState.isDragging ? touchState.currentY - touchState.startY : 0;
+  // Only a committed horizontal drag moves the card, so scrolling a profile
+  // never drags it around the screen.
+  const isSwiping = touchState.isDragging && touchState.axis === 'x';
+  const deltaX = isSwiping ? touchState.currentX - touchState.startX : 0;
   const dragRotation = deltaX * 0.08;
 
-  const dragStyle = touchState.isDragging && !exitDirection ? {
-    transform: `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(${dragRotation}deg)`,
+  const dragStyle = isSwiping && !exitDirection ? {
+    transform: `translate3d(${deltaX}px, 0, 0) rotate(${dragRotation}deg)`,
     transition: 'none',
   } : {};
 
@@ -279,16 +311,17 @@ export default function DiscoverPage() {
             onMouseDown={handleDragStart}
             onMouseMove={handleDragMove}
             onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
           >
             {/* Visual Swipe Direction Stamps */}
             {(deltaX > 40 || exitDirection === 'right') && (
-              <div className="swipe-stamp like-stamp animate-pop">LIKE 💖</div>
+              <div className="swipe-stamp like-stamp animate-pop">LIKE</div>
             )}
             {(deltaX < -40 || exitDirection === 'left') && (
-              <div className="swipe-stamp nope-stamp animate-pop">PASS ✕</div>
+              <div className="swipe-stamp nope-stamp animate-pop">PASS</div>
             )}
-            {(deltaY < -50 || exitDirection === 'up') && (
-              <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKE ⭐</div>
+            {exitDirection === 'up' && (
+              <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKED</div>
             )}
 
             <DuoCard 
@@ -319,16 +352,17 @@ export default function DiscoverPage() {
           onMouseDown={handleDragStart}
           onMouseMove={handleDragMove}
           onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
         >
           {/* Visual Swipe Direction Stamps */}
           {(deltaX > 40 || exitDirection === 'right') && (
-            <div className="swipe-stamp like-stamp animate-pop">LIKE 💖</div>
+            <div className="swipe-stamp like-stamp animate-pop">LIKE</div>
           )}
           {(deltaX < -40 || exitDirection === 'left') && (
-            <div className="swipe-stamp nope-stamp animate-pop">PASS ✕</div>
+            <div className="swipe-stamp nope-stamp animate-pop">PASS</div>
           )}
-          {(deltaY < -50 || exitDirection === 'up') && (
-            <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKE ⭐</div>
+          {exitDirection === 'up' && (
+            <div className="swipe-stamp superlike-stamp animate-pop">SUPERLIKED</div>
           )}
 
           <ProfileCard 

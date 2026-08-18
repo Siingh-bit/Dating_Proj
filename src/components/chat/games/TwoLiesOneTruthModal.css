@@ -85,7 +85,7 @@
   line-height: 1.4;
   padding: 8px 12px;
   background: var(--bg-elevated);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 
 .custom-instructions {

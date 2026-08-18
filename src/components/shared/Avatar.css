@@ -29,7 +29,7 @@
 
 .avatar-fallback {
   font-weight: 600;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,9 +46,9 @@
   right: 2px;
   width: 25%;
   height: 25%;
-  background-color: #4CAF50;
+  background-color: var(--success);
   border-radius: 50%;
-  border: 2px solid var(--bg-main, #0C0A10);
+  border: 2px solid var(--bg-deepest);
   z-index: 2;
 }
 
@@ -60,7 +60,7 @@
   height: 30%;
   background-color: #2196F3;
   border-radius: 50%;
-  border: 2px solid var(--bg-main, #0C0A10);
+  border: 2px solid var(--bg-deepest);
   display: flex;
   align-items: center;
   justify-content: center;

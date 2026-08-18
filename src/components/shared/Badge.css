@@ -3,12 +3,12 @@
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-elevated, #1E1A2E);
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
 }
@@ -16,7 +16,7 @@
 .badge-phase {
   background-color: color-mix(in srgb, var(--phase-color) 15%, transparent);
   border-color: color-mix(in srgb, var(--phase-color) 30%, transparent);
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 .badge-dot {
@@ -30,7 +30,7 @@
   min-width: 20px;
   height: 20px;
   justify-content: center;
-  background-color: var(--accent, #E8604C);
+  background-color: var(--accent);
   color: #fff;
   border: none;
   font-weight: 600;

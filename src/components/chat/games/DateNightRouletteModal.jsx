@@ -68,7 +68,7 @@ export default function DateNightRouletteModal({ onClose, onSendToChat }) {
     <div className="date-night-overlay">
       <div className="date-night-modal">
         <header className="date-night-header">
-          <h2>🎰 Date Night Roulette</h2>
+          <h2>Date Night Roulette</h2>
           <button className="close-btn" onClick={onClose}><X size={24} /></button>
         </header>
 

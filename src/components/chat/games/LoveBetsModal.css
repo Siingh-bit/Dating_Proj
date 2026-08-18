@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  color: var(--gold, #C4A265);
+  color: var(--gold);
   margin-bottom: 26px;
 }
 
@@ -21,13 +21,13 @@
 .lb-steps {
   margin: 0;
   padding-left: 20px;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.65;
 }
 
 .lb-steps li { margin-bottom: 12px; }
-.lb-steps strong { color: var(--text-primary, #F5F0EB); }
+.lb-steps strong { color: var(--text-primary); }
 
 /* --- Betting --- */
 .lb-stage {
@@ -47,7 +47,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   margin-bottom: 8px;
 }
 
@@ -61,10 +61,10 @@
 
 .lb-option {
   padding: 15px 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  background: var(--bg-card, #1A1626);
-  color: var(--text-primary, #F5F0EB);
+  background: var(--bg-card);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
@@ -76,7 +76,7 @@
 .lb-option:active { transform: scale(0.99); }
 
 .lb-option.picked {
-  border-color: var(--accent, #E8604C);
+  border-color: var(--accent);
   background: rgba(232, 96, 76, 0.16);
 }
 
@@ -93,10 +93,10 @@
   flex: 1;
   min-width: 56px;
   padding: 13px 8px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  background: var(--bg-card, #1A1626);
-  color: var(--text-secondary, #9B95A5);
+  background: var(--bg-card);
+  color: var(--text-secondary);
   font-family: inherit;
   font-size: 15px;
   font-weight: 700;
@@ -106,19 +106,19 @@
 }
 
 .lb-stake.picked {
-  border-color: var(--gold, #C4A265);
+  border-color: var(--gold);
   background: rgba(196, 162, 101, 0.18);
-  color: var(--gold-light, #DBBF85);
+  color: var(--gold-light);
 }
 
 .lb-allin {
   flex: 0 0 auto;
   min-width: 74px;
-  color: var(--error, #E84C5E);
+  color: var(--error);
 }
 
 .lb-allin.picked {
-  border-color: var(--error, #E84C5E);
+  border-color: var(--error);
   background: rgba(232, 76, 94, 0.18);
   color: #FF8A99;
 }
@@ -126,18 +126,18 @@
 .lb-risk {
   align-self: center;
   font-size: 13px;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   margin: 0;
 }
 
-.lb-risk strong { color: var(--gold-light, #DBBF85); }
+.lb-risk strong { color: var(--gold-light); }
 
 .lb-secret {
   align-self: center;
   margin: 8px 0 0;
   font-size: 12px;
   font-style: italic;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 /* --- Settle --- */
@@ -148,13 +148,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.lb-settle-amount.win  { color: var(--success, #5CB87A); }
-.lb-settle-amount.lose { color: var(--error, #E84C5E); }
+.lb-settle-amount.win  { color: var(--success); }
+.lb-settle-amount.lose { color: var(--error); }
 
 .lb-balance {
   margin-top: 12px;
   font-size: 13px;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 /* --- Final --- */
@@ -165,8 +165,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-.lb-net.win  { color: var(--success, #5CB87A); }
-.lb-net.lose { color: var(--error, #E84C5E); }
+.lb-net.win  { color: var(--success); }
+.lb-net.lose { color: var(--error); }
 
 .lb-history {
   width: 100%;
@@ -181,18 +181,18 @@
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  border-radius: 9px;
+  border-radius: var(--radius-md);
   margin-bottom: 6px;
   font-size: 12px;
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
   border-left: 3px solid transparent;
 }
 
-.lb-history-row.win  { border-left-color: var(--success, #5CB87A); }
-.lb-history-row.lose { border-left-color: var(--error, #E84C5E); }
+.lb-history-row.win  { border-left-color: var(--success); }
+.lb-history-row.lose { border-left-color: var(--error); }
 
 .lb-history-q {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -204,5 +204,5 @@
   flex: 0 0 auto;
 }
 
-.lb-history-row.win .lb-history-d  { color: var(--success, #5CB87A); }
-.lb-history-row.lose .lb-history-d { color: var(--error, #E84C5E); }
+.lb-history-row.win .lb-history-d  { color: var(--success); }
+.lb-history-row.lose .lb-history-d { color: var(--error); }

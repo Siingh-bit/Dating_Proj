@@ -36,7 +36,7 @@
 }
 
 .call-btn {
-  color: var(--accent-color, #e8604c);
+  color: var(--accent);
 }
 
 .call-btn:hover {

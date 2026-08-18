@@ -43,7 +43,7 @@
 
 .doodle-select {
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
@@ -55,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.1);
   background: var(--bg-card);
@@ -107,7 +107,7 @@
 .brush-btn {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
@@ -134,7 +134,7 @@
 .tool-btn {
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-secondary);

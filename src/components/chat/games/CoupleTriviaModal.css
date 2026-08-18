@@ -22,7 +22,7 @@
   background: rgba(232, 96, 76, 0.1);
   color: var(--accent);
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   font-weight: 600;
   font-size: 14px;
 }
@@ -57,7 +57,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   padding: 16px 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   cursor: pointer;
   transition: all 0.2s;
@@ -77,23 +77,23 @@
 
 .trivia-option-btn.correct {
   background: rgba(76, 175, 80, 0.1);
-  border-color: #4CAF50;
-  color: #4CAF50;
+  border-color: var(--success);
+  color: var(--success);
 }
 
 .trivia-option-btn.wrong {
   background: rgba(244, 67, 54, 0.1);
-  border-color: #F44336;
-  color: #F44336;
+  border-color: var(--error);
+  color: var(--error);
 }
 
 .icon-correct {
-  color: #4CAF50;
+  color: var(--success);
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .icon-wrong {
-  color: #F44336;
+  color: var(--error);
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -108,7 +108,7 @@
 }
 
 .results-award {
-  color: #FFC107;
+  color: var(--warning);
   animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 

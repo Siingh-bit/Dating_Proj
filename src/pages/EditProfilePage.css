@@ -1,12 +1,12 @@
 .edit-profile-page {
-  background-color: var(--bg-primary, #121018);
+  background-color: var(--bg-primary);
   min-height: 100dvh;
   width: 100%;
   max-width: 430px;
   margin: 0 auto;
   position: relative;
   overflow-y: auto;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   font-family: var(--font-sans, 'Inter', sans-serif);
 }
 
@@ -78,7 +78,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   margin: 0 0 var(--space-md, 16px) 0;
   font-weight: 600;
 }
@@ -96,7 +96,7 @@
 
 .count-label {
   font-size: 0.8rem;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 /* Photos Grid */
@@ -111,7 +111,7 @@
   border-radius: var(--radius-md, 10px);
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-card, #1A1626);
+  background-color: var(--bg-card);
 }
 
 .photo-slot.filled img {
@@ -141,8 +141,8 @@
   right: 6px;
   width: 22px;
   height: 22px;
-  background-color: var(--accent, #E8604C);
-  border: 2px solid var(--bg-card, #1A1626);
+  background-color: var(--accent);
+  border: 2px solid var(--bg-card);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -182,8 +182,8 @@
 
 .bio-textarea, .prompt-textarea {
   width: 100%;
-  background-color: var(--bg-card, #1A1626);
-  color: var(--text-primary, #F5F0EB);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
   border: 1px solid transparent;
   border-radius: var(--radius-md, 10px);
   padding: var(--space-md, 16px);
@@ -197,17 +197,17 @@
 .bio-textarea:focus, .prompt-textarea:focus {
   outline: none;
   border-color: rgba(255, 255, 255, 0.15);
-  background-color: var(--bg-elevated, #231E32);
+  background-color: var(--bg-elevated);
 }
 
 .bio-textarea::placeholder, .prompt-textarea::placeholder {
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .char-count {
   text-align: right;
   font-size: 0.75rem;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .prompts-list {
@@ -217,7 +217,7 @@
 }
 
 .prompt-edit-card {
-  background-color: var(--bg-card, #1A1626);
+  background-color: var(--bg-card);
   border-radius: var(--radius-lg, 14px);
   padding: var(--space-md, 16px);
   display: flex;
@@ -228,7 +228,7 @@
 .prompt-label {
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 1.1rem;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   line-height: 1.3;
 }
 
@@ -239,7 +239,7 @@
 
 /* Fields Group */
 .fields-group {
-  background-color: var(--bg-card, #1A1626);
+  background-color: var(--bg-card);
   border-radius: var(--radius-lg, 14px);
   overflow: hidden;
   display: flex;
@@ -260,7 +260,7 @@
 
 .field-label {
   font-weight: 500;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 0.95rem;
   flex-shrink: 0;
   width: 100px;
@@ -270,7 +270,7 @@
   flex-grow: 1;
   background: transparent;
   border: none;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   font-size: 0.95rem;
   text-align: right;
   font-family: inherit;
@@ -282,7 +282,7 @@
 }
 
 .field-input.read-only {
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
 }
 
 .field-col {
@@ -299,7 +299,7 @@
 
 .field-label-col {
   font-weight: 500;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -313,7 +313,7 @@
 .pill-option {
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid transparent;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   padding: 8px 16px;
   border-radius: var(--radius-full, 9999px);
   font-size: 0.9rem;
@@ -327,7 +327,7 @@
 }
 
 .pill-option.selected {
-  background-color: var(--accent, #E8604C);
+  background-color: var(--accent);
   color: #fff;
 }
 
@@ -338,9 +338,9 @@
 }
 
 .chip {
-  background-color: var(--bg-elevated, #231E32);
+  background-color: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   padding: 8px 16px;
   border-radius: var(--radius-full, 9999px);
   font-size: 0.9rem;
@@ -355,6 +355,6 @@
 
 .chip.selected {
   background-color: rgba(232, 96, 76, 0.15);
-  border-color: var(--accent, #E8604C);
-  color: var(--accent, #E8604C);
+  border-color: var(--accent);
+  color: var(--accent);
 }

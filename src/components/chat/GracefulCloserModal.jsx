@@ -85,7 +85,7 @@ export default function GracefulCloserModal({ matchProfile, onClose, onConfirmEn
               }}
             >
               <div className="closure-card-top">
-                <h4>✍️ Custom Respectful Note</h4>
+                <h4>Write your own note</h4>
                 {isCustom && <Check size={16} className="check-icon" />}
               </div>
               {isCustom ? (

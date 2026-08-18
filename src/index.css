@@ -34,6 +34,16 @@
   --text-secondary: #9B95A5;
   --text-tertiary: #5A5465;
   --text-inverse: #0C0A10;
+  /* Sits on accent/coloured fills. Kept as pure white because the warm
+     off-white above doesn't hold enough contrast on the coral button. */
+  --text-on-accent: #FFFFFF;
+
+  /* Raised surface used by card gradients and light-on-dark tiles */
+  --surface-raised: #2A1B38;
+
+  /* Third-party brand colours — only for the Spotify integration */
+  --brand-spotify: #1DB954;
+  --brand-spotify-light: #1ED760;
 
   /* Status */
   --success: #5CB87A;
@@ -100,6 +110,29 @@
   --bottom-nav-height: 68px;
   --top-bar-height: 56px;
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+
+  /* Elevation scale — every stacking context in the app comes from this list.
+     Previously z-index values ranged ad hoc from 1 to 99999, which made it
+     impossible to reason about what covers what. */
+  --z-base: 1;
+  --z-sticky: 10;
+  --z-nav: 100;
+  --z-overlay: 1000;      /* modals, sheets, game screens */
+  --z-toast: 1500;        /* feedback above modals */
+  --z-lightbox: 2000;     /* fullscreen media */
+  --z-max: 3000;          /* intro / celebration takeovers */
+
+  /* Minimum comfortable touch target (Apple HIG / Material both say 44-48px) */
+  --tap-target: 44px;
+
+  /* Backdrop used by every overlay so they all feel like one system */
+  --backdrop: rgba(6, 5, 9, 0.68);
+  --backdrop-blur: 14px;
+
+  /* Translucent hover/press washes for ghost controls sitting on any surface */
+  --overlay-hover: rgba(255, 255, 255, 0.05);
+  --overlay-press: rgba(255, 255, 255, 0.09);
 }
 
 /* --- Base --- */
@@ -145,6 +178,14 @@ input, textarea, select {
   color: inherit;
   background: none;
   border: none;
+}
+
+/* Suppress the default ring only for mouse/touch focus. Keyboard focus still
+   gets the :focus-visible ring below — a blanket `outline: none` here would
+   make the app unusable by keyboard. */
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -298,11 +339,169 @@ ul, ol {
 .stagger-children > *:nth-child(7) { animation-delay: 360ms; }
 .stagger-children > *:nth-child(8) { animation-delay: 420ms; }
 
-/* --- Global Interactive Styles & Utilities --- */
+/* ============================================
+   FOUNDATION — cross-cutting rules that make the app feel like
+   one designed product rather than a set of separate screens.
+   ============================================ */
+
+/* --- 1. Focus. Visible for keyboard users, invisible for pointer users. --- */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+}
+
+/* Buttons and links get a soft halo as well as the ring, so focus reads
+   clearly even on top of photos and coloured cards. */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Inputs indicate focus with the border they already have, plus the ring. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* --- 2. Touch feel. Removes the grey flash on tap and the accidental
+       text selection that makes a web app feel like a web page. --- */
+button,
+[role="button"],
+.tab-btn,
+.cat-btn,
+.mode-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* Text the user may genuinely want to copy stays selectable. */
+p, h1, h2, h3, h4, h5, h6,
+.message-text, .game-summary-text, input, textarea {
+  user-select: text;
+}
+
+/* Icon-only controls must still be comfortably tappable even when the icon
+   inside them is small. */
+.icon-btn,
+.close-btn,
+.back-button {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- 3. Scrolling. Stops a scroll inside a modal or list from chaining to
+       the page behind it, which is the classic mobile-web tell. --- */
+.hide-scrollbar,
+[class*="-list"],
+[class*="-grid"],
+[class*="-scroll"],
+[class*="messages"],
+.page,
+.gs-modal,
+.game-lounge-modal {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- 4. Overlays. Twelve modals were each inventing their own backdrop:
+       five different tints, four blur values and z-indexes from 100 to 99999.
+       These rules give them one shared identity without renaming a single
+       class or touching any component's structure.
+       The `body` prefix raises specificity just enough to win over the
+       component stylesheets, which load after this file. --- */
+body .modal-overlay,
+body .game-modal-overlay,
+body .gs-overlay,
+body .tod-overlay,
+body .game-lounge-overlay,
+body .hot-takes-overlay,
+body .mind-meld-overlay,
+body .blitz-overlay,
+body .date-night-overlay,
+body .story-overlay,
+body .comment-overlay {
+  background: var(--backdrop);
+  backdrop-filter: blur(var(--backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+  z-index: var(--z-overlay);
+  animation: fadeIn var(--duration-fast) var(--ease-out);
+}
+
+/* Fullscreen media and takeovers sit above ordinary modals. */
+body .media-lightbox-overlay,
+body .video-feed-overlay {
+  z-index: var(--z-lightbox);
+}
+
+body .logo-intro-overlay,
+body .superlike-celebration-overlay,
+body .call-overlay {
+  z-index: var(--z-max);
+}
+
+/* Bottom sheets must clear the iPhone home indicator, otherwise their last
+   row of buttons sits underneath it. */
+body .gs-modal,
+body .tod-modal,
+body .game-lounge-modal {
+  padding-bottom: calc(var(--space-lg) + var(--safe-area-bottom));
+}
+
+/* --- 5. Interaction states. Every control gets consistent press feedback and
+       a single disabled treatment, so the app responds the same way
+       everywhere instead of each component inventing its own. --- */
+button,
+[role="button"] {
+  transition: transform var(--duration-fast) var(--ease-out),
+              filter var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.25);
+}
+
+/* Never animate a control the user can't use. */
+button:disabled:active,
+[aria-disabled="true"]:active {
+  transform: none;
+}
+
+/* Pointer devices get a subtle lift; touch devices skip it so nothing
+   sticks in a hover state after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):hover,
+  [role="button"]:not([aria-disabled="true"]):hover {
+    filter: brightness(1.08);
+  }
+}
+
+/* --- 6. Motion. One switch that calms the entire app for users who ask
+       for reduced motion, instead of relying on 66 files remembering to. --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 .glass {

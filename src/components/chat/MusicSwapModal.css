@@ -17,7 +17,7 @@
   width: 100%;
   max-width: 420px;
   max-height: 88vh;
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
   border: 1px solid rgba(29, 185, 84, 0.3);
   border-radius: var(--radius-xl, 24px);
   display: flex;
@@ -42,7 +42,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #1DB954;
+  color: var(--brand-spotify);
   margin-bottom: 4px;
 }
 
@@ -87,9 +87,9 @@
 
 .track-search-input {
   width: 100%;
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 10px 12px 10px 34px;
   color: #fff;
   font-size: 0.85rem;
@@ -108,9 +108,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 10px 14px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -118,11 +118,11 @@
 
 .track-item.active {
   background: rgba(29, 185, 84, 0.15);
-  border-color: #1DB954;
+  border-color: var(--brand-spotify);
 }
 
 .track-disc {
-  color: #1DB954;
+  color: var(--brand-spotify);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,7 +141,7 @@
 }
 
 .track-vibe {
-  color: #FFD700;
+  color: var(--phase-serious);
 }
 
 .music-note-box {
@@ -157,9 +157,9 @@
 }
 
 .music-note-input {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 10px 12px;
   color: #fff;
   font-size: 0.85rem;
@@ -174,9 +174,9 @@
 .send-track-btn {
   width: 100%;
   padding: 12px;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, #1DB954, #1ed760);
-  color: #121018;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--brand-spotify), var(--brand-spotify-light));
+  color: var(--bg-primary);
   border: none;
   font-weight: 800;
   font-size: 0.95rem;

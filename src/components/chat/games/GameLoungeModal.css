@@ -12,14 +12,14 @@
 .game-lounge-modal {
   width: 100%;
   max-width: 430px;
-  background: var(--bg-primary, #121018);
+  background: var(--bg-primary);
   border-radius: var(--radius-lg, 14px) var(--radius-lg, 14px) 0 0;
   padding: 24px 20px;
   height: 85vh;
   display: flex;
   flex-direction: column;
   animation: slideUp 0.3s ease-out;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 @keyframes slideUp {
@@ -43,7 +43,7 @@
 .close-btn {
   background: none;
   border: none;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 8px;
   transition: transform 0.2s;
@@ -61,9 +61,9 @@
 .lounge-tabs::-webkit-scrollbar { display: none; }
 
 .tab-btn {
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
   border: 1px solid transparent;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   padding: 8px 16px;
   border-radius: var(--radius-full, 9999px);
   white-space: nowrap;
@@ -73,7 +73,7 @@
 }
 
 .tab-btn.active {
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
 }
 
@@ -88,8 +88,8 @@
 .games-grid::-webkit-scrollbar { display: none; }
 
 .game-card {
-  background: var(--bg-elevated, #231E32);
-  border-radius: 12px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
   padding: 16px;
   display: flex;
   align-items: center;
@@ -102,9 +102,9 @@
 
 .game-icon-wrapper {
   background: rgba(232, 96, 76, 0.1);
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   width: 48px; height: 48px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,18 +122,18 @@
 
 .game-category {
   font-size: 12px;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
 }
 
 .game-badge {
   position: absolute;
   top: -6px;
   right: 16px;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   font-size: 10px;
   font-weight: bold;
   padding: 2px 8px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
 }

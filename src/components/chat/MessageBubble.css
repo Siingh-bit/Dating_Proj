@@ -26,7 +26,7 @@
   opacity: 0;
   border: none;
   background: rgba(232, 96, 76, 0.1);
-  color: var(--accent-color, #e8604c);
+  color: var(--accent);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -42,14 +42,14 @@
 }
 
 .unsend-action-btn:hover {
-  background: #e8604c;
+  background: var(--accent);
   color: #fff;
   transform: scale(1.1);
 }
 
 .message-bubble {
   padding: 10px 14px;
-  border-radius: 18px;
+  border-radius: var(--radius-xl);
   font-size: 14.5px;
   line-height: 1.45;
   word-break: break-word;
@@ -61,14 +61,14 @@
 }
 
 .is-own .message-bubble {
-  background: linear-gradient(135deg, #e8604c 0%, #ff7b6a 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, #ff7b6a 100%);
   color: #ffffff;
   border-bottom-right-radius: 4px;
 }
 
 .is-other .message-bubble {
-  background: var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom-left-radius: 4px;
 }
@@ -87,7 +87,7 @@
 
 .view-once-card {
   padding: 10px 14px;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -101,7 +101,7 @@
 
 .is-other .view-once-card.is-unopened {
   background: rgba(232, 96, 76, 0.12);
-  color: #e8604c;
+  color: var(--accent);
 }
 
 .view-once-card.is-opened {
@@ -125,7 +125,7 @@
 }
 
 .permanent-photo-card {
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   max-width: 240px;
   cursor: pointer;
@@ -137,7 +137,7 @@
   max-height: 260px;
   object-fit: cover;
   display: block;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   transition: transform 0.2s;
 }
 
@@ -151,7 +151,7 @@
 
 .message-timestamp {
   font-size: 11px;
-  color: var(--text-muted, #999999);
+  color: var(--text-secondary);
   margin-top: 4px;
   padding: 0 4px;
 }
@@ -198,7 +198,7 @@
   max-width: 100%;
   max-height: 75vh;
   object-fit: contain;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   box-shadow: 0 20px 50px rgba(0,0,0,0.8);
 }
 
@@ -211,13 +211,13 @@
   background: rgba(232, 96, 76, 0.9);
   color: #fff;
   font-size: 12px;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 /* Game Block Styles */
 .game-content-block {
   background: rgba(0,0,0,0.15);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-bottom: 6px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -234,9 +234,20 @@
   gap: 4px;
   font-size: 11px;
   text-transform: uppercase;
-  color: var(--accent, #e8604c);
+  color: var(--accent);
   margin-bottom: 8px;
   font-weight: 700;
+}
+
+/* Summary shown for games that have no bespoke result card yet.
+   Preserves newlines so multi-line summaries (e.g. Two-Line Tango) read well. */
+.game-summary-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: inherit;
 }
 
 .game-doodle-prompt {
@@ -247,8 +258,8 @@
 }
 
 .doodle-img {
-  background: #1A1626;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -263,7 +274,7 @@
 }
 
 .fortune-result strong {
-  color: var(--accent, #e8604c);
+  color: var(--accent);
   display: block;
   font-size: 11px;
   text-transform: uppercase;
@@ -276,7 +287,7 @@
 }
 
 .game-score {
-  color: var(--accent, #e8604c);
+  color: var(--accent);
   font-size: 14px;
   font-weight: 700;
 }
@@ -288,7 +299,7 @@
   background: var(--accent-gradient);
   color: #fff;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   margin-bottom: 6px;
 }
 
@@ -327,7 +338,7 @@
   font-size: 13px;
   padding: 4px 8px;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   margin-bottom: 4px;
 }
 
@@ -366,7 +377,7 @@
 .chat-itinerary-card {
   background: linear-gradient(135deg, rgba(35, 25, 45, 0.95), rgba(45, 20, 30, 0.95));
   border: 1.5px solid rgba(232, 96, 76, 0.5);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: 14px 16px;
   min-width: 250px;
   max-width: 320px;
@@ -376,7 +387,7 @@
 .itinerary-header-badge {
   font-size: 11px;
   font-weight: 800;
-  color: #FFD700;
+  color: var(--phase-serious);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
@@ -402,8 +413,8 @@
   color: #FFFFFF !important;
   background: rgba(0, 0, 0, 0.3);
   padding: 8px 10px;
-  border-radius: 8px;
-  border-left: 3px solid #FFD700;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--phase-serious);
 }
 
 .itinerary-rsvp-row {
@@ -412,16 +423,46 @@
   margin-top: 12px;
 }
 
+/* Confirmed state shown in place of the buttons once a choice is made,
+   so the answer lives in the card rather than in a browser alert. */
+.itinerary-rsvp-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  animation: scaleIn var(--duration-normal) var(--ease-spring);
+}
+
+.itinerary-rsvp-state.is-accepted {
+  background: rgba(92, 184, 122, 0.16);
+  color: var(--success);
+  border: 1px solid rgba(92, 184, 122, 0.32);
+}
+
+.itinerary-rsvp-state.is-tweak {
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
 .rsvp-btn {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 9999px;
+  min-height: 36px;
+  padding: 9px 12px;
+  border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   border: none;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
+
+.rsvp-btn:hover { filter: brightness(1.08); }
 
 .rsvp-btn:active {
   transform: scale(0.95);
@@ -443,7 +484,7 @@
 .chat-music-card {
   background: linear-gradient(135deg, rgba(20, 35, 25, 0.9), rgba(12, 10, 16, 0.9));
   border: 1px solid rgba(29, 185, 84, 0.3);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-top: 4px;
 }
@@ -451,7 +492,7 @@
 .music-header-badge {
   font-size: 11px;
   font-weight: 700;
-  color: #1ed760;
+  color: var(--brand-spotify-light);
   text-transform: uppercase;
   margin-bottom: 6px;
 }
@@ -489,7 +530,7 @@
 .chat-closure-card {
   background: rgba(124, 77, 255, 0.12);
   border: 1px solid rgba(124, 77, 255, 0.3);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 12px;
   margin-top: 4px;
 }
@@ -497,7 +538,7 @@
 .closure-badge-pill {
   font-size: 11px;
   font-weight: 700;
-  color: #7C4DFF;
+  color: var(--phase-talking);
   text-transform: uppercase;
   margin-bottom: 4px;
 }

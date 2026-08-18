@@ -212,7 +212,7 @@ export default function LoveBetsModal({ onClose, onSendToChat }) {
                 <div className={`lb-settle-amount ${truth === choice ? 'win' : 'lose'}`}>
                   {truth === choice ? '+' : '−'}{stake}
                 </div>
-                <h3 className="gs-result-title">{truth === choice ? 'Called it! 🎯' : 'Wrong read 😬'}</h3>
+                <h3 className="gs-result-title">{truth === choice ? 'Called it' : 'Wrong read'}</h3>
                 <p className="gs-result-note">
                   They said <strong>“{truth === 'a' ? q.a : q.b}”</strong>.
                   {truth === choice ? ' Exactly what you predicted.' : ` You backed “${choice === 'a' ? q.a : q.b}”.`}

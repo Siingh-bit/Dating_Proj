@@ -103,11 +103,6 @@ const AuthPage = () => {
         </div>
       )}
 
-      {step === 3 && (
-        <div className="dev-banner">
-          Dev OTP: <span>{generatedOtp}</span>
-        </div>
-      )}
 
       {step > 1 && step < 4 && (
         <button className="back-button" onClick={() => setStep(step - 1)}>
@@ -186,10 +181,17 @@ const AuthPage = () => {
       {step === 3 && (
         <div className="step-container step-3 slide-in-right">
           <div className="auth-form-header">
-            <h2>Enter Verification Code</h2>
-            <p>We sent a 6-digit code to your email</p>
+            <h2>Enter your code</h2>
+            <p>We sent a 6-digit code to {email || 'your email'}</p>
           </div>
-          
+
+          {/* This build has no mail backend, so the code is surfaced here.
+              Presented as a deliberate demo affordance rather than a debug bar. */}
+          <div className="demo-code-hint">
+            <span className="demo-code-label">Demo mode</span>
+            <span className="demo-code-value">{generatedOtp}</span>
+          </div>
+
           <div className={`otp-container ${otpError ? 'shake' : ''}`}>
             {otp.map((digit, index) => (
               <input

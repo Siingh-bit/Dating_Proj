@@ -16,7 +16,7 @@
 }
 
 .so-intro-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
@@ -26,9 +26,9 @@
 .so-board {
   position: relative;
   align-self: center;
-  background: linear-gradient(180deg, #14111C 0%, #1A1626 100%);
+  background: linear-gradient(180deg, #14111C 0%, var(--bg-card) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
   user-select: none;
@@ -57,7 +57,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   pointer-events: none;
 }
 

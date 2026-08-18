@@ -173,7 +173,7 @@ export default function WobbleHourModal({ onClose, onMatchCreated, potentialCand
                 >
                   <span>{currentQ.optA}</span>
                   {userChoice === 'A' && <Check size={16} className="opt-check" />}
-                  {partnerChoice === 'A' && <span className="partner-matched-tag">{candidate.name} picked this! 💖</span>}
+                  {partnerChoice === 'A' && <span className="partner-matched-tag">{candidate.name} picked this</span>}
                 </button>
 
                 <button 
@@ -182,7 +182,7 @@ export default function WobbleHourModal({ onClose, onMatchCreated, potentialCand
                 >
                   <span>{currentQ.optB}</span>
                   {userChoice === 'B' && <Check size={16} className="opt-check" />}
-                  {partnerChoice === 'B' && <span className="partner-matched-tag">{candidate.name} picked this! 💖</span>}
+                  {partnerChoice === 'B' && <span className="partner-matched-tag">{candidate.name} picked this</span>}
                 </button>
               </div>
 
@@ -230,7 +230,7 @@ export default function WobbleHourModal({ onClose, onMatchCreated, potentialCand
                 <Heart size={14} fill="#fff" /> 100% Chemistry
               </div>
             </div>
-            <h2>It's a Wobble Match! ✨</h2>
+            <h2>It's a Wobble Match</h2>
             <p>You and <strong>{candidate.name}</strong> both rated 5 stars! Photos unblurred.</p>
 
             <button 

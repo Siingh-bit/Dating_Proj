@@ -12,14 +12,14 @@
 .tod-modal {
   width: 100%;
   max-width: 430px;
-  background: var(--bg-primary, #121018);
+  background: var(--bg-primary);
   border-radius: var(--radius-lg, 14px) var(--radius-lg, 14px) 0 0;
   padding: 24px 20px;
   height: 85vh;
   display: flex;
   flex-direction: column;
   animation: slideUp 0.3s ease-out;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 .tod-header {
@@ -39,23 +39,23 @@
   scrollbar-width: none;
 }
 .cat-btn {
-  background: var(--bg-elevated, #231E32);
-  color: var(--text-secondary, #9B95A5);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
   border: none;
   padding: 8px 14px;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   font-weight: 500;
   white-space: nowrap;
 }
 .cat-btn.active {
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
 }
 
 .tod-mode-toggle {
   display: flex;
-  background: var(--bg-card, #1A1626);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
   padding: 4px;
   margin-bottom: 24px;
 }
@@ -64,20 +64,20 @@
   padding: 10px;
   border: none;
   background: transparent;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   transition: all 0.2s;
 }
 .mode-btn.active {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   color: #fff;
 }
 
 .tod-card {
   flex: 1;
-  background: linear-gradient(135deg, #2A1B38, #1A1626);
-  border-radius: 16px;
+  background: linear-gradient(135deg, var(--surface-raised), var(--bg-card));
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,7 +88,7 @@
   border: 1px solid rgba(255,255,255,0.05);
   position: relative;
 }
-.tod-card.mode-dare { background: linear-gradient(135deg, #3A1B28, #1A1626); }
+.tod-card.mode-dare { background: linear-gradient(135deg, #3A1B28, var(--bg-card)); }
 
 .tod-card.flipping {
   transform: rotateY(90deg);
@@ -96,7 +96,7 @@
 }
 
 .card-icon {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
   margin-bottom: 20px;
 }
 .card-text {
@@ -113,11 +113,11 @@
 }
 .shuffle-btn {
   flex: 1;
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   color: #fff;
   border: none;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   display: flex;
   justify-content: center;
@@ -126,11 +126,11 @@
 }
 .send-btn {
   flex: 2;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   border: none;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   display: flex;
   justify-content: center;

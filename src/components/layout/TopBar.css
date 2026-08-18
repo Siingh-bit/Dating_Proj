@@ -5,7 +5,7 @@
   justify-content: space-between;
   padding: 0 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: var(--bg-main, #0C0A10);
+  background-color: var(--bg-deepest);
   flex-shrink: 0;
   z-index: 10;
 }
@@ -20,13 +20,13 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 .top-bar-title {
   font-family: var(--font-display, 'DM Serif Display', serif);
   font-size: 24px;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   margin: 0;
   font-weight: normal;
 }
@@ -42,15 +42,15 @@
   align-items: center;
   gap: 4px;
   padding: 6px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 500;
   background-color: var(--bg-elevated, #1E1A2E);
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
 }
 
 .likes-badge {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
 }
 
 .badge-icon {

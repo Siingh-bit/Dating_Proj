@@ -4,7 +4,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  background: var(--bg-deepest, #0C0A10);
+  background: var(--bg-deepest);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -38,11 +38,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-card, #1A1626);
+  background: var(--bg-card);
 }
 
 .story-ring.has-story {
-  background: linear-gradient(45deg, #E8604C, #FF7B6B, #7C4DFF, #1DB954);
+  background: linear-gradient(45deg, var(--accent), var(--accent-light), var(--phase-talking), var(--brand-spotify));
   background-size: 300% 300%;
   animation: gradient-rotate 4s ease infinite;
 }
@@ -63,7 +63,7 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--bg-deepest, #0C0A10);
+  border: 2px solid var(--bg-deepest);
 }
 
 .add-story-badge {
@@ -73,12 +73,12 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--bg-deepest, #0C0A10);
+  border: 2px solid var(--bg-deepest);
   box-shadow: 0 2px 6px rgba(232, 96, 76, 0.4);
 }
 
@@ -89,13 +89,13 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #1DB954;
-  border: 2px solid var(--bg-deepest, #0C0A10);
+  background: var(--brand-spotify);
+  border: 2px solid var(--bg-deepest);
 }
 
 .story-username {
   font-size: 0.72rem;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   max-width: 62px;
   overflow: hidden;
   text-overflow: ellipsis;

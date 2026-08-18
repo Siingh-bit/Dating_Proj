@@ -50,7 +50,7 @@
   height: 100%;
   position: absolute;
   backface-visibility: hidden;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
   justify-content: center;

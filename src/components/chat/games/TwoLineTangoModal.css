@@ -2,13 +2,13 @@
 .tt-steps {
   margin: 0 0 22px;
   padding-left: 20px;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.65;
 }
 
 .tt-steps li { margin-bottom: 12px; }
-.tt-steps strong { color: var(--text-primary, #F5F0EB); }
+.tt-steps strong { color: var(--text-primary); }
 
 .tt-opener-preview {
   width: 100%;
@@ -20,7 +20,7 @@
   margin-top: 12px;
   background: none;
   border: none;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   font-family: inherit;
   font-size: 12px;
   cursor: pointer;
@@ -29,7 +29,7 @@
   gap: 6px;
 }
 
-.tt-reroll:hover { color: var(--accent, #E8604C); }
+.tt-reroll:hover { color: var(--accent); }
 
 /* --- Writing turn --- */
 .tt-stage {
@@ -43,7 +43,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   margin-bottom: 8px;
 }
 
@@ -62,17 +62,17 @@
   align-self: center;
   margin: 14px 0 20px;
   font-size: 12px;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
 .tt-input {
   width: 100%;
   padding: 14px 16px;
-  border-radius: 12px;
-  background: var(--bg-input, #1E1A2C);
-  border: 1px solid var(--bg-elevated, #231E32);
-  color: var(--text-primary, #F5F0EB);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  border: 1px solid var(--bg-elevated);
+  color: var(--text-primary);
   font-size: 16px;
   font-family: inherit;
   line-height: 1.5;
@@ -81,14 +81,14 @@
 
 .tt-input:focus {
   outline: none;
-  border-color: var(--accent, #E8604C);
+  border-color: var(--accent);
 }
 
 .tt-count {
   align-self: flex-end;
   margin-top: 6px;
   font-size: 11px;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -112,7 +112,7 @@
 }
 
 .tt-handoff-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   margin: 0;
 }
@@ -128,21 +128,21 @@
 .tt-story-line {
   margin: 0 0 14px;
   padding: 12px 15px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   line-height: 1.55;
   animation: ttLineIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .tt-story-opener {
-  background: var(--bg-elevated, #231E32);
+  background: var(--bg-elevated);
   font-style: italic;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
 }
 
 .tt-story-line.p1 {
   background: rgba(232, 96, 76, 0.14);
-  border-left: 3px solid var(--accent, #E8604C);
+  border-left: 3px solid var(--accent);
 }
 
 .tt-story-line.p2 {

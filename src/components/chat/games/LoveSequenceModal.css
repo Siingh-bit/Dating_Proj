@@ -9,7 +9,7 @@
 
 .lsq-preview-pad {
   height: 66px;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,7 +18,7 @@
 }
 
 .lsq-intro-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.6;
   text-align: center;
@@ -33,12 +33,12 @@
   letter-spacing: 0.06em;
   height: 22px;
   margin: 6px 0 14px;
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   flex: 0 0 auto;
 }
 
-.lsq-status.input   { color: var(--accent, #E8604C); }
-.lsq-status.failing { color: var(--error, #E84C5E); }
+.lsq-status.input   { color: var(--accent); }
+.lsq-status.failing { color: var(--error); }
 
 /* --- Pads --- */
 .lsq-grid {
@@ -55,7 +55,7 @@
   aspect-ratio: 1;
   max-height: 150px;
   border: 2px solid transparent;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   background: var(--pad-color);
   filter: brightness(0.42) saturate(0.75);
   font-size: 34px;
@@ -77,7 +77,7 @@
 .lsq-pad.wrong {
   animation: lsqWrong 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   filter: brightness(1) saturate(0.4);
-  border-color: var(--error, #E84C5E);
+  border-color: var(--error);
 }
 
 @keyframes lsqWrong {

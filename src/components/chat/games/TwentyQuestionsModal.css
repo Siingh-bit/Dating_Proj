@@ -24,7 +24,7 @@
   height: 64px;
   background: rgba(232, 96, 76, 0.1);
   color: var(--accent);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +56,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   padding: 16px 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -91,7 +91,7 @@
   border: none;
   width: 100%;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -134,7 +134,7 @@
   background: var(--bg-elevated);
   border: 1px dashed rgba(255, 255, 255, 0.2);
   padding: 20px;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   margin-bottom: 32px;
   display: flex;
   flex-direction: column;
@@ -158,7 +158,7 @@
 .rules-box {
   background: rgba(255, 255, 255, 0.03);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   text-align: left;
   margin-bottom: 32px;
 }

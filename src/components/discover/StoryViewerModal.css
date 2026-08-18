@@ -29,7 +29,7 @@
 
 @media (min-width: 480px) {
   .story-viewer-modal {
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     height: 92vh;
   }
 }
@@ -142,9 +142,9 @@
   left: 14px;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(8px);
-  color: #FFD700;
+  color: var(--phase-serious);
   padding: 4px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
   font-weight: 600;
   display: flex;
@@ -162,7 +162,7 @@
   background: rgba(12, 10, 16, 0.7);
   backdrop-filter: blur(12px);
   padding: 12px 16px;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 30;
 }
@@ -213,7 +213,7 @@
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   padding: 12px 42px 12px 16px;
   color: #fff;
   font-size: 0.88rem;
@@ -230,7 +230,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--accent, #E8604C);
+  background: var(--accent);
   color: #fff;
   border: none;
   display: flex;

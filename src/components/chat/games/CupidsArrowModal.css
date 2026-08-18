@@ -3,21 +3,21 @@
 .ca-intro-icon { font-size: 54px; margin-bottom: 20px; }
 
 .ca-intro-note {
-  color: var(--text-secondary, #9B95A5);
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.65;
   margin: 0;
 }
 
-.ca-intro-note strong { color: var(--accent, #E8604C); }
+.ca-intro-note strong { color: var(--accent); }
 
 /* --- Board --- */
 .ca-board {
   position: relative;
   align-self: center;
-  background: linear-gradient(180deg, #171320 0%, #221A2E 70%, #2A1B38 100%);
+  background: linear-gradient(180deg, #171320 0%, #221A2E 70%, var(--surface-raised) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   touch-action: none;
   cursor: crosshair;
@@ -69,7 +69,7 @@
 
 .ca-power-fill {
   height: 100%;
-  background: linear-gradient(90deg, #5CB87A, #C4A265 55%, #E84C5E);
+  background: linear-gradient(90deg, var(--success), var(--gold) 55%, var(--error));
   transition: width 0.05s linear;
 }
 
@@ -104,7 +104,7 @@
 .ca-arrow {
   position: absolute;
   font-size: 26px;
-  color: var(--text-primary, #F5F0EB);
+  color: var(--text-primary);
   pointer-events: none;
   z-index: 5;
   line-height: 1;
@@ -124,8 +124,8 @@
   animation: caFlash 0.7s ease-out forwards;
 }
 
-.ca-flash.hit  { color: #FFD700; text-shadow: 0 0 18px rgba(255, 215, 0, 0.7); }
-.ca-flash.miss { color: var(--text-tertiary, #5A5465); }
+.ca-flash.hit  { color: var(--phase-serious); text-shadow: 0 0 18px rgba(255, 215, 0, 0.7); }
+.ca-flash.miss { color: var(--text-tertiary); }
 
 @keyframes caFlash {
   0%   { opacity: 0; transform: translateX(-50%) scale(0.7); }
@@ -141,7 +141,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   pointer-events: none;
 }
 

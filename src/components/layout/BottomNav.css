@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  color: var(--text-tertiary, #5A5465);
+  color: var(--text-tertiary);
   text-decoration: none;
   flex: 1;
   height: 100%;
@@ -35,7 +35,7 @@
 }
 
 .bottom-nav-item.active {
-  color: var(--accent, #E8604C);
+  color: var(--accent);
 }
 
 .icon-wrapper {

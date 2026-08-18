@@ -121,7 +121,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 15px;
   cursor: pointer;
   transition: all 0.2s;
@@ -185,7 +185,7 @@
 
 .results-breakdown {
   background: var(--bg-elevated);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 32px;
 }
@@ -211,7 +211,7 @@
   border: none;
   width: 100%;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-size: 16px;
   font-weight: 600;
   display: flex;

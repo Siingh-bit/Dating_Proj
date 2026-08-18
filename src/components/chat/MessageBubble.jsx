@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Image as ImageIcon, Trash2, X, Gamepad2 } from 'lucide-react';
+import { Eye, EyeOff, Image as ImageIcon, Trash2, X, Gamepad2, Check } from 'lucide-react';
 import { formatTime } from '../../utils/helpers';
 import './MessageBubble.css';
+
+/* Rendered as their own card elsewhere in this component, not inside the
+   mini-game block. */
+const FEATURE_CARD_TYPES = ['date_itinerary', 'music_swap', 'graceful_closure'];
+
+/* Game types that have a bespoke result card below. Anything NOT listed here
+   falls back to showing the game's summary text, so a new game is never
+   silently rendered as an empty bubble. Add a type here when you add its card. */
+const GAMES_WITH_CUSTOM_CARD = [
+  'truth_or_dare',
+  'would_you_rather',
+  'two_lies_one_truth',
+  'compatibility_quiz',
+  'emoji_decoder',
+  'couple_trivia',
+  'twenty_questions',
+  'doodle_draw',
+  'love_fortune',
+  'finish_lyric',
+];
 
 export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend, onViewOnce }) {
   const [showFullImage, setShowFullImage] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [rsvp, setRsvp] = useState(null);   // null | 'accepted' | 'tweak'
 
   const media = message.media;
   const dateData = message.gameData?.type === 'date_itinerary' ? message.gameData : (
@@ -33,6 +54,13 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
       note: message.text.replace('🕊️', '').trim(),
     } : null
   );
+
+  const gameType = message.gameData?.type;
+  const isGameResult = !!message.gameData && !FEATURE_CARD_TYPES.includes(gameType);
+  /* No bespoke card for this game -> show its summary text instead of an
+     empty badge. */
+  const needsSummaryFallback = isGameResult && !GAMES_WITH_CUSTOM_CARD.includes(gameType);
+  const summaryText = message.gameData?.summaryText || message.text;
 
   const handleViewOnceClick = () => {
     if (media?.mode === 'view_once' && !media.viewed) {
@@ -100,14 +128,21 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
                 )}
               </div>
               {dateData.note && <p className="itinerary-note">"{dateData.note}"</p>}
-              <div className="itinerary-rsvp-row">
-                <button className="rsvp-btn accepted" onClick={() => alert("Date invitation accepted! 🥂")}>
-                  I'm In! 🥂
-                </button>
-                <button className="rsvp-btn tweak" onClick={() => alert("Shared tweak request ✨")}>
-                  Suggest Tweak ✨
-                </button>
-              </div>
+              {rsvp ? (
+                <div className={`itinerary-rsvp-state is-${rsvp}`} role="status">
+                  <Check size={15} />
+                  <span>{rsvp === 'accepted' ? "You're going" : 'Change suggested'}</span>
+                </div>
+              ) : (
+                <div className="itinerary-rsvp-row">
+                  <button className="rsvp-btn accepted" onClick={() => setRsvp('accepted')}>
+                    Count me in
+                  </button>
+                  <button className="rsvp-btn tweak" onClick={() => setRsvp('tweak')}>
+                    Suggest a change
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -137,7 +172,7 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
           )}
 
           {/* Mini-Games Content */}
-          {message.gameData && !['date_itinerary', 'music_swap', 'graceful_closure'].includes(message.gameData.type) && (
+          {isGameResult && (
             <div className="game-content-block">
               <div className="game-badge">
                 <Gamepad2 size={14} /> {message.gameData.type?.replace(/_/g, ' ').toUpperCase()}
@@ -215,6 +250,12 @@ export default function MessageBubble({ message, isOwn, showTimestamp, onUnsend,
                 <div className="game-lyric">
                   <span className="game-score">Love Song Quiz Score: {message.gameData.score}/{message.gameData.total}</span>
                 </div>
+              )}
+
+              {/* Fallback for games without a bespoke card — without this the
+                  bubble would show only the badge and drop the result entirely. */}
+              {needsSummaryFallback && summaryText && (
+                <p className="game-summary-text">{summaryText}</p>
               )}
             </div>
           )}
