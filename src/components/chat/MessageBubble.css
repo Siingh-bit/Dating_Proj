@@ -551,3 +551,32 @@
   font-style: italic;
 }
 
+
+/* --- Per-game result cards ---
+   Each of these wrappers was referenced in MessageBubble.jsx but had no rule
+   of its own, so only their children were styled and the cards had no shape.
+   One shared treatment keeps every game result looking like the same family. */
+.game-tod-card,
+.game-wyr-card,
+.game-tlt-card,
+.game-compat-card,
+.game-emoji-card,
+.game-trivia-card,
+.game-twenty-card,
+.game-doodle,
+.game-fortune {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.game-doodle {
+  align-items: flex-start;
+}
+
+.emoji-solved {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: inherit;
+  opacity: 0.9;
+}

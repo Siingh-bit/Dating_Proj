@@ -326,3 +326,18 @@
   color: var(--accent);
   margin-top: var(--space-xs) !important;
 }
+
+/* Date divider between message groups — had no styles, so it rendered as a
+   plain left-aligned line of text in the middle of the conversation. */
+.date-separator {
+  align-self: center;
+  margin: var(--space-base) auto;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

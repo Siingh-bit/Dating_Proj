@@ -154,13 +154,14 @@ export default function WobbleHourModal({ onClose, onMatchCreated, potentialCand
             <div className="mystery-profile-preview">
               <div className="mystery-photo-wrap">
                 <img src={candidate.photos[0]} alt="" className="mystery-photo blurred" />
-                <div className="mystery-badge">
-                  <span>🎭 Photos Locked</span>
-                </div>
               </div>
               <div className="mystery-info">
                 <h4>{candidate.name}, {candidate.age}</h4>
                 <span className="mystery-location">{candidate.location}</span>
+                {/* Sits beside the avatar rather than inside it — the photo
+                    wrap is a 50px circle with overflow:hidden, which clipped
+                    this badge entirely. */}
+                <span className="mystery-badge">Photos locked</span>
               </div>
             </div>
 

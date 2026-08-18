@@ -222,3 +222,10 @@
   background: #d7281d;
   transform: scale(1.08);
 }
+
+/* Call status line ("Ringing…", "Connected") */
+.status-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}

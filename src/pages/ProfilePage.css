@@ -244,3 +244,31 @@
   text-decoration: underline;
   padding: var(--space-sm);
 }
+
+/* --- Interests ---
+   These three classes were referenced in ProfilePage.jsx but had no CSS at
+   all, so the tags rendered as bare inline spans and ran together into one
+   unbroken string ("TravelMusicCoffee..."). */
+.interests-section {
+  margin-bottom: var(--space-xl);
+}
+
+.interests-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.interest-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
