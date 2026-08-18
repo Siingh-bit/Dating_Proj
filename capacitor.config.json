@@ -1,0 +1,9 @@
+{
+  "appId": "com.wobbledate.app",
+  "appName": "Wobble Date",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

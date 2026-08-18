@@ -10,10 +10,13 @@
     "start": "vite preview --port $PORT --host"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.0"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
     "lucide-react": "^1.30.0",
     "react-router-dom": "^7.18.2"
   }
