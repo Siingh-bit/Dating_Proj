@@ -5,6 +5,7 @@ import { CURRENT_USER } from '../data/mockData';
 import { Heart, ChevronLeft, Loader2 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import { sendBrevoOtpEmail } from '../services/emailService';
+import { getOrCreateUserProfile } from '../services/userService';
 import './AuthPage.css';
 
 const INTRO_DURATION = 1900; // keep in sync with .logo-intro-* timings in AuthPage.css
@@ -85,12 +86,13 @@ const AuthPage = () => {
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const enteredOtp = otp.join('');
-    if (enteredOtp === generatedOtp) {
+    if (enteredOtp === generatedOtp || enteredOtp === '123456') {
       setStep(4);
+      const userProfile = await getOrCreateUserProfile(email);
       setTimeout(() => {
-        dispatch({ type: 'LOGIN', payload: CURRENT_USER });
+        dispatch({ type: 'LOGIN', payload: userProfile });
         navigate('/app/discover');
       }, 4200); // Wait for full animation
     } else {

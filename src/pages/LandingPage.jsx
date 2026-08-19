@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import { sendBrevoOtpEmail } from '../services/emailService';
+import { getOrCreateUserProfile } from '../services/userService';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -85,12 +86,13 @@ export default function LandingPage() {
     }
   };
 
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     const entered = authOtp.join('');
     if (entered === generatedOtp || entered === '123456') {
       setHeartAnim(true);
+      const userProfile = await getOrCreateUserProfile(authEmail);
       setTimeout(() => {
-        authDispatch({ type: 'LOGIN', payload: CURRENT_USER });
+        authDispatch({ type: 'LOGIN', payload: userProfile });
         setShowAuthModal(false);
         navigate('/app/discover');
       }, 2000);
@@ -99,10 +101,12 @@ export default function LandingPage() {
     }
   };
 
-  const handleSocialLogin = () => {
+  const handleSocialLogin = async () => {
     setHeartAnim(true);
+    const demoEmail = 'user.' + Math.floor(1000 + Math.random() * 9000) + '@wobbledate.com';
+    const userProfile = await getOrCreateUserProfile(demoEmail);
     setTimeout(() => {
-      authDispatch({ type: 'LOGIN', payload: CURRENT_USER });
+      authDispatch({ type: 'LOGIN', payload: userProfile });
       setShowAuthModal(false);
       navigate('/app/discover');
     }, 1200);
