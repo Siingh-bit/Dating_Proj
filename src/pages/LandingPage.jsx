@@ -108,6 +108,20 @@ export default function LandingPage() {
     }, 1200);
   };
 
+  const scrollToSection = (e, sectionId) => {
+    if (e) e.preventDefault();
+    const elem = document.getElementById(sectionId);
+    if (elem) {
+      const navOffset = 75;
+      const elementPosition = elem.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <div className="landing-page-root">
       {/* Ambient background glows */}
@@ -129,13 +143,13 @@ export default function LandingPage() {
           </div>
 
           <nav className="navbar-links">
-            <a href="#features" className="nav-link">Features</a>
-            <a href="#wobble-hour" className="nav-link">
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')} className="nav-link">Features</a>
+            <a href="#wobble-hour" onClick={(e) => scrollToSection(e, 'wobble-hour')} className="nav-link">
               <span className="live-dot" /> The Wobble Hour
             </a>
-            <a href="#interactive-games" className="nav-link">Lounge Games</a>
-            <a href="#city-dates" className="nav-link">City Itineraries</a>
-            <a href="#download" className="nav-link">Download APK</a>
+            <a href="#interactive-games" onClick={(e) => scrollToSection(e, 'interactive-games')} className="nav-link">Lounge Games</a>
+            <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')} className="nav-link">City Itineraries</a>
+            <a href="#download" onClick={(e) => scrollToSection(e, 'download')} className="nav-link">Download APK</a>
           </nav>
 
           <div className="navbar-actions">
@@ -543,18 +557,18 @@ export default function LandingPage() {
 
             <div className="footer-nav-col">
               <h4>Features</h4>
-              <a href="#wobble-hour">The Wobble Hour</a>
-              <a href="#interactive-games">Lounge Games</a>
-              <a href="#city-dates">First Date Planner</a>
-              <a href="#features">Voice Waves & Spotify</a>
+              <a href="#wobble-hour" onClick={(e) => scrollToSection(e, 'wobble-hour')}>The Wobble Hour</a>
+              <a href="#interactive-games" onClick={(e) => scrollToSection(e, 'interactive-games')}>Lounge Games</a>
+              <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')}>First Date Planner</a>
+              <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Voice Waves & Spotify</a>
             </div>
 
             <div className="footer-nav-col">
               <h4>Destinations</h4>
-              <a href="#city-dates">Mumbai (Bandra & Colaba)</a>
-              <a href="#city-dates">Bangalore (Indiranagar)</a>
-              <a href="#city-dates">Delhi NCR (Hauz Khas)</a>
-              <a href="#city-dates">Pune & Goa</a>
+              <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')}>Mumbai (Bandra & Colaba)</a>
+              <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')}>Bangalore (Indiranagar)</a>
+              <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')}>Delhi NCR (Hauz Khas)</a>
+              <a href="#city-dates" onClick={(e) => scrollToSection(e, 'city-dates')}>Pune & Goa</a>
             </div>
 
             <div className="footer-nav-col">
