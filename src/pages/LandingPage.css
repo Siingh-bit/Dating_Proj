@@ -1350,3 +1350,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Chemistry meter labels and the OTP step container — all referenced in the
+   JSX but never given rules. */
+.meter-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.meter-status {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.modal-otp-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+}

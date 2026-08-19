@@ -644,3 +644,8 @@
 .btn-skip-id:hover {
   color: #FFF;
 }
+
+/* Mirror the front camera preview only; the captured frame stays true. */
+.live-video-feed.is-selfie {
+  transform: scaleX(-1);
+}

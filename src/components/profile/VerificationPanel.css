@@ -203,6 +203,13 @@
   object-fit: cover;
 }
 
+/* A front camera feed that isn't mirrored reads as "inverted" — you move left
+   and the image goes right. Mirror the PREVIEW only; the captured frame is
+   drawn from the raw stream, so the stored selfie stays true for review. */
+.verify-cam-stage.selfie .verify-cam-video {
+  transform: scaleX(-1);
+}
+
 /* Selfie gets an oval face guide; ID gets a rectangular document frame. */
 .verify-cam-guide {
   position: absolute;

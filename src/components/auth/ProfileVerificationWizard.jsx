@@ -273,7 +273,7 @@ export default function ProfileVerificationWizard({ onComplete }) {
             <div className="camera-viewfinder-box">
               {cameraActive ? (
                 <div className="camera-live-frame">
-                  <video ref={videoRef} autoPlay playsInline muted className="live-video-feed" />
+                  <video ref={videoRef} autoPlay playsInline muted className="live-video-feed is-selfie" />
                   {/* Oval Face Guide Overlay */}
                   <div className="face-oval-hud">
                     <div className="oval-border"></div>

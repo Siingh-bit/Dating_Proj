@@ -522,3 +522,9 @@
   font-size: var(--text-sm);
   font-weight: 600;
 }
+
+/* Front-facing preview must be mirrored or it feels inverted. Preview only —
+   the canvas capture reads the raw stream, so the saved selfie stays true. */
+.camera-feed.is-selfie {
+  transform: scaleX(-1);
+}

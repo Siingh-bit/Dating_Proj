@@ -370,6 +370,14 @@ select:focus-visible {
   outline-offset: 1px;
 }
 
+/* Placeholders must read as a hint, never as entered text. Without this the
+   browser default renders near-white on our dark inputs, so "hello@gmail.com"
+   looked like the field was already filled in. */
+::placeholder {
+  color: var(--text-tertiary);
+  opacity: 1; /* Firefox dims placeholders by default */
+}
+
 /* --- 2. Touch feel. Removes the grey flash on tap and the accidental
        text selection that makes a web app feel like a web page. --- */
 button,

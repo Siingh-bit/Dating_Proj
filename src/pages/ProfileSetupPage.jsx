@@ -86,6 +86,7 @@ export default function ProfileSetupPage() {
   const [idCameraActive, setIdCameraActive] = useState(false);
   const [idCameraStream, setIdCameraStream] = useState(null);
   const [capturedId, setCapturedId] = useState(user?.govt_id_url || null);
+  const [cameraError, setCameraError] = useState('');
 
   // Stop camera streams on unmount
   useEffect(() => {
@@ -128,7 +129,8 @@ export default function ProfileSetupPage() {
       setCameraActive(true);
       if (videoRef.current) videoRef.current.srcObject = stream;
     } catch (e) {
-      console.warn('Camera error:', e);
+      console.error('[Wobble Date] Selfie camera unavailable:', e);
+      setCameraError('We need camera access for the live selfie. Please allow it in your browser settings and try again.');
     }
   };
 
@@ -155,7 +157,8 @@ export default function ProfileSetupPage() {
       setIdCameraActive(true);
       if (idVideoRef.current) idVideoRef.current.srcObject = stream;
     } catch (e) {
-      console.warn('ID Camera error:', e);
+      console.error('[Wobble Date] ID camera unavailable:', e);
+      setCameraError('Camera unavailable. You can upload a photo of your ID instead.');
     }
   };
 
@@ -450,8 +453,11 @@ export default function ProfileSetupPage() {
           <div className="setup-step-body animate-fade-in">
             <h2>Identity & Verification</h2>
             <p className="step-desc">
-              Snap a live camera selfie to prove liveness. Optionally attach a Government ID for the Official Verified Badge.
+              Take a live selfie so we know you're you. A government ID is optional
+              and only needed for the verified badge.
             </p>
+
+            {cameraError && <p className="setup-error-msg">{cameraError}</p>}
 
             {/* Live Selfie Box */}
             <div className="verification-card-unit">
@@ -466,7 +472,7 @@ export default function ProfileSetupPage() {
               <div className="viewfinder-mini-box">
                 {cameraActive ? (
                   <div className="live-camera-wrap">
-                    <video ref={videoRef} autoPlay playsInline muted className="camera-feed" />
+                    <video ref={videoRef} autoPlay playsInline muted className="camera-feed is-selfie" />
                     <div className="oval-face-hud"></div>
                     <button className="btn-snap-circle" onClick={snapSelfie}></button>
                   </div>

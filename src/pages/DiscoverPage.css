@@ -527,3 +527,12 @@
 }
 
 
+
+/* Empty-state icon needed centring. */
+.empty-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  color: var(--text-tertiary);
+}

@@ -98,12 +98,32 @@ export default function LandingPage() {
   const handleOtpInput = (index, val) => {
     const digits = val.replace(/[^0-9a-zA-Z]/g, '');
     const newOtp = [...authOtp];
+
+    // Pasting or autofilling the whole code used to keep only the first
+    // character, so "482913" landed as a single digit in one box.
+    if (digits.length > 1) {
+      digits.slice(0, 6 - index).split('').forEach((ch, i) => {
+        newOtp[index + i] = ch;
+      });
+      setAuthOtp(newOtp);
+      setOtpError(false);
+      const last = Math.min(index + digits.length, 5);
+      document.getElementById(`landing-otp-${last}`)?.focus();
+      return;
+    }
+
     newOtp[index] = digits ? digits[0] : '';
     setAuthOtp(newOtp);
     setOtpError(false);
     if (digits && index < 5) {
-      const nextInput = document.getElementById(`landing-otp-${index + 1}`);
-      if (nextInput) nextInput.focus();
+      document.getElementById(`landing-otp-${index + 1}`)?.focus();
+    }
+  };
+
+  // Backspace on an empty box should step back, like every other OTP field.
+  const handleOtpKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && !authOtp[index] && index > 0) {
+      document.getElementById(`landing-otp-${index - 1}`)?.focus();
     }
   };
 
@@ -379,7 +399,7 @@ export default function LandingPage() {
 
             <div className="demo-meter-wrapper">
               <div className="demo-meter-header">
-                <span className="meter-name">🔥 Chemistry Level:</span>
+                <span className="meter-name">Chemistry level</span>
                 <span className="meter-status" style={{ color: currentVibe.color }}>
                   {currentVibe.label} ({demoChemistry}%)
                 </span>
@@ -669,7 +689,11 @@ export default function LandingPage() {
                 <div className="input-field-group">
                   <label>Email Address</label>
                   <input 
-                    type="email" 
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    autoCapitalize="none"
+                    spellCheck="false" 
                     placeholder="you@example.com" 
                     value={authEmail} 
                     onChange={(e) => setAuthEmail(e.target.value)}
@@ -724,11 +748,13 @@ export default function LandingPage() {
                     <input
                       key={idx}
                       id={`landing-otp-${idx}`}
+                      autoComplete="one-time-code"
                       type="text"
                       inputMode="numeric"
                       maxLength={1}
                       value={digit}
                       onChange={(e) => handleOtpInput(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                       className={`otp-box ${otpError ? 'error-shake' : ''}`}
                     />
                   ))}

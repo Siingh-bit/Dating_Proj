@@ -188,8 +188,12 @@ const AuthPage = () => {
           <form className="auth-form" onSubmit={handleContinue}>
             <div className="input-group">
               <input 
-                type="email" 
-                placeholder="Email address" 
+                type="email"
+                autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                spellCheck="false"
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -240,6 +244,7 @@ const AuthPage = () => {
               <input
                 key={index}
                 ref={inputRefs[index]}
+                      autoComplete="one-time-code"
                 type="text"
                 inputMode="numeric"
                 maxLength="1"
