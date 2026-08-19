@@ -9,6 +9,7 @@ import {
   Smartphone, Globe, Award, ChevronRight, UserCheck, Lock
 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
+import OtpHeartReveal, { REVEAL_DURATION } from '../components/shared/OtpHeartReveal';
 import { sendBrevoOtpEmail } from '../services/emailService';
 import { getOrCreateUserProfile, buildLocalProfile, isSuperAdminEmail } from '../services/userService';
 import './LandingPage.css';
@@ -132,18 +133,24 @@ export default function LandingPage() {
     const isAdmin = isSuperAdminEmail(authEmail);
     try {
       authDispatch({ type: 'LOGIN', payload: userProfile });
-      setShowAuthModal(false);
-      setHeartAnim(false);
-      setIsVerifying(false);
 
-      if (isAdmin) {
-        sessionStorage.setItem('wobble_admin_auth', 'true');
-        navigate('/admin', { replace: true });
-      } else if (!userProfile.profile_completed) {
-        navigate('/app/setup', { replace: true });
-      } else {
-        navigate('/app/discover', { replace: true });
-      }
+      // Let the heart reveal finish before moving on. Everything below runs
+      // whether or not the animation is watched, so this can't strand anyone.
+      setTimeout(() => {
+        setShowAuthModal(false);
+        setHeartAnim(false);
+        setIsVerifying(false);
+
+        if (isAdmin) {
+          sessionStorage.setItem('wobble_admin_auth', 'true');
+          navigate('/admin', { replace: true });
+        } else {
+          // Everyone lands on Discover. Profile setup is prompted from there
+          // the first time they try to like or pass, rather than being a wall
+          // between signing up and seeing the app.
+          navigate('/app/discover', { replace: true });
+        }
+      }, REVEAL_DURATION);
     } catch (err) {
       console.error('[Wobble Date] Navigation after sign-in failed:', err);
       setHeartAnim(false);
@@ -735,9 +742,11 @@ export default function LandingPage() {
 
             {heartAnim && (
               <div className="auth-heart-celebration-overlay">
-                <WobbleLogo className="modal-wobble-logo animate-pulse" />
-                <h3>Welcome to Wobble Date</h3>
-                <p>Opening your account...</p>
+                <OtpHeartReveal
+                  digits={authOtp}
+                  title="Welcome to Wobble Date"
+                  subtitle="Opening your account"
+                />
               </div>
             )}
           </div>

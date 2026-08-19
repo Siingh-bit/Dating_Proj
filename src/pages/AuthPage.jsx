@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { CURRENT_USER } from '../data/mockData';
 import { Heart, ChevronLeft, Loader2 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
+import OtpHeartReveal, { REVEAL_DURATION } from '../components/shared/OtpHeartReveal';
 import { sendBrevoOtpEmail } from '../services/emailService';
 import { getOrCreateUserProfile, isSuperAdminEmail } from '../services/userService';
 import './AuthPage.css';
@@ -139,12 +140,12 @@ const AuthPage = () => {
       if (isAdmin) {
         sessionStorage.setItem('wobble_admin_auth', 'true');
         navigate('/admin');
-      } else if (!userProfile.profile_completed) {
-        navigate('/app/setup');
       } else {
+        // Profile setup is prompted from inside Discover instead of blocking
+        // the way in.
         navigate('/app/discover');
       }
-    }, 3800); // wait for the full heart animation
+    }, REVEAL_DURATION); // stay in step with the heart reveal
   };
 
   return (
@@ -271,32 +272,14 @@ const AuthPage = () => {
 
       {step === 4 && (
         <div className="step-container step-4">
-          <div className="heart-animation-container">
-            {/* Digits fly toward center and dissolve */}
-            {otp.map((digit, index) => (
-              <div 
-                key={index} 
-                className="flying-digit"
-                style={{ 
-                  '--start-x': `${(index - 2.5) * 52}px`,
-                  animationDelay: `${index * 0.06}s`
-                }}
-              >
-                {digit}
-              </div>
-            ))}
-            {/* Real SVG heart appears after digits converge */}
-            <svg className="heart-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-              <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" 
-                fill="#E8604C"/>
-            </svg>
-          </div>
-          <div className="welcome-message">
-            <h2>Welcome to Wobble Date</h2>
-            <p>Let's find your match</p>
-          </div>
+          <OtpHeartReveal
+            digits={otp}
+            title="Welcome to Wobble Date"
+            subtitle="Let's find your match"
+          />
         </div>
       )}
+
     </div>
   );
 };
