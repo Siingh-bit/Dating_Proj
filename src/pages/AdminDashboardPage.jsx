@@ -35,11 +35,13 @@ import {
   deleteUserProfile, 
   isSuperAdminEmail 
 } from '../services/userService';
+import { sha256 } from '../utils/security';
 import { useAuth } from '../contexts/AuthContext';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import './AdminDashboardPage.css';
 
-const CREATOR_MASTER_PASSCODE = 'wobble2026boss';
+// Cryptographic SHA-256 signature of creator master passcode
+const CREATOR_MASTER_HASH = 'e1b8c70beeb791a34c8085927a445a41278fcc41b941856a22f1f3ba0c09fa8d';
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
@@ -81,9 +83,10 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handlePasscodeSubmit = (e) => {
+  const handlePasscodeSubmit = async (e) => {
     e.preventDefault();
-    if (passcode === CREATOR_MASTER_PASSCODE || passcode === 'admin123' || isSuperAdminEmail(user?.email)) {
+    const hash = await sha256(passcode.trim());
+    if (hash === CREATOR_MASTER_HASH || isSuperAdminEmail(user?.email)) {
       setIsAuthenticated(true);
       sessionStorage.setItem('wobble_admin_auth', 'true');
       setPasscodeError(false);
