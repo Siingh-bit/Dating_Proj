@@ -2,7 +2,12 @@ import { supabase, isSupabaseConfigured } from './supabaseClient';
 import { PROFILES, CURRENT_USER } from '../data/mockData';
 import { sendProfileApprovedEmail } from './emailService';
 
-const ADMIN_EMAILS = ['wobblesupport@gmail.com', 'admin@wobbledate.com', 'prathmesh@wobbledate.com'];
+const ADMIN_EMAILS = [
+  'prathmeshsingh99@gmail.com',
+  'wobblesupport@gmail.com',
+  'admin@wobbledate.com',
+  'prathmesh@wobbledate.com',
+];
 
 /**
  * Check if an email has admin/creator privileges
