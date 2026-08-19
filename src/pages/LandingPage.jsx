@@ -113,13 +113,13 @@ export default function LandingPage() {
       {/* --- Sticky Glass Navbar --- */}
       <header className="landing-navbar">
         <div className="navbar-container">
-          <div className="navbar-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="brand-logo-wrap">
-              <WobbleLogo className="brand-svg-logo" />
+          <div className="landing-navbar-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="landing-brand-logo-wrap">
+              <img src="/logo.png" alt="Wobble Date Logo" className="landing-brand-img-logo" />
             </div>
-            <div className="brand-text-block">
-              <span className="brand-name">Wobble Date</span>
-              <span className="brand-domain">wobbledate.com</span>
+            <div className="landing-brand-text-block">
+              <span className="landing-brand-title">Wobble Date</span>
+              <span className="landing-brand-badge">wobbledate.com</span>
             </div>
           </div>
 
