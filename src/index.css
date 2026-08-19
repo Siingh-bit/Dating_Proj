@@ -444,7 +444,7 @@ body .video-feed-overlay {
   z-index: var(--z-lightbox);
 }
 
-body .logo-intro-overlay,
+body .wintro-overlay,
 body .superlike-celebration-overlay,
 body .call-overlay {
   z-index: var(--z-max);

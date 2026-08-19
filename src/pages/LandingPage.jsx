@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import OtpHeartReveal, { REVEAL_DURATION } from '../components/shared/OtpHeartReveal';
+import WobbleIntroOverlay, { INTRO_DURATION } from '../components/shared/WobbleIntroOverlay';
 import { sendBrevoOtpEmail } from '../services/emailService';
 import { getOrCreateUserProfile, buildLocalProfile, isSuperAdminEmail } from '../services/userService';
 import './LandingPage.css';
@@ -31,6 +32,8 @@ export default function LandingPage() {
   const [heartAnim, setHeartAnim] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [authErrorMsg, setAuthErrorMsg] = useState('');
+  const [introPlaying, setIntroPlaying] = useState(false);
+  const introShownRef = React.useRef(false);
 
   /* The fake countdown that used to drive the hero pill is gone. It re-rendered
      the entire landing page once a second for a timer that just looped, and it
@@ -54,6 +57,15 @@ export default function LandingPage() {
     setIsSignIn(signInMode);
     setAuthStep(1);
     setShowAuthModal(true);
+
+    // Play the mark-assembling intro the first time the modal opens. Once per
+    // page load only — it's a brand moment, not something to sit through on
+    // every retry.
+    if (!introShownRef.current) {
+      introShownRef.current = true;
+      setIntroPlaying(true);
+      setTimeout(() => setIntroPlaying(false), INTRO_DURATION);
+    }
   };
 
   const handleContinueEmail = async (e) => {
@@ -739,6 +751,8 @@ export default function LandingPage() {
                 </button>
               </div>
             )}
+
+            {introPlaying && <WobbleIntroOverlay />}
 
             {heartAnim && (
               <div className="auth-heart-celebration-overlay">

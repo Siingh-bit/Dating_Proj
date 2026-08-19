@@ -1,0 +1,128 @@
+/* ============================================
+   Wobble mark intro — the glyphs orbit the W and settle
+   Timeline: glyphs pop in (0–0.6s) -> orbit 360° (0.34–1.55s)
+             W draws in (0.34–1.29s) -> wordmark (1.18s) -> fade (1.58s)
+   ============================================ */
+
+.wintro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(232, 96, 76, 0.14) 0%, rgba(12, 10, 16, 0) 62%),
+    var(--bg-deepest);
+  animation:
+    wintroOverlayIn 0.25s ease-out both,
+    wintroOverlayOut 0.32s 1.58s ease-in forwards;
+}
+
+@keyframes wintroOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wintroOverlayOut { to { opacity: 0; } }
+
+.wintro-mark {
+  width: 190px;
+  height: 190px;
+  overflow: visible;
+  filter: drop-shadow(0 0 28px rgba(232, 96, 76, 0.35));
+  animation: wintroMarkSettle 1.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes wintroMarkSettle {
+  0%   { transform: scale(0.86); }
+  70%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* --- Orbit: outer groups rotate about the VISUAL CENTRE of the mark --- */
+.wobble-logo.is-animated .wl-male-orbit,
+.wobble-logo.is-animated .wl-female-orbit {
+  transform-box: view-box;
+  transform-origin: 100px 95px;
+}
+
+.wobble-logo.is-animated .wl-male-orbit {
+  animation: glyphOrbitCCW 1.55s cubic-bezier(0.34, 1.32, 0.5, 1) both;
+}
+
+.wobble-logo.is-animated .wl-female-orbit {
+  animation: glyphOrbitCW 1.55s cubic-bezier(0.34, 1.32, 0.5, 1) 0.08s both;
+}
+
+/* Male: holds on the left end, then spins counter-clockwise back home */
+@keyframes glyphOrbitCCW {
+  0%, 22% { transform: rotate(0deg); }
+  78%     { transform: rotate(-360deg); }
+  89%     { transform: rotate(-374deg); }
+  100%    { transform: rotate(-360deg); }
+}
+
+/* Female: holds on the right end, then spins clockwise back home */
+@keyframes glyphOrbitCW {
+  0%, 22% { transform: rotate(0deg); }
+  78%     { transform: rotate(360deg); }
+  89%     { transform: rotate(374deg); }
+  100%    { transform: rotate(360deg); }
+}
+
+/* --- Pop-in: inner groups scale about EACH GLYPH'S OWN centre, so they appear
+       on the ends of the W rather than growing out of the middle --- */
+.wobble-logo.is-animated .wl-male,
+.wobble-logo.is-animated .wl-female {
+  transform-box: view-box;
+  animation: glyphPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.wobble-logo.is-animated .wl-male   { transform-origin: 37px 53px; }
+.wobble-logo.is-animated .wl-female { transform-origin: 167px 77px; animation-delay: 0.08s; }
+
+@keyframes glyphPop {
+  0%   { opacity: 0; transform: scale(0.1); }
+  55%  { opacity: 1; transform: scale(1.28); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* The W draws itself in underneath the orbiting glyphs */
+.wobble-logo.is-animated .wl-w {
+  stroke-dasharray: 100;
+  animation: wStrokeDraw 0.95s 0.34s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes wStrokeDraw {
+  0%   { stroke-dashoffset: 100; opacity: 0; }
+  12%  { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.wintro-name {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  margin: 0;
+  opacity: 0;
+  animation: wintroNameIn 0.5s 1.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wintroNameIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wintro-mark,
+  .wintro-name,
+  .wobble-logo.is-animated .wl-male,
+  .wobble-logo.is-animated .wl-female,
+  .wobble-logo.is-animated .wl-male-orbit,
+  .wobble-logo.is-animated .wl-female-orbit,
+  .wobble-logo.is-animated .wl-w {
+    animation: none !important;
+    opacity: 1;
+  }
+}

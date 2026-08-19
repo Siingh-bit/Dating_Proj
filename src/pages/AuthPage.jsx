@@ -5,11 +5,10 @@ import { CURRENT_USER } from '../data/mockData';
 import { Heart, ChevronLeft, Loader2 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import OtpHeartReveal, { REVEAL_DURATION } from '../components/shared/OtpHeartReveal';
+import WobbleIntroOverlay, { INTRO_DURATION } from '../components/shared/WobbleIntroOverlay';
 import { sendBrevoOtpEmail } from '../services/emailService';
 import { getOrCreateUserProfile, isSuperAdminEmail } from '../services/userService';
 import './AuthPage.css';
-
-const INTRO_DURATION = 1900; // keep in sync with .logo-intro-* timings in AuthPage.css
 
 const AuthPage = () => {
   const [step, setStep] = useState(1);
@@ -150,12 +149,7 @@ const AuthPage = () => {
 
   return (
     <div className="auth-page">
-      {introPlaying && (
-        <div className="logo-intro-overlay">
-          <WobbleLogo animated className="logo-intro-mark" />
-          <h1 className="logo-intro-name">Wobble Date</h1>
-        </div>
-      )}
+      {introPlaying && <WobbleIntroOverlay />}
 
 
       {step > 1 && step < 4 && (
