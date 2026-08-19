@@ -138,6 +138,18 @@ export default function SettingsPage() {
         </div>
 
         <div className="settings-group">
+          <h2 className="settings-group-title">Creator Controls</h2>
+          <div className="settings-card">
+            <div className="settings-row clickable" onClick={() => navigate('/admin')}>
+              <span className="settings-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#FFD700', fontWeight: 600 }}>
+                👑 Super Admin & Verification Portal
+              </span>
+              <span className="settings-value chevron">›</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="settings-group">
           <h2 className="settings-group-title">About</h2>
           <div className="settings-card">
             <div className="settings-row clickable">

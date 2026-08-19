@@ -1,14 +1,32 @@
 import { supabase, isSupabaseConfigured } from './supabaseClient';
-import { PROFILES, CURRENT_USER, CONVERSATIONS } from '../data/mockData';
+import { PROFILES, CURRENT_USER } from '../data/mockData';
+import { sendProfileApprovedEmail } from './emailService';
+
+const ADMIN_EMAILS = ['wobblesupport@gmail.com', 'admin@wobbledate.com', 'prathmesh@wobbledate.com'];
+
+/**
+ * Check if an email has admin/creator privileges
+ */
+export function isSuperAdminEmail(email) {
+  if (!email) return false;
+  return ADMIN_EMAILS.some(admin => admin.toLowerCase() === email.toLowerCase());
+}
 
 /**
  * Get an existing user profile or create a new one in Supabase
  */
 export async function getOrCreateUserProfile(email, initialData = {}) {
+  const isAdmin = isSuperAdminEmail(email);
+
   if (!isSupabaseConfigured || !supabase) {
+    // Local / offline fallback
+    const localStatus = isAdmin ? 'approved' : 'pending';
     return {
       ...CURRENT_USER,
       email,
+      verification_status: localStatus,
+      verified: isAdmin,
+      is_admin: isAdmin,
       ...initialData,
     };
   }
@@ -25,6 +43,9 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       return {
         ...CURRENT_USER,
         ...existingUser,
+        verification_status: existingUser.verification_status || (isAdmin ? 'approved' : 'pending'),
+        verified: Boolean(existingUser.verified || isAdmin),
+        is_admin: isAdmin,
         photos: existingUser.photos?.length ? existingUser.photos : CURRENT_USER.photos,
         prompts: existingUser.prompts?.length ? existingUser.prompts : CURRENT_USER.prompts,
         vitals: existingUser.vitals && Object.keys(existingUser.vitals).length ? existingUser.vitals : CURRENT_USER.vitals,
@@ -47,7 +68,8 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       languages: initialData.languages || CURRENT_USER.languages,
       vitals: initialData.vitals || CURRENT_USER.vitals,
       tier: 'free',
-      verified: true,
+      verified: isAdmin,
+      verification_status: isAdmin ? 'approved' : 'pending',
       daily_likes_remaining: 10,
       weekly_ends_remaining: 2,
     };
@@ -59,14 +81,21 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       .single();
 
     if (insertErr) {
-      console.warn('[Wobble Date] Could not insert to Supabase, using local profile fallback', insertErr);
-      return { ...CURRENT_USER, ...newProfile };
+      console.warn('[Wobble Date] Could not insert to Supabase, using local fallback', insertErr);
+      return { ...CURRENT_USER, ...newProfile, is_admin: isAdmin };
     }
 
-    return { ...CURRENT_USER, ...created };
+    return { ...CURRENT_USER, ...created, is_admin: isAdmin };
   } catch (err) {
     console.error('[Wobble Date] Profile service error:', err);
-    return { ...CURRENT_USER, email, ...initialData };
+    return {
+      ...CURRENT_USER,
+      email,
+      verification_status: isAdmin ? 'approved' : 'pending',
+      verified: isAdmin,
+      is_admin: isAdmin,
+      ...initialData,
+    };
   }
 }
 
@@ -96,7 +125,7 @@ export async function updateUserProfile(userId, updates) {
 }
 
 /**
- * Fetch available profiles for Discover swipe deck
+ * Fetch available profiles for Discover swipe deck (only approved/verified profiles)
  */
 export async function fetchDiscoverProfiles(currentUserId) {
   if (!isSupabaseConfigured || !supabase) {
@@ -108,6 +137,7 @@ export async function fetchDiscoverProfiles(currentUserId) {
       .from('profiles')
       .select('*')
       .neq('id', currentUserId || '00000000-0000-0000-0000-000000000000')
+      .eq('verification_status', 'approved')
       .limit(30);
 
     if (error || !data || data.length === 0) {
@@ -116,5 +146,140 @@ export async function fetchDiscoverProfiles(currentUserId) {
     return data;
   } catch (err) {
     return PROFILES;
+  }
+}
+
+/**
+ * =========================================================================
+ * SUPER ADMIN & CREATOR METHODS
+ * =========================================================================
+ */
+
+/**
+ * Fetch all registered user profiles for the Super Admin review portal
+ */
+export async function fetchAllAdminProfiles() {
+  if (!isSupabaseConfigured || !supabase) {
+    // Return mock curated profiles with mixed verification status for testing
+    return [
+      ...PROFILES.map((p, idx) => ({
+        ...p,
+        email: `${p.name.toLowerCase()}@wobblepreview.com`,
+        verification_status: idx < 3 ? 'pending' : 'approved',
+        created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
+      })),
+    ];
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      return PROFILES.map((p, idx) => ({
+        ...p,
+        email: `${p.name.toLowerCase()}@wobblepreview.com`,
+        verification_status: idx < 3 ? 'pending' : 'approved',
+        created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
+      }));
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch admin profiles:', err);
+    return [];
+  }
+}
+
+/**
+ * Approve a user profile: updates verification_status to 'approved', sets verified=true,
+ * and sends an automated confirmation email to the user via Brevo.
+ */
+export async function approveUserProfile(userId, email, name) {
+  try {
+    if (isSupabaseConfigured && supabase) {
+      await supabase
+        .from('profiles')
+        .update({
+          verification_status: 'approved',
+          verified: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', userId);
+    }
+
+    // Send confirmation email via Brevo
+    if (email) {
+      await sendProfileApprovedEmail(email, name);
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error('Failed to approve profile:', err);
+    return { success: false, error: err };
+  }
+}
+
+/**
+ * Reject a user profile
+ */
+export async function rejectUserProfile(userId, reason = 'Photos or details did not meet community guidelines.') {
+  try {
+    if (isSupabaseConfigured && supabase) {
+      await supabase
+        .from('profiles')
+        .update({
+          verification_status: 'rejected',
+          verified: false,
+          rejection_reason: reason,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', userId);
+    }
+    return { success: true };
+  } catch (err) {
+    console.error('Failed to reject profile:', err);
+    return { success: false, error: err };
+  }
+}
+
+/**
+ * Change a user's subscription tier from the admin panel
+ */
+export async function setProfileTier(userId, tier) {
+  const tierSlots = { free: 1, lite: 3, plus: 5, elite: 10 };
+  const tierEnds = { free: 2, lite: 3, plus: 5, elite: 7 };
+
+  try {
+    if (isSupabaseConfigured && supabase) {
+      await supabase
+        .from('profiles')
+        .update({
+          tier,
+          conversation_slots: tierSlots[tier] || 1,
+          weekly_ends_max: tierEnds[tier] || 2,
+          weekly_ends_remaining: tierEnds[tier] || 2,
+        })
+        .eq('id', userId);
+    }
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err };
+  }
+}
+
+/**
+ * Delete a user profile completely (admin only)
+ */
+export async function deleteUserProfile(userId) {
+  try {
+    if (isSupabaseConfigured && supabase) {
+      await supabase.from('profiles').delete().eq('id', userId);
+    }
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err };
   }
 }

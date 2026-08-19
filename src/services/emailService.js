@@ -229,3 +229,130 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
     };
   }
 }
+
+/**
+ * Branded HTML email template for Profile Approved notification
+ */
+function createProfileApprovedTemplate(userName) {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile is Officially Verified!</title>
+  <style>
+    body {
+      margin: 0; padding: 0; background-color: #0C0A10;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #F5F0EB;
+    }
+    .email-container {
+      max-width: 540px; margin: 30px auto; background: #1A1626;
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+      overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .header {
+      background: linear-gradient(135deg, #231E32 0%, #1A1626 100%);
+      padding: 36px 24px 24px; text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .badge {
+      display: inline-block; background: rgba(52, 211, 153, 0.15);
+      border: 1px solid #34D399; color: #34D399;
+      padding: 6px 16px; border-radius: 9999px;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 12px;
+    }
+    .content { padding: 36px 32px; text-align: center; }
+    .title { font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 12px; }
+    .subtitle { font-size: 15px; color: #9B95A5; line-height: 1.6; margin-bottom: 28px; }
+    .cta-btn {
+      display: inline-block; background: linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%);
+      color: #FFFFFF !important; font-weight: 700; font-size: 16px;
+      padding: 16px 36px; border-radius: 9999px; text-decoration: none;
+      box-shadow: 0 10px 30px rgba(232, 96, 76, 0.4); margin-bottom: 24px;
+    }
+    .features-card {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px; padding: 20px; text-align: left; margin-bottom: 20px;
+    }
+    .feature-item { margin-bottom: 12px; font-size: 13px; color: #D1CBD8; display: flex; align-items: center; }
+    .footer {
+      background: #0C0A10; padding: 24px; text-align: center;
+      font-size: 11px; color: #5A5465; border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <div class="badge">Verified Member ✨</div>
+      <div style="font-size: 32px;">💖</div>
+      <div style="font-size: 24px; font-weight: 800; color: #FFF; margin-top: 6px;">Wobble Date</div>
+    </div>
+
+    <div class="content">
+      <div class="title">Welcome, ${userName || 'there'}! 🎉</div>
+      <div class="subtitle">
+        Your profile has been reviewed and approved by the Wobble Concierge team. You now have full access to discover genuine connections.
+      </div>
+
+      <a href="https://wobbledate.com/app/discover" class="cta-btn">
+        Start Discovering Matches →
+      </a>
+
+      <div class="features-card">
+        <div style="font-size: 12px; font-weight: 700; color: #FF7B6B; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;">What's Unlocked:</div>
+        <div class="feature-item">✨ <strong>Verified Badge:</strong> Displayed on your profile to build trust.</div>
+        <div class="feature-item">🌙 <strong>The Wobble Hour:</strong> 8–9 PM daily speed blind chemistry dates.</div>
+        <div class="feature-item">🎮 <strong>Couple Lounge:</strong> 10+ interactive icebreaker games in chat.</div>
+        <div class="feature-item">🥂 <strong>Curated Dates:</strong> 1-click real-life cafe & dinner itineraries.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2026 Wobble Date • Chemistry-First Dating Platform<br>
+      <a href="https://wobbledate.com" style="color: #FF7B6B; text-decoration: none;">wobbledate.com</a>
+    </div>
+  </div>
+</body>
+</html>
+  `;
+}
+
+/**
+ * Send an email notifying the user that their profile has been approved
+ */
+export async function sendProfileApprovedEmail(recipientEmail, userName) {
+  const apiKey = import.meta.env.VITE_BREVO_API_KEY || (typeof window !== 'undefined' ? window.__BREVO_API_KEY__ : null);
+
+  if (!apiKey) {
+    console.log(`[Dev Mode] Profile approved email simulated for ${recipientEmail}`);
+    return { success: true, mode: 'fallback' };
+  }
+
+  const payload = {
+    sender: SENDER_CONFIG,
+    to: [{ email: recipientEmail }],
+    subject: `🎉 Congratulations ${userName || ''}! Your Wobble Date profile is approved`,
+    htmlContent: createProfileApprovedTemplate(userName),
+    textContent: `Hi ${userName || 'there'}! Your Wobble Date profile has been approved. Visit https://wobbledate.com to start meeting matches!`,
+  };
+
+  try {
+    const res = await fetch(BREVO_API_URL, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      },
+      body: JSON.stringify(payload),
+    });
+    return { success: res.ok };
+  } catch (err) {
+    console.error('Failed to send approval email', err);
+    return { success: false, error: err };
+  }
+}
