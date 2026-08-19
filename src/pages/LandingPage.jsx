@@ -9,6 +9,7 @@ import {
   Smartphone, Globe, Award, ChevronRight, UserCheck, Lock
 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
+import { sendBrevoOtpEmail } from '../services/emailService';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -21,6 +22,7 @@ export default function LandingPage() {
   const [authStep, setAuthStep] = useState(1);
   const [isSignIn, setIsSignIn] = useState(false);
   const [authEmail, setAuthEmail] = useState('');
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [authOtp, setAuthOtp] = useState(['', '', '', '', '', '']);
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState(false);
@@ -60,11 +62,14 @@ export default function LandingPage() {
     setShowAuthModal(true);
   };
 
-  const handleContinueEmail = (e) => {
+  const handleContinueEmail = async (e) => {
     e.preventDefault();
-    if (!authEmail) return;
+    if (!authEmail || isSendingEmail) return;
+    setIsSendingEmail(true);
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(code);
+    await sendBrevoOtpEmail(authEmail, code);
+    setIsSendingEmail(false);
     setAuthStep(2);
   };
 
@@ -597,8 +602,8 @@ export default function LandingPage() {
                   />
                 </div>
 
-                <button type="submit" className="modal-primary-btn">
-                  Continue with Email <ArrowRight size={16} />
+                <button type="submit" className="modal-primary-btn" disabled={isSendingEmail}>
+                  {isSendingEmail ? "Sending Code..." : "Continue with Email"} <ArrowRight size={16} />
                 </button>
 
                 <div className="modal-divider">

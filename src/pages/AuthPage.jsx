@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CURRENT_USER } from '../data/mockData';
-import { Heart, ChevronLeft } from 'lucide-react';
+import { Heart, ChevronLeft, Loader2 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
+import { sendBrevoOtpEmail } from '../services/emailService';
 import './AuthPage.css';
 
 const INTRO_DURATION = 1900; // keep in sync with .logo-intro-* timings in AuthPage.css
@@ -14,6 +15,7 @@ const AuthPage = () => {
   const introTimer = useRef(null);
   const [isSignIn, setIsSignIn] = useState(false);
   const [email, setEmail] = useState('');
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState(false);
@@ -39,11 +41,14 @@ const AuthPage = () => {
     setStep(2);
   };
 
-  const handleContinue = (e) => {
+  const handleContinue = async (e) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || isSendingEmail) return;
+    setIsSendingEmail(true);
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(newOtp);
+    await sendBrevoOtpEmail(email, newOtp);
+    setIsSendingEmail(false);
     setStep(3);
   };
 
@@ -147,7 +152,9 @@ const AuthPage = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn-primary">Continue</button>
+            <button type="submit" className="btn-primary" disabled={isSendingEmail}>
+              {isSendingEmail ? 'Sending Code...' : 'Continue'}
+            </button>
           </form>
 
           <div className="divider">
