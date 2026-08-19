@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect, useCallback } from "react";
 
 const AuthContext = createContext(null);
 
@@ -96,8 +96,37 @@ function authReducer(state, action) {
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
+  /**
+   * Pull the latest profile from the database and merge it in.
+   *
+   * Without this, an admin approving someone had no effect on that person's
+   * browser: their profile is cached in localStorage, so they stayed stuck on
+   * "verification pending" until they logged out and back in.
+   */
+  const refreshProfile = useCallback(async () => {
+    const email = state.user?.email;
+    if (!email) return;
+    try {
+      const { getOrCreateUserProfile } = await import("../services/userService");
+      const fresh = await getOrCreateUserProfile(email);
+      if (fresh) dispatch({ type: "UPDATE_PROFILE", payload: fresh });
+    } catch (err) {
+      console.error("[Wobble Date] Could not refresh profile", err);
+    }
+  }, [state.user?.email]);
+
+  // Refresh on load, and whenever the tab regains focus — so an approval lands
+  // within seconds of the user coming back to the app.
+  useEffect(() => {
+    if (!state.isAuthenticated) return;
+    refreshProfile();
+    const onFocus = () => refreshProfile();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [state.isAuthenticated, refreshProfile]);
+
   return (
-    <AuthContext.Provider value={{ ...state, dispatch }}>
+    <AuthContext.Provider value={{ ...state, dispatch, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

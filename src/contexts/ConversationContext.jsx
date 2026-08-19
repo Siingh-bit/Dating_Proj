@@ -1,13 +1,22 @@
-import { createContext, useContext, useReducer } from "react";
-import { MATCHES, CONVERSATIONS, INCOMING_LIKES } from "../data/mockData";
-
+import { createContext, useContext, useReducer, useEffect } from "react";
 const ConversationContext = createContext(null);
 
-const initialState = {
-  matches: MATCHES,
-  conversations: CONVERSATIONS,
-  incomingLikes: INCOMING_LIKES,
-};
+/* A new account starts empty. Matches and likes are earned in Discover; they
+   used to be pre-seeded from mock data, so every real signup opened the app
+   already "matched" with the seeded profiles and saw them sitting in Likes. */
+const STORAGE_KEY = "wobble_conversations";
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (err) {
+    console.error("[Wobble Date] Could not read saved conversations", err);
+  }
+  return { matches: [], conversations: {}, incomingLikes: [] };
+}
+
+const initialState = loadState();
 
 function conversationReducer(state, action) {
   switch (action.type) {
@@ -190,6 +199,16 @@ function conversationReducer(state, action) {
 
 export function ConversationProvider({ children }) {
   const [state, dispatch] = useReducer(conversationReducer, initialState);
+
+  // Matches and messages are real user data now, so they have to survive a
+  // refresh rather than resetting to the seeded mock every load.
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (err) {
+      console.error("[Wobble Date] Could not save conversations", err);
+    }
+  }, [state]);
 
   const activeConversations = state.matches.filter((m) => m.isActiveConversation);
 

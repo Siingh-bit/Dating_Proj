@@ -69,6 +69,7 @@ export function buildLocalProfile(email, initialData = {}) {
     daily_likes_remaining: 10,
     weekly_ends_remaining: 2,
     conversation_slots: 1,
+    weekly_ends_max: 2,
   };
 }
 
@@ -104,6 +105,9 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
     is_admin: isAdmin,
     daily_likes_remaining: 10,
     weekly_ends_remaining: 2,
+    // These were missing, so the top bar rendered "3/undefined".
+    conversation_slots: 1,
+    weekly_ends_max: 2,
   };
 
   if (!isSupabaseConfigured || !supabase) {
@@ -250,10 +254,18 @@ export async function fetchAllAdminProfiles() {
  * grants optional verified badge, and sends confirmation email via Brevo.
  */
 export async function approveUserProfile(userId, email, name, options = { grantBadge: true }) {
+  // Approval gates real matching, so "it worked" must mean the row actually
+  // changed. This previously returned success:true even when Supabase was
+  // unconfigured or the update was rejected, so an admin could approve someone
+  // who stayed locked out.
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Database not configured — cannot approve.' };
+  }
+
   try {
     const isBadgeGranted = Boolean(options?.grantBadge);
-    if (isSupabaseConfigured && supabase) {
-      await supabase
+    const { error } = await withTimeout(
+      supabase
         .from('profiles')
         .update({
           verification_status: 'approved',
@@ -261,18 +273,31 @@ export async function approveUserProfile(userId, email, name, options = { grantB
           govt_id_status: isBadgeGranted ? 'verified' : 'none',
           updated_at: new Date().toISOString(),
         })
-        .eq('id', userId);
+        .eq('id', userId),
+      NETWORK_TIMEOUT_MS,
+      'approve profile'
+    );
+
+    if (error) {
+      console.error('[Wobble Date] Approve failed:', error);
+      return { success: false, error: error.message || 'Update rejected by the database.' };
     }
 
-    // Send confirmation email via Brevo
+    // A failed notification must not report the approval itself as failed —
+    // the user IS approved at this point.
     if (email) {
-      await sendProfileApprovedEmail(email, name);
+      try {
+        await sendProfileApprovedEmail(email, name);
+      } catch (mailErr) {
+        console.warn('[Wobble Date] Approved, but the email failed:', mailErr);
+        return { success: true, warning: 'Approved, but the confirmation email could not be sent.' };
+      }
     }
 
     return { success: true };
   } catch (err) {
-    console.error('Failed to approve profile:', err);
-    return { success: false, error: err };
+    console.error('[Wobble Date] Approve failed:', err);
+    return { success: false, error: err.message || String(err) };
   }
 }
 
@@ -280,9 +305,12 @@ export async function approveUserProfile(userId, email, name, options = { grantB
  * Reject a user profile
  */
 export async function rejectUserProfile(userId, reason = 'Photos or details did not meet community guidelines.') {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Database not configured — cannot reject.' };
+  }
   try {
-    if (isSupabaseConfigured && supabase) {
-      await supabase
+    const { error } = await withTimeout(
+      supabase
         .from('profiles')
         .update({
           verification_status: 'rejected',
@@ -291,12 +319,18 @@ export async function rejectUserProfile(userId, reason = 'Photos or details did 
           rejection_reason: reason,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', userId);
+        .eq('id', userId),
+      NETWORK_TIMEOUT_MS,
+      'reject profile'
+    );
+    if (error) {
+      console.error('[Wobble Date] Reject failed:', error);
+      return { success: false, error: error.message || 'Update rejected by the database.' };
     }
     return { success: true };
   } catch (err) {
-    console.error('Failed to reject profile:', err);
-    return { success: false, error: err };
+    console.error('[Wobble Date] Reject failed:', err);
+    return { success: false, error: err.message || String(err) };
   }
 }
 
@@ -307,9 +341,12 @@ export async function setProfileTier(userId, tier) {
   const tierSlots = { free: 1, lite: 3, plus: 5, elite: 10 };
   const tierEnds = { free: 2, lite: 3, plus: 5, elite: 7 };
 
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Database not configured — cannot change tier.' };
+  }
   try {
-    if (isSupabaseConfigured && supabase) {
-      await supabase
+    const { error } = await withTimeout(
+      supabase
         .from('profiles')
         .update({
           tier,
@@ -317,11 +354,14 @@ export async function setProfileTier(userId, tier) {
           weekly_ends_max: tierEnds[tier] || 2,
           weekly_ends_remaining: tierEnds[tier] || 2,
         })
-        .eq('id', userId);
-    }
+        .eq('id', userId),
+      NETWORK_TIMEOUT_MS,
+      'set tier'
+    );
+    if (error) return { success: false, error: error.message };
     return { success: true };
   } catch (err) {
-    return { success: false, error: err };
+    return { success: false, error: err.message || String(err) };
   }
 }
 
@@ -329,12 +369,18 @@ export async function setProfileTier(userId, tier) {
  * Delete a user profile completely (admin only)
  */
 export async function deleteUserProfile(userId) {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Database not configured — cannot delete.' };
+  }
   try {
-    if (isSupabaseConfigured && supabase) {
-      await supabase.from('profiles').delete().eq('id', userId);
-    }
+    const { error } = await withTimeout(
+      supabase.from('profiles').delete().eq('id', userId),
+      NETWORK_TIMEOUT_MS,
+      'delete profile'
+    );
+    if (error) return { success: false, error: error.message };
     return { success: true };
   } catch (err) {
-    return { success: false, error: err };
+    return { success: false, error: err.message || String(err) };
   }
 }

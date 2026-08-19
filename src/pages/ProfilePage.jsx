@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import VerificationPanel from '../components/profile/VerificationPanel';
 import './ProfilePage.css';
 
 export default function ProfilePage() {
@@ -104,6 +105,8 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
+
+        <VerificationPanel />
 
         <div className="profile-actions">
           <button className="btn-upgrade" onClick={() => navigate('/app/premium')}>

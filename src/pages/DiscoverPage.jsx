@@ -79,14 +79,21 @@ export default function DiscoverPage() {
    * Check if user is eligible to like/pass/superlike
    */
   const checkCanInteract = () => {
-    // 1. Check if user profile is empty or incomplete
+    // Admins bypass the queue.
+    if (user?.is_admin) return true;
+
+    // 1. No photos yet — nothing to match on.
     if (!user?.profile_completed || !user?.photos || user.photos.length === 0) {
       setShowIncompleteModal(true);
       return false;
     }
 
-    // 2. Check if user profile is pending admin verification
-    if (user?.verification_status === 'pending' && !user?.is_admin && !user?.verified) {
+    // 2. Only an APPROVED account may like, pass or superlike. Browsing stays
+    //    open to everyone. This previously only blocked 'pending', so a user
+    //    who never submitted a selfie ('unverified') could act freely — the
+    //    exact case the liveness check exists to stop.
+    const approved = user?.verification_status === 'approved' || user?.verified;
+    if (!approved) {
       setShowPendingVerificationModal(true);
       return false;
     }
@@ -480,15 +487,36 @@ export default function DiscoverPage() {
               <X size={18} />
             </button>
             <div className="guard-icon-wrap pending">
-              <Clock size={32} color="#F59E0B" />
+              <Clock size={32} color="var(--warning)" />
             </div>
-            <h3>Verification Under Review ⏳</h3>
-            <p>
-              Your profile is currently being reviewed by our concierge team (~10–15 mins). You can browse the deck, and you'll receive an email confirmation once approved to start matching!
-            </p>
-            <button className="btn-guard-primary" onClick={() => setShowPendingVerificationModal(false)}>
-              <span>Got it</span>
-            </button>
+            {/* An account that has not submitted a selfie yet needs a different
+                message from one that is genuinely waiting on review. */}
+            {user?.live_selfie_url ? (
+              <>
+                <h3>Verification under review</h3>
+                <p>
+                  We're checking your selfie now. You can keep browsing, and we'll
+                  email you as soon as you're approved to start matching.
+                </p>
+                <button className="btn-guard-primary" onClick={() => setShowPendingVerificationModal(false)}>
+                  <span>Got it</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <h3>Verify to start matching</h3>
+                <p>
+                  Take a quick live selfie so we know you're you. It takes about
+                  ten seconds, and you can browse in the meantime.
+                </p>
+                <button className="btn-guard-primary" onClick={() => navigate('/app/profile')}>
+                  <span>Verify now</span> <ArrowRight size={16} />
+                </button>
+                <button className="btn-guard-secondary" onClick={() => setShowPendingVerificationModal(false)}>
+                  Later
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -96,3 +96,17 @@
   top: -2px;
   right: -2px;
 }
+
+/* Profile tab shows the user's own photo once they have one */
+.nav-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.bottom-nav-item.active .nav-avatar {
+  border-color: var(--accent);
+}

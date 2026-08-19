@@ -1300,3 +1300,123 @@
   background: #000;
   display: block;
 }
+
+/* Toast tones — a failed write must not look like a success */
+.admin-notification-toast.tone-success { border-left: 3px solid var(--success); }
+.admin-notification-toast.tone-warn    { border-left: 3px solid var(--warning); }
+.admin-notification-toast.tone-error   { border-left: 3px solid var(--error); }
+
+/* Reject / delete dialogs, replacing window.prompt and window.confirm */
+.admin-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lightbox);
+  background: var(--backdrop);
+  backdrop-filter: blur(var(--backdrop-blur));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-base);
+}
+
+.admin-dialog {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+.admin-dialog h3 {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+}
+
+.admin-dialog p {
+  margin: 0 0 var(--space-base);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.admin-dialog-input {
+  width: 100%;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  border: 1px solid var(--bg-elevated);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-base);
+  resize: vertical;
+  margin-bottom: var(--space-base);
+}
+
+.admin-dialog-input:focus { outline: none; border-color: var(--accent); }
+
+.admin-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+.admin-dialog-btn {
+  min-height: 40px;
+  padding: 0 var(--space-base);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-dialog-btn.danger {
+  background: var(--error);
+  border-color: var(--error);
+  color: var(--text-on-accent);
+}
+
+/* --- Classes referenced in the JSX that had no rules at all --- */
+
+/* The loading indicator never actually rotated without this. */
+.spin {
+  animation: adminSpin 0.9s linear infinite;
+}
+
+@keyframes adminSpin { to { transform: rotate(360deg); } }
+
+.kpi-data {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.user-primary-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
+.tier-badge-dropdown {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.divider-dot {
+  color: var(--text-tertiary);
+  padding: 0 var(--space-xs);
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin { animation-duration: 2s; }
+}

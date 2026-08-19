@@ -63,6 +63,9 @@ export default function AdminDashboardPage() {
   const [activeDossierProfile, setActiveDossierProfile] = useState(null); // Full Profile Dossier Modal
   const [actionSuccessBanner, setActionSuccessBanner] = useState(null);
   const [processingId, setProcessingId] = useState(null);
+  const [rejectTarget, setRejectTarget] = useState(null);
+  const [rejectReason, setRejectReason] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   // Load profiles on mount
   useEffect(() => {
@@ -118,14 +121,28 @@ export default function AdminDashboardPage() {
           verified: grantBadge,
         }));
       }
-      showBanner(`✅ Approved ${profile.name}! ${grantBadge ? 'Granted Official Verified Badge ✨' : 'Approved as Standard Member'}`);
+      showBanner(
+        res.warning
+          ? `Approved ${profile.name}. ${res.warning}`
+          : `Approved ${profile.name}${grantBadge ? ' with the verified badge' : ' as a standard member'}.`,
+        res.warning ? 'warn' : 'success'
+      );
+    } else {
+      // The write genuinely failed — say so instead of showing a success
+      // banner for a change the database never accepted.
+      showBanner(`Could not approve ${profile.name}. ${res.error || ''}`.trim(), 'error');
     }
     setProcessingId(null);
   };
 
-  const handleReject = async (profile) => {
-    const reason = window.prompt(`Enter rejection reason for ${profile.name}:`, 'Live selfie or ID photo was unclear.');
-    if (reason === null) return;
+  // Rejection reason is collected in a proper dialog, not window.prompt().
+  const handleReject = (profile) => setRejectTarget(profile);
+
+  const confirmReject = async () => {
+    const profile = rejectTarget;
+    const reason = (rejectReason || '').trim() || 'Live selfie or ID photo was unclear.';
+    setRejectTarget(null);
+    setRejectReason('');
 
     setProcessingId(profile.id);
     const res = await rejectUserProfile(profile.id, reason);
@@ -143,30 +160,44 @@ export default function AdminDashboardPage() {
           rejection_reason: reason,
         }));
       }
-      showBanner(`❌ Profile for ${profile.name} marked as rejected.`);
+      showBanner(`${profile.name} marked as rejected.`);
+    } else {
+      showBanner(`Could not reject ${profile.name}. ${res.error || ''}`.trim(), 'error');
     }
     setProcessingId(null);
   };
 
   const handleTierChange = async (userId, newTier) => {
-    await setProfileTier(userId, newTier);
-    setProfiles(prev => prev.map(p => p.id === userId ? { ...p, tier: newTier } : p));
-    showBanner(`💎 Tier updated to ${newTier.toUpperCase()}`);
-  };
-
-  const handleDelete = async (profile) => {
-    if (!window.confirm(`Are you sure you want to permanently delete ${profile.name}'s profile?`)) return;
-    await deleteUserProfile(profile.id);
-    setProfiles(prev => prev.filter(p => p.id !== profile.id));
-    if (activeDossierProfile?.id === profile.id) {
-      setActiveDossierProfile(null);
+    const res = await setProfileTier(userId, newTier);
+    if (!res.success) {
+      showBanner(`Could not change tier. ${res.error || ''}`.trim(), 'error');
+      return;
     }
-    showBanner(`🗑️ Deleted profile for ${profile.name}`);
+    setProfiles(prev => prev.map(p => p.id === userId ? { ...p, tier: newTier } : p));
+    showBanner(`Tier updated to ${newTier}.`);
   };
 
-  const showBanner = (msg) => {
-    setActionSuccessBanner(msg);
-    setTimeout(() => setActionSuccessBanner(null), 4000);
+  const handleDelete = (profile) => setDeleteTarget(profile);
+
+  const confirmDelete = async () => {
+    const profile = deleteTarget;
+    setDeleteTarget(null);
+    setProcessingId(profile.id);
+    const res = await deleteUserProfile(profile.id);
+    if (!res.success) {
+      showBanner(`Could not delete ${profile.name}. ${res.error || ''}`.trim(), 'error');
+      setProcessingId(null);
+      return;
+    }
+    setProfiles(prev => prev.filter(p => p.id !== profile.id));
+    if (activeDossierProfile?.id === profile.id) setActiveDossierProfile(null);
+    showBanner(`Deleted ${profile.name}'s profile.`);
+    setProcessingId(null);
+  };
+
+  const showBanner = (msg, tone = 'success') => {
+    setActionSuccessBanner({ msg, tone });
+    setTimeout(() => setActionSuccessBanner(null), 5000);
   };
 
   // Stats calculation
@@ -320,8 +351,44 @@ export default function AdminDashboardPage() {
 
       {/* Banner message */}
       {actionSuccessBanner && (
-        <div className="admin-notification-toast">
-          {actionSuccessBanner}
+        <div className={`admin-notification-toast tone-${actionSuccessBanner.tone}`} role="status">
+          {actionSuccessBanner.msg}
+        </div>
+      )}
+
+      {/* Reject dialog — replaces window.prompt() */}
+      {rejectTarget && (
+        <div className="admin-dialog-overlay" onClick={() => setRejectTarget(null)}>
+          <div className="admin-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Reject {rejectTarget.name}?</h3>
+            <p>They'll be told why, so keep it specific and kind.</p>
+            <textarea
+              className="admin-dialog-input"
+              rows={3}
+              autoFocus
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="Live selfie or ID photo was unclear."
+            />
+            <div className="admin-dialog-actions">
+              <button className="admin-dialog-btn" onClick={() => setRejectTarget(null)}>Cancel</button>
+              <button className="admin-dialog-btn danger" onClick={confirmReject}>Reject profile</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete confirmation — replaces window.confirm() */}
+      {deleteTarget && (
+        <div className="admin-dialog-overlay" onClick={() => setDeleteTarget(null)}>
+          <div className="admin-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Delete {deleteTarget.name}'s profile?</h3>
+            <p>This permanently removes their account and photos. It cannot be undone.</p>
+            <div className="admin-dialog-actions">
+              <button className="admin-dialog-btn" onClick={() => setDeleteTarget(null)}>Cancel</button>
+              <button className="admin-dialog-btn danger" onClick={confirmDelete}>Delete permanently</button>
+            </div>
+          </div>
         </div>
       )}
 
