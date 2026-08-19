@@ -22,10 +22,14 @@ const WOMAN = new Set(['woman', 'women', 'female', 'f']);
 const MAN = new Set(['man', 'men', 'male', 'm']);
 
 export function matchesPreference(profileGender, preference) {
-  if (!preference || preference === 'everyone' || preference === 'all') return true;
-  const g = String(profileGender || '').toLowerCase();
-  if (preference === 'women') return WOMAN.has(g);
-  if (preference === 'men') return MAN.has(g);
+  // Both sides are normalised: setup writes 'women', Edit Profile writes
+  // 'Women', and seeded rows use 'female'. Comparing raw strings would make
+  // one of those silently match everyone.
+  const pref = String(preference || '').trim().toLowerCase();
+  if (!pref || pref === 'everyone' || pref === 'all') return true;
+  const g = String(profileGender || '').trim().toLowerCase();
+  if (pref === 'women') return WOMAN.has(g);
+  if (pref === 'men') return MAN.has(g);
   // An unrecognised preference should never hide the whole deck.
   return true;
 }

@@ -6,6 +6,13 @@ import './EditProfilePage.css';
 
 const GENDERS = ['Man', 'Woman', 'Non-binary'];
 const PRONOUNS = ['he/him', 'she/her', 'they/them', 'ask me'];
+const SEXUALITIES = [
+  'Straight', 'Gay', 'Lesbian', 'Bisexual',
+  'Pansexual', 'Asexual', 'Queer', 'Questioning',
+];
+/* Who the user wants shown to them. Kept separate from sexuality: one is
+   identity, the other drives the Discover filter. */
+const SHOW_ME = ['Women', 'Men', 'Everyone'];
 const LANGUAGES = ['English', 'Hindi', 'Marathi', 'Tamil', 'Telugu', 'Bengali', 'Kannada', 'Malayalam', 'Gujarati', 'Punjabi', 'Urdu', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Mandarin', 'Arabic'];
 const INTENTIONS = ['Life partner', 'Long-term', 'Short-term', 'Casual', 'Figuring it out'];
 const EXERCISE = ['Never', 'Sometimes', 'Active', 'Daily'];
@@ -32,6 +39,9 @@ const EditProfilePage = () => {
     age: '',
     gender: '',
     pronouns: '',
+    sexuality: '',
+    show_sexuality: false,
+    interested_in: '',
     location: '',
     languages: [],
     intention: '',
@@ -62,6 +72,9 @@ const EditProfilePage = () => {
         age: user.age || '',
         gender: user.gender || '',
         pronouns: user.pronouns || '',
+        sexuality: user.sexuality || '',
+        show_sexuality: Boolean(user.show_sexuality),
+        interested_in: user.interested_in || '',
         location: user.location || '',
         languages: user.languages || [],
         intention: user.intention || '',
@@ -89,6 +102,10 @@ const EditProfilePage = () => {
       name: formData.name,
       gender: formData.gender,
       pronouns: formData.pronouns,
+      sexuality: formData.sexuality || null,
+      // only publish it if they actually opted in
+      show_sexuality: Boolean(formData.sexuality) && formData.show_sexuality,
+      interested_in: formData.interested_in,
       location: formData.location,
       photos: formData.photos,
       bio: formData.bio,
@@ -273,6 +290,26 @@ const EditProfilePage = () => {
             <div className="field-col">
               <label className="field-label-col">Pronouns</label>
               {renderPills('pronouns', PRONOUNS)}
+            </div>
+            <div className="field-col">
+              <label className="field-label-col">
+                Sexuality <span className="field-optional">optional</span>
+              </label>
+              {renderPills('sexuality', SEXUALITIES)}
+              {formData.sexuality && (
+                <label className="field-inline-check">
+                  <input
+                    type="checkbox"
+                    checked={formData.show_sexuality}
+                    onChange={e => updateField('show_sexuality', e.target.checked)}
+                  />
+                  <span>Show this on my profile</span>
+                </label>
+              )}
+            </div>
+            <div className="field-col">
+              <label className="field-label-col">Show me</label>
+              {renderPills('interested_in', SHOW_ME)}
             </div>
             <div className="field-row">
               <label className="field-label">Location</label>
