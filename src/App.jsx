@@ -12,18 +12,38 @@ import SettingsPage from "./pages/SettingsPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import VerificationPendingModal from "./components/auth/VerificationPendingModal";
+import ProfileVerificationWizard from "./components/auth/ProfileVerificationWizard";
 import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
   const { isAuthenticated, user, dispatch } = useAuth();
 
+  // User needs to take their live verification selfie / upload ID
+  const needsVerificationSetup = isAuthenticated && 
+    !user?.is_admin && 
+    !user?.live_selfie_url && 
+    user?.verification_status !== 'approved';
+
+  // User finished wizard and is waiting for Creator review
   const isPendingVerification = isAuthenticated && 
     user?.verification_status === 'pending' && 
     !user?.is_admin && 
-    !user?.verified;
+    !user?.verified &&
+    !needsVerificationSetup;
 
   return (
     <>
+      {needsVerificationSetup && (
+        <ProfileVerificationWizard 
+          onComplete={() => {
+            dispatch({
+              type: 'UPDATE_PROFILE',
+              payload: { verification_status: 'pending' }
+            });
+          }}
+        />
+      )}
+
       {isPendingVerification && (
         <VerificationPendingModal 
           onApproved={() => {

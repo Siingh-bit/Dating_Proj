@@ -27,6 +27,9 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       verification_status: localStatus,
       verified: isAdmin,
       is_admin: isAdmin,
+      live_selfie_url: initialData.live_selfie_url || CURRENT_USER.photos?.[0],
+      govt_id_url: initialData.govt_id_url || null,
+      govt_id_status: initialData.govt_id_url ? 'uploaded' : 'none',
       ...initialData,
     };
   }
@@ -46,6 +49,9 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
         verification_status: existingUser.verification_status || (isAdmin ? 'approved' : 'pending'),
         verified: Boolean(existingUser.verified || isAdmin),
         is_admin: isAdmin,
+        live_selfie_url: existingUser.live_selfie_url || existingUser.photos?.[0] || CURRENT_USER.photos?.[0],
+        govt_id_url: existingUser.govt_id_url || null,
+        govt_id_status: existingUser.govt_id_status || (existingUser.govt_id_url ? 'uploaded' : 'none'),
         photos: existingUser.photos?.length ? existingUser.photos : CURRENT_USER.photos,
         prompts: existingUser.prompts?.length ? existingUser.prompts : CURRENT_USER.prompts,
         vitals: existingUser.vitals && Object.keys(existingUser.vitals).length ? existingUser.vitals : CURRENT_USER.vitals,
@@ -67,6 +73,9 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       interests: initialData.interests || CURRENT_USER.interests,
       languages: initialData.languages || CURRENT_USER.languages,
       vitals: initialData.vitals || CURRENT_USER.vitals,
+      live_selfie_url: initialData.live_selfie_url || CURRENT_USER.photos?.[0],
+      govt_id_url: initialData.govt_id_url || null,
+      govt_id_status: initialData.govt_id_url ? 'uploaded' : 'none',
       tier: 'free',
       verified: isAdmin,
       verification_status: isAdmin ? 'approved' : 'pending',
@@ -155,20 +164,28 @@ export async function fetchDiscoverProfiles(currentUserId) {
  * =========================================================================
  */
 
+// Demo government ID cards for mock review preview in admin
+const DEMO_GOVT_IDS = [
+  'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=600&q=80',
+];
+
 /**
  * Fetch all registered user profiles for the Super Admin review portal
  */
 export async function fetchAllAdminProfiles() {
   if (!isSupabaseConfigured || !supabase) {
     // Return mock curated profiles with mixed verification status for testing
-    return [
-      ...PROFILES.map((p, idx) => ({
-        ...p,
-        email: `${p.name.toLowerCase()}@wobblepreview.com`,
-        verification_status: idx < 3 ? 'pending' : 'approved',
-        created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
-      })),
-    ];
+    return PROFILES.map((p, idx) => ({
+      ...p,
+      email: `${p.name.toLowerCase()}@wobblepreview.com`,
+      verification_status: idx < 3 ? 'pending' : 'approved',
+      verified: idx >= 3,
+      live_selfie_url: p.photos?.[0],
+      govt_id_url: idx % 2 === 0 ? p.photos?.[1] : null,
+      govt_id_status: idx % 2 === 0 ? (idx >= 3 ? 'verified' : 'uploaded') : 'none',
+      created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
+    }));
   }
 
   try {
@@ -182,6 +199,10 @@ export async function fetchAllAdminProfiles() {
         ...p,
         email: `${p.name.toLowerCase()}@wobblepreview.com`,
         verification_status: idx < 3 ? 'pending' : 'approved',
+        verified: idx >= 3,
+        live_selfie_url: p.photos?.[0],
+        govt_id_url: idx % 2 === 0 ? p.photos?.[1] : null,
+        govt_id_status: idx % 2 === 0 ? (idx >= 3 ? 'verified' : 'uploaded') : 'none',
         created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
       }));
     }
@@ -194,17 +215,19 @@ export async function fetchAllAdminProfiles() {
 }
 
 /**
- * Approve a user profile: updates verification_status to 'approved', sets verified=true,
- * and sends an automated confirmation email to the user via Brevo.
+ * Approve a user profile: updates verification_status to 'approved',
+ * grants optional verified badge, and sends confirmation email via Brevo.
  */
-export async function approveUserProfile(userId, email, name) {
+export async function approveUserProfile(userId, email, name, options = { grantBadge: true }) {
   try {
+    const isBadgeGranted = Boolean(options?.grantBadge);
     if (isSupabaseConfigured && supabase) {
       await supabase
         .from('profiles')
         .update({
           verification_status: 'approved',
-          verified: true,
+          verified: isBadgeGranted,
+          govt_id_status: isBadgeGranted ? 'verified' : 'none',
           updated_at: new Date().toISOString(),
         })
         .eq('id', userId);
@@ -233,6 +256,7 @@ export async function rejectUserProfile(userId, reason = 'Photos or details did 
         .update({
           verification_status: 'rejected',
           verified: false,
+          govt_id_status: 'rejected',
           rejection_reason: reason,
           updated_at: new Date().toISOString(),
         })

@@ -1,0 +1,646 @@
+/* ========================================================
+   PROFILE & IDENTITY VERIFICATION WIZARD STYLES
+   ======================================================== */
+
+.wizard-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(12, 10, 16, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+}
+
+.wizard-container {
+  width: 100%;
+  max-width: 500px;
+  background: linear-gradient(180deg, #1C1728 0%, #121018 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  padding: 28px 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(232, 96, 76, 0.15);
+  box-sizing: border-box;
+}
+
+.wizard-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+  margin-bottom: 22px;
+}
+
+.wizard-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #FFFFFF;
+}
+
+.wizard-steps-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #9B95A5;
+  font-weight: 600;
+}
+
+.wizard-steps-pill span.active {
+  color: #FF7B6B;
+  font-weight: 700;
+}
+
+.wizard-steps-pill .dot {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Step headings */
+.step-badge-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(232, 96, 76, 0.12);
+  border: 1px solid rgba(232, 96, 76, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.step-badge-icon.badge-gold {
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.step-heading {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 1.55rem;
+  color: #FFFFFF;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.step-subheading {
+  font-size: 0.84rem;
+  color: #9B95A5;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+/* Step 1 Photos grid */
+.wizard-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.wizard-photo-slot {
+  aspect-ratio: 3/4;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.wizard-photo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-num-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #FFF;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.wizard-input-group {
+  margin-bottom: 16px;
+}
+
+.wizard-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #D1CBD8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.wizard-textarea {
+  width: 100%;
+  background: #0C0A10;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.wizard-textarea:focus {
+  border-color: #E8604C;
+}
+
+.wizard-prompts-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.prompt-preview-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.prompt-q-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #FF7B6B;
+}
+
+.prompt-a-text {
+  font-size: 0.8rem;
+  color: #F5F0EB;
+  margin-top: 2px;
+}
+
+.btn-wizard-next {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 14px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(232, 96, 76, 0.35);
+  transition: all 0.2s;
+}
+
+.btn-wizard-next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(232, 96, 76, 0.5);
+}
+
+/* ========================================================
+   STEP 2: LIVE SELFIE CAMERA & OVAL HUD
+   ======================================================== */
+
+.camera-viewfinder-box {
+  width: 100%;
+  max-width: 320px;
+  height: 320px;
+  margin: 0 auto 20px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  background: #0C0A10;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.camera-live-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.live-video-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* Mirror selfie */
+}
+
+/* Oval Face HUD Overlay */
+.face-oval-hud {
+  position: absolute;
+  inset: 20px 40px;
+  border-radius: 50% / 60%;
+  border: 2px dashed rgba(232, 96, 76, 0.8);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.scan-laser-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FF7B6B, #E8604C, transparent);
+  box-shadow: 0 0 12px #FF7B6B;
+  animation: scanLaser 2.2s infinite ease-in-out;
+}
+
+@keyframes scanLaser {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.hud-guidance-text {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.camera-idle-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.camera-idle-frame:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.camera-start-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 24px rgba(232, 96, 76, 0.4);
+}
+
+.camera-idle-frame p {
+  color: #FFF;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin: 0 0 4px;
+}
+
+.camera-idle-frame span {
+  font-size: 0.75rem;
+  color: #9B95A5;
+}
+
+.captured-selfie-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.selfie-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selfie-verified-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(52, 211, 153, 0.95);
+  color: #0C0A10;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Camera snap buttons */
+.camera-action-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.btn-snap-photo {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 3px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.btn-snap-photo:active {
+  transform: scale(0.92);
+}
+
+.snap-inner-ring {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #E8604C;
+}
+
+.gold-snap .snap-inner-ring {
+  background: #FFD700;
+}
+
+.captured-action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-retake-photo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFF;
+  border-radius: 9999px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-confirm-selfie {
+  flex: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%);
+  color: #FFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fallback-upload-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-file-fallback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #9B95A5;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.btn-file-fallback:hover {
+  color: #FFF;
+}
+
+/* ========================================================
+   STEP 3: GOVT ID VIEWFINDER & RECTANGULAR BOX GUIDE
+   ======================================================== */
+
+.id-viewfinder-box {
+  width: 100%;
+  max-width: 440px;
+  height: 260px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  background: #0C0A10;
+  border: 2px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.id-camera-live-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Rectangular ID Bounding Box Guide */
+.id-card-hud-rect {
+  position: absolute;
+  inset: 24px 30px;
+  border: 2px solid rgba(255, 215, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 215, 0, 0.25);
+  pointer-events: none;
+}
+
+.corner-bracket {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: #FFD700;
+  border-style: solid;
+}
+
+.corner-bracket.top-left {
+  top: -2px;
+  left: -2px;
+  border-width: 3px 0 0 3px;
+  border-top-left-radius: 10px;
+}
+
+.corner-bracket.top-right {
+  top: -2px;
+  right: -2px;
+  border-width: 3px 3px 0 0;
+  border-top-right-radius: 10px;
+}
+
+.corner-bracket.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  border-width: 0 0 3px 3px;
+  border-bottom-left-radius: 10px;
+}
+
+.corner-bracket.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 3px 3px 0;
+  border-bottom-right-radius: 10px;
+}
+
+.id-rect-guide-text {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #FFD700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.id-idle-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.id-rect-idle-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(255, 215, 0, 0.4);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 215, 0, 0.03);
+  text-align: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.id-rect-idle-placeholder p {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin: 10px 0 4px;
+}
+
+.id-rect-idle-placeholder span {
+  color: #9B95A5;
+  font-size: 0.72rem;
+}
+
+.captured-id-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.id-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.id-attached-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 215, 0, 0.95);
+  color: #0C0A10;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-submit-verification {
+  flex: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+}
+
+.id-action-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn-id-file-upload {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  color: #FFD700;
+  border-radius: 9999px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-skip-id {
+  background: transparent;
+  border: none;
+  color: #9B95A5;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.btn-skip-id:hover {
+  color: #FFF;
+}
