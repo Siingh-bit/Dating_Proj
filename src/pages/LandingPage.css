@@ -16,10 +16,10 @@
 .landing-ambient-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(140px);
+  filter: blur(160px);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.22;
+  opacity: 0.10;
 }
 
 .glow-top-left {
@@ -27,7 +27,7 @@
   left: -100px;
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, #E8604C 0%, #7C4DFF 100%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
 }
 
 .glow-center-right {
@@ -35,7 +35,7 @@
   right: -150px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, #7C4DFF 0%, #00D2FF 100%);
+  background: radial-gradient(circle, var(--phase-talking) 0%, transparent 70%);
 }
 
 .glow-bottom-center {
@@ -213,7 +213,7 @@
 .landing-hero-section {
   position: relative;
   z-index: 1;
-  padding: 60px 24px 80px;
+  padding: 96px 24px 88px;
 }
 
 .hero-content-container {
@@ -225,154 +225,103 @@
   text-align: center;
 }
 
-.hero-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(232, 96, 76, 0.12);
-  border: 1px solid rgba(232, 96, 76, 0.35);
-  padding: 6px 16px;
-  border-radius: 9999px;
-  margin-bottom: 24px;
-  font-size: 0.85rem;
-  backdrop-filter: blur(10px);
-}
+/* ============================================
+   HERO
+   Rebuilt to read as a calm consumer product rather than a
+   promo page. The four things that made it look like an
+   astrology / jackpot site, and what replaced them:
+     1. gradient headline text  -> one solid colour
+     2. font-weight 800 on a 400-only serif (fake bold) -> real 400
+     3. glowing coral CTA halo  -> flat fill, no glow
+     4. ticking countdown pill  -> a plain standing line
+   ============================================ */
 
-.live-pulse-badge {
-  font-weight: 800;
-  color: #FF7B6B;
-  letter-spacing: 0.04em;
-}
-
-.badge-text {
-  color: var(--text-primary, #F5F0EB);
-}
-
-.badge-countdown {
-  color: #FFD700;
-  font-weight: 700;
-  background: rgba(255, 215, 0, 0.15);
-  padding: 2px 8px;
-  border-radius: 9999px;
+.hero-eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
 }
 
 .hero-title {
   font-family: var(--font-display, 'DM Serif Display', Georgia, serif);
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  margin-bottom: 20px;
-  max-width: 900px;
-}
-
-.text-gradient-accent {
-  background: linear-gradient(135deg, #FF8A65 0%, #E8604C 50%, #FFD700 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
+  /* DM Serif Display ships a single weight. Requesting anything heavier makes
+     the browser fake it, which is what produced the blobby look. */
+  font-weight: 400;
+  font-size: clamp(2.35rem, 5vw, 3.9rem);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0 0 22px;
+  max-width: 16ch;
+  text-wrap: balance;
 }
 
 .hero-subtitle {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  color: var(--text-secondary, #9B95A5);
-  line-height: 1.6;
-  max-width: 760px;
-  margin-bottom: 36px;
-}
-
-.hero-subtitle strong {
-  color: var(--text-primary, #F5F0EB);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 46ch;
+  margin: 0 0 36px;
+  text-wrap: pretty;
 }
 
 .hero-cta-group {
   display: flex;
-  align-items: center;
-  gap: 16px;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 48px;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.cta-primary-btn,
+.cta-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  height: 52px;
+  padding: 0 26px;
+  border-radius: var(--radius-md);
+  font-size: 0.975rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
 }
 
 .cta-primary-btn {
-  padding: 16px 36px;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  background: var(--accent-gradient, linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%));
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 8px 32px rgba(232, 96, 76, 0.45);
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border: 1px solid var(--accent);
 }
 
-.cta-primary-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 40px rgba(232, 96, 76, 0.6);
-}
+.cta-primary-btn:hover { background: #d4553f; border-color: #d4553f; }
 
 .cta-secondary-btn {
-  padding: 16px 32px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--text-primary, #F5F0EB);
-  background: rgba(35, 30, 50, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  backdrop-filter: blur(12px);
-  text-decoration: none;
-  transition: all 0.25s ease;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .cta-secondary-btn:hover {
-  background: rgba(45, 40, 65, 0.95);
+  background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
 }
 
-/* Stats Row */
-.hero-stats-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  flex-wrap: wrap;
-  margin-bottom: 60px;
-  padding: 18px 32px;
-  background: rgba(26, 22, 38, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  backdrop-filter: blur(14px);
-}
+.cta-primary-btn:active,
+.cta-secondary-btn:active { transform: translateY(1px); }
 
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-num {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #FFFFFF;
-}
-
-.stat-label {
-  font-size: 0.78rem;
-  color: var(--text-secondary, #9B95A5);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.stat-divider {
-  width: 1px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.1);
+.hero-trustline {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin: 0;
 }
 
 /* --- Hero 3D Device Showcase --- */

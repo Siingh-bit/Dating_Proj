@@ -31,19 +31,9 @@ export default function LandingPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [authErrorMsg, setAuthErrorMsg] = useState('');
 
-  // Live Wobble Hour Countdown simulation
-  const [countdown, setCountdown] = useState({ min: 42, sec: 18 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev.sec > 0) return { ...prev, sec: prev.sec - 1 };
-        if (prev.min > 0) return { min: prev.min - 1, sec: 59 };
-        return { min: 59, sec: 59 };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+  /* The fake countdown that used to drive the hero pill is gone. It re-rendered
+     the entire landing page once a second for a timer that just looped, and it
+     was the main thing making the page feel like a promo funnel. */
 
   const getChemistryVibe = (val) => {
     if (val < 30) return { label: 'Sparking', color: '#6FD3E8', desc: 'Starting to click' };
@@ -251,67 +241,51 @@ export default function LandingPage() {
       <section className="landing-hero-section">
         <div className="hero-content-container">
           
-          {/* Top Live Event Announcement */}
-          <div className="hero-badge-pill animate-fade-in-up">
-            <span className="live-pulse-badge">🔴 LIVE 8:00–9:00 PM</span>
-            <span className="badge-text">The Wobble Hour: 3-Min Blind Chemistry Event</span>
-            <span className="badge-countdown">Starts in {countdown.min}m {countdown.sec}s</span>
-          </div>
+          {/* A quiet standing fact, not a countdown. The old pill used a red
+              dot, all-caps LIVE and a ticking timer — the urgency pattern
+              gambling sites use, which is what made this read as a jackpot page. */}
+          <span className="hero-eyebrow animate-fade-in-up">
+            Live matchmaking · nightly at 8pm
+          </span>
 
-          {/* Main Headline */}
+          {/* One colour, real font weight. The old headline used an
+              orange-to-gold gradient (the astrology/casino signature) and asked
+              for weight 800 from a font that only ships 400, so the browser
+              synthesised a fake bold and it came out smeared. */}
           <h1 className="hero-title animate-fade-in-up">
-            Where Real Chemistry Sparks <br />
-            <span className="text-gradient-accent">Before The First Date</span>
+            Real chemistry,<br />before the first date
           </h1>
 
           <p className="hero-subtitle animate-fade-in-up">
-            Say goodbye to endless superficial swiping and dead-end texting. Wobble Date connects you through 
-            <strong> live blind speed chemistry</strong>, <strong>in-chat connection meters</strong>, and <strong>seamless first-date planners</strong>.
+            Less swiping, more talking. Meet through live blind conversations,
+            then let the chat do the rest.
           </p>
 
           {/* Hero CTAs */}
           <div className="hero-cta-group animate-fade-in-up">
-            <button 
+            <button
               className="cta-primary-btn"
               onClick={() => handleOpenAuth(false)}
             >
-              <Sparkles size={18} />
-              <span>Launch Web App (Free)</span>
-              <ArrowRight size={18} />
+              <span>Open the app</span>
+              <ArrowRight size={17} />
             </button>
 
-            <a 
-              href="/WobbleDate.apk" 
+            <a
+              href="/WobbleDate.apk"
               download="WobbleDate.apk"
               className="cta-secondary-btn"
             >
-              <Download size={18} />
-              <span>Download Android APK</span>
+              <Download size={17} />
+              <span>Get the Android app</span>
             </a>
           </div>
 
-          {/* Social Proof Stats */}
-          <div className="hero-stats-row animate-fade-in-up">
-            <div className="stat-item">
-              <span className="stat-num">8–9 PM</span>
-              <span className="stat-label">Daily Live Matchmaking</span>
-            </div>
-            <div className="stat-divider" />
-            <div className="stat-item">
-              <span className="stat-num">10+</span>
-              <span className="stat-label">In-Chat Icebreaker Games</span>
-            </div>
-            <div className="stat-divider" />
-            <div className="stat-item">
-              <span className="stat-num">100%</span>
-              <span className="stat-label">Curated Date Itineraries</span>
-            </div>
-            <div className="stat-divider" />
-            <div className="stat-item">
-              <span className="stat-num">0%</span>
-              <span className="stat-label">Awkward Ghosting</span>
-            </div>
-          </div>
+          {/* Replaces the glass stat card. "100% curated" and "0% ghosting"
+              were unverifiable claims that read as clickbait. */}
+          <p className="hero-trustline animate-fade-in-up">
+            Free to join · Photo-verified profiles
+          </p>
 
           {/* Hero 3D Device Showcase with Floating Badges */}
           <div className="hero-device-showcase animate-fade-in-up">
