@@ -3,34 +3,68 @@ import { CURRENT_USER } from "../data/mockData";
 
 const AuthContext = createContext(null);
 
+const STORAGE_KEY = 'wobble_auth_user';
+
+function getStoredUser() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (err) {
+    console.error('Failed to parse stored auth user', err);
+    return null;
+  }
+}
+
+const savedUser = getStoredUser();
+
 const initialState = {
-  user: null,
-  isAuthenticated: false,
-  isOnboarded: false,
+  user: savedUser || null,
+  isAuthenticated: !!savedUser,
+  isOnboarded: !!savedUser,
 };
 
 function authReducer(state, action) {
   switch (action.type) {
-    case "LOGIN":
-      return { ...state, isAuthenticated: true, user: action.payload };
-    case "LOGOUT":
-      return { ...state, isAuthenticated: false, user: null };
-    case "UPDATE_PROFILE":
-      return { ...state, user: { ...state.user, ...action.payload } };
+    case "LOGIN": {
+      const user = action.payload || CURRENT_USER;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      } catch (err) {
+        console.error('Failed to save user session', err);
+      }
+      return { ...state, isAuthenticated: true, user, isOnboarded: true };
+    }
+    case "LOGOUT": {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (err) {}
+      return { ...state, isAuthenticated: false, user: null, isOnboarded: false };
+    }
+    case "UPDATE_PROFILE": {
+      const updatedUser = { ...state.user, ...action.payload };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+      } catch (err) {}
+      return { ...state, user: updatedUser };
+    }
     case "SET_ONBOARDED":
       return { ...state, isOnboarded: true };
     case "UPGRADE_TIER": {
       const tierSlots = { free: 1, lite: 3, plus: 5, elite: 10 };
       const tierEnds = { free: 2, lite: 3, plus: 5, elite: 7 };
+      const upgradedUser = {
+        ...state.user,
+        tier: action.payload,
+        conversation_slots: tierSlots[action.payload],
+        weekly_ends_max: tierEnds[action.payload],
+        weekly_ends_remaining: tierEnds[action.payload],
+      };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(upgradedUser));
+      } catch (err) {}
       return {
         ...state,
-        user: {
-          ...state.user,
-          tier: action.payload,
-          conversation_slots: tierSlots[action.payload],
-          weekly_ends_max: tierEnds[action.payload],
-          weekly_ends_remaining: tierEnds[action.payload],
-        },
+        user: upgradedUser,
       };
     }
     case "USE_DAILY_LIKE":
