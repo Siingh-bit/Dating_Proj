@@ -10,11 +10,12 @@ import {
   ChevronRight, 
   MapPin, 
   Plus, 
-  X,
+  Trash2,
   FileText,
   Scan,
   Heart,
-  ArrowRight
+  ArrowRight,
+  User
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { updateUserProfile } from '../services/userService';
@@ -30,20 +31,15 @@ export default function ProfileSetupPage() {
   const [name, setName] = useState(user?.name || '');
   const [age, setAge] = useState(user?.age || 24);
   const [gender, setGender] = useState(user?.gender || 'male');
-  const [location, setLocation] = useState(user?.location || 'Mumbai, India');
-  const [photos, setPhotos] = useState(user?.photos?.length ? user?.photos : [
-    '/profiles/isha/1.jpg',
-    '/profiles/isha/2.jpg',
-    '/profiles/isha/3.jpg',
-    '/profiles/isha/4.jpg',
-  ]);
+  const [location, setLocation] = useState(user?.location || '');
+  const [photos, setPhotos] = useState(user?.photos?.length ? user?.photos : []);
 
   // Step 2 State: Bio & Prompts
-  const [bio, setBio] = useState(user?.bio || 'Love spontaneous weekend trips, filter coffee, and deep late-night talks.');
+  const [bio, setBio] = useState(user?.bio || '');
   const [prompts, setPrompts] = useState(user?.prompts?.length ? user?.prompts : [
-    { question: 'My simple pleasures are', answer: 'Iced matcha latte and sunset walks at Bandstand.' },
-    { question: "I'll fall for you if", answer: 'You are passionate about your craft and make me laugh unexpectedly.' },
-    { question: 'The hallmark of a good relationship is', answer: 'Unfiltered comfort, mutual trust, and endless banter.' },
+    { question: 'My simple pleasures are', answer: '' },
+    { question: "I'll fall for you if", answer: '' },
+    { question: 'The hallmark of a good relationship is', answer: '' },
   ]);
 
   // Step 3 State: Live Selfie & Govt ID
@@ -69,6 +65,24 @@ export default function ProfileSetupPage() {
 
   const stopCamera = (stream) => {
     if (stream) stream.getTracks().forEach(t => t.stop());
+  };
+
+  // Photo Upload Handler
+  const handlePhotoUpload = (e, index) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const newPhotos = [...photos];
+        newPhotos[index] = ev.target.result;
+        setPhotos(newPhotos);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePhoto = (index) => {
+    setPhotos(prev => prev.filter((_, i) => i !== index));
   };
 
   // Selfie camera
@@ -140,11 +154,11 @@ export default function ProfileSetupPage() {
       name: name || user?.name || 'Alex',
       age: parseInt(age, 10) || 24,
       gender,
-      location,
-      photos,
+      location: location || 'Mumbai, India',
+      photos: photos.length > 0 ? photos : ['/profiles/ananya/1.jpg'],
       bio,
       prompts,
-      live_selfie_url: capturedSelfie || photos[0],
+      live_selfie_url: capturedSelfie || (photos.length > 0 ? photos[0] : null),
       govt_id_url: capturedId || null,
       govt_id_status: capturedId ? 'uploaded' : 'none',
       profile_completed: true,
@@ -172,7 +186,7 @@ export default function ProfileSetupPage() {
       </div>
 
       <div className="setup-progress-bar">
-        <div className={`step-dot ${step >= 1 ? 'active' : ''}`}>1. Basics</div>
+        <div className={`step-dot ${step >= 1 ? 'active' : ''}`}>1. Basics & Photos</div>
         <div className="progress-connector"></div>
         <div className={`step-dot ${step >= 2 ? 'active' : ''}`}>2. Bio & Prompts</div>
         <div className="progress-connector"></div>
@@ -184,7 +198,7 @@ export default function ProfileSetupPage() {
         {step === 1 && (
           <div className="setup-step-body animate-fade-in">
             <h2>Personal Basics & Photos</h2>
-            <p className="step-desc">Add your info and at least 4 clear photos.</p>
+            <p className="step-desc">Add your details and upload your photos to show your true vibe.</p>
 
             <div className="setup-form-grid">
               <div className="form-group">
@@ -193,8 +207,9 @@ export default function ProfileSetupPage() {
                   type="text" 
                   value={name} 
                   onChange={(e) => setName(e.target.value)} 
-                  placeholder="Your Name"
+                  placeholder="Enter your name"
                   className="setup-input"
+                  required
                 />
               </div>
 
@@ -205,11 +220,13 @@ export default function ProfileSetupPage() {
                   value={age} 
                   onChange={(e) => setAge(e.target.value)} 
                   className="setup-input"
+                  min={18}
+                  max={99}
                 />
               </div>
 
               <div className="form-group full-width">
-                <label>City & Location</label>
+                <label>City / Location</label>
                 <div className="input-with-icon">
                   <MapPin size={16} />
                   <input 
@@ -223,17 +240,47 @@ export default function ProfileSetupPage() {
               </div>
             </div>
 
-            <label className="section-subtitle">Profile Photos (4 required)</label>
+            <label className="section-subtitle">Profile Photos (Upload 1–4 photos)</label>
             <div className="photos-preview-strip">
-              {photos.map((p, i) => (
-                <div key={i} className="photo-box">
-                  <img src={p} alt={`Photo ${i + 1}`} />
-                  <span className="photo-tag">#{i + 1}</span>
-                </div>
-              ))}
+              {[0, 1, 2, 3].map((slotIdx) => {
+                const photoUrl = photos[slotIdx];
+                return (
+                  <div key={slotIdx} className={`photo-slot-box ${photoUrl ? 'has-photo' : 'empty'}`}>
+                    {photoUrl ? (
+                      <>
+                        <img src={photoUrl} alt={`Upload ${slotIdx + 1}`} />
+                        <span className="photo-tag">#{slotIdx + 1}</span>
+                        <button className="btn-del-photo" onClick={() => handleRemovePhoto(slotIdx)}>
+                          <Trash2 size={12} />
+                        </button>
+                      </>
+                    ) : (
+                      <label className="photo-upload-label">
+                        <Plus size={20} />
+                        <span>Add</span>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={(e) => handlePhotoUpload(e, slotIdx)} 
+                          style={{ display: 'none' }} 
+                        />
+                      </label>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
-            <button className="btn-setup-continue" onClick={() => setStep(2)}>
+            <button 
+              className="btn-setup-continue" 
+              onClick={() => {
+                if (!name.trim()) {
+                  alert('Please enter your name to continue');
+                  return;
+                }
+                setStep(2);
+              }}
+            >
               <span>Next: Bio & Prompts</span>
               <ArrowRight size={16} />
             </button>
@@ -253,7 +300,7 @@ export default function ProfileSetupPage() {
                 onChange={(e) => setBio(e.target.value)} 
                 rows={3} 
                 className="setup-textarea"
-                placeholder="A little bit about you..."
+                placeholder="Share a short bio (e.g. your passions, favorite weekend plans...)"
               />
             </div>
 
@@ -270,6 +317,7 @@ export default function ProfileSetupPage() {
                       updated[idx].answer = e.target.value;
                       setPrompts(updated);
                     }}
+                    placeholder="Type your answer here..."
                     className="prompt-text-input"
                   />
                 </div>
@@ -319,7 +367,7 @@ export default function ProfileSetupPage() {
                 ) : (
                   <div className="idle-camera-trigger" onClick={startSelfieCamera}>
                     <Camera size={28} />
-                    <span>Tap to take live selfie</span>
+                    <span>Tap to open live selfie camera</span>
                   </div>
                 )}
               </div>
@@ -375,7 +423,7 @@ export default function ProfileSetupPage() {
               <button className="btn-setup-back" onClick={() => setStep(2)}>Back</button>
               <button className="btn-setup-finish" onClick={handleSaveAndComplete}>
                 <ShieldCheck size={18} />
-                <span>Save Profile & Start Dating</span>
+                <span>Save Profile & Enter App</span>
               </button>
             </div>
           </div>

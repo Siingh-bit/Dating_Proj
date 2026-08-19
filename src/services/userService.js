@@ -13,25 +13,38 @@ export function isSuperAdminEmail(email) {
 }
 
 /**
- * Get an existing user profile or create a new one in Supabase
+ * Get an existing user profile or create a clean, empty new user profile
  */
 export async function getOrCreateUserProfile(email, initialData = {}) {
   const isAdmin = isSuperAdminEmail(email);
 
+  const cleanEmptyTemplate = {
+    email,
+    name: initialData.name || (email ? email.split('@')[0] : ''),
+    age: initialData.age || 24,
+    gender: initialData.gender || 'male',
+    interested_in: initialData.interested_in || 'female',
+    location: initialData.location || '',
+    bio: '',
+    photos: [],
+    prompts: [],
+    interests: [],
+    languages: [],
+    vitals: {},
+    live_selfie_url: null,
+    govt_id_url: null,
+    govt_id_status: 'none',
+    tier: 'free',
+    verified: isAdmin,
+    verification_status: isAdmin ? 'approved' : 'unverified',
+    profile_completed: isAdmin,
+    is_admin: isAdmin,
+    daily_likes_remaining: 10,
+    weekly_ends_remaining: 2,
+  };
+
   if (!isSupabaseConfigured || !supabase) {
-    // Local / offline fallback
-    const localStatus = isAdmin ? 'approved' : 'pending';
-    return {
-      ...CURRENT_USER,
-      email,
-      verification_status: localStatus,
-      verified: isAdmin,
-      is_admin: isAdmin,
-      live_selfie_url: initialData.live_selfie_url || CURRENT_USER.photos?.[0],
-      govt_id_url: initialData.govt_id_url || null,
-      govt_id_status: initialData.govt_id_url ? 'uploaded' : 'none',
-      ...initialData,
-    };
+    return cleanEmptyTemplate;
   }
 
   try {
@@ -44,43 +57,23 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
 
     if (existingUser && !fetchErr) {
       return {
-        ...CURRENT_USER,
+        ...cleanEmptyTemplate,
         ...existingUser,
-        verification_status: existingUser.verification_status || (isAdmin ? 'approved' : 'pending'),
+        verification_status: existingUser.verification_status || (isAdmin ? 'approved' : 'unverified'),
         verified: Boolean(existingUser.verified || isAdmin),
         is_admin: isAdmin,
-        live_selfie_url: existingUser.live_selfie_url || existingUser.photos?.[0] || CURRENT_USER.photos?.[0],
-        govt_id_url: existingUser.govt_id_url || null,
-        govt_id_status: existingUser.govt_id_status || (existingUser.govt_id_url ? 'uploaded' : 'none'),
-        photos: existingUser.photos?.length ? existingUser.photos : CURRENT_USER.photos,
-        prompts: existingUser.prompts?.length ? existingUser.prompts : CURRENT_USER.prompts,
-        vitals: existingUser.vitals && Object.keys(existingUser.vitals).length ? existingUser.vitals : CURRENT_USER.vitals,
+        photos: existingUser.photos || [],
+        prompts: existingUser.prompts || [],
+        vitals: existingUser.vitals || {},
+        profile_completed: Boolean(existingUser.photos?.length >= 1),
       };
     }
 
-    // 2. If new user, create a new profile in Supabase
+    // 2. If new user, create a clean profile in Supabase
     const newProfile = {
       id: crypto.randomUUID(),
-      email,
-      name: initialData.name || email.split('@')[0],
-      age: initialData.age || 24,
-      gender: initialData.gender || 'male',
-      interested_in: initialData.interested_in || 'female',
-      location: initialData.location || 'Mumbai, India',
-      bio: initialData.bio || '',
-      photos: initialData.photos || CURRENT_USER.photos,
-      prompts: initialData.prompts || CURRENT_USER.prompts,
-      interests: initialData.interests || CURRENT_USER.interests,
-      languages: initialData.languages || CURRENT_USER.languages,
-      vitals: initialData.vitals || CURRENT_USER.vitals,
-      live_selfie_url: initialData.live_selfie_url || CURRENT_USER.photos?.[0],
-      govt_id_url: initialData.govt_id_url || null,
-      govt_id_status: initialData.govt_id_url ? 'uploaded' : 'none',
-      tier: 'free',
-      verified: isAdmin,
-      verification_status: isAdmin ? 'approved' : 'pending',
-      daily_likes_remaining: 10,
-      weekly_ends_remaining: 2,
+      ...cleanEmptyTemplate,
+      ...initialData,
     };
 
     const { data: created, error: insertErr } = await supabase
@@ -90,21 +83,14 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
       .single();
 
     if (insertErr) {
-      console.warn('[Wobble Date] Could not insert to Supabase, using local fallback', insertErr);
-      return { ...CURRENT_USER, ...newProfile, is_admin: isAdmin };
+      console.warn('[Wobble Date] Insert fallback:', insertErr);
+      return newProfile;
     }
 
-    return { ...CURRENT_USER, ...created, is_admin: isAdmin };
+    return { ...cleanEmptyTemplate, ...created };
   } catch (err) {
     console.error('[Wobble Date] Profile service error:', err);
-    return {
-      ...CURRENT_USER,
-      email,
-      verification_status: isAdmin ? 'approved' : 'pending',
-      verified: isAdmin,
-      is_admin: isAdmin,
-      ...initialData,
-    };
+    return cleanEmptyTemplate;
   }
 }
 
@@ -159,23 +145,10 @@ export async function fetchDiscoverProfiles(currentUserId) {
 }
 
 /**
- * =========================================================================
- * SUPER ADMIN & CREATOR METHODS
- * =========================================================================
- */
-
-// Demo government ID cards for mock review preview in admin
-const DEMO_GOVT_IDS = [
-  'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=600&q=80',
-];
-
-/**
  * Fetch all registered user profiles for the Super Admin review portal
  */
 export async function fetchAllAdminProfiles() {
   if (!isSupabaseConfigured || !supabase) {
-    // Return mock curated profiles with mixed verification status for testing
     return PROFILES.map((p, idx) => ({
       ...p,
       email: `${p.name.toLowerCase()}@wobblepreview.com`,

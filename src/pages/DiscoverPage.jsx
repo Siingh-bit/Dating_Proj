@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, Flame, Users, User, Eye, EyeOff, Sparkles, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Compass, Flame, Users, User, Eye, EyeOff, Sparkles, Plus, Clock, UserPlus, ShieldAlert, ArrowRight, X } from 'lucide-react';
 import ProfileCard from '../components/profile/ProfileCard';
 import ActionBar from '../components/discover/ActionBar';
 import DuoCard from '../components/discover/DuoCard';
@@ -11,6 +12,7 @@ import { playPop, playWhoosh, playMatchChime, playSuperlikeFanfare } from '../ut
 import './DiscoverPage.css';
 
 export default function DiscoverPage() {
+  const navigate = useNavigate();
   const { user, dispatch: authDispatch } = useAuth();
   const { matches, dispatch: convoDispatch } = useConversations();
   const [profiles, setProfiles] = useState([]);
@@ -28,6 +30,10 @@ export default function DiscoverPage() {
   const [duoIndex, setDuoIndex] = useState(0);
   const [isBlindMode, setIsBlindMode] = useState(false);
 
+  // Interaction Guards Modals
+  const [showIncompleteModal, setShowIncompleteModal] = useState(false);
+  const [showPendingVerificationModal, setShowPendingVerificationModal] = useState(false);
+
   useEffect(() => {
     // Filter out already matched profiles and filter by target gender (women for male user)
     const matchedProfileIds = matches.map(m => m.matchedWith.id);
@@ -42,6 +48,25 @@ export default function DiscoverPage() {
   const showToast = (message) => {
     setToast(message);
     setTimeout(() => setToast(null), 3000);
+  };
+
+  /**
+   * Check if user is eligible to like/pass/superlike
+   */
+  const checkCanInteract = () => {
+    // 1. Check if user profile is empty or incomplete
+    if (!user?.profile_completed || !user?.photos || user.photos.length === 0) {
+      setShowIncompleteModal(true);
+      return false;
+    }
+
+    // 2. Check if user profile is pending admin verification
+    if (user?.verification_status === 'pending' && !user?.is_admin && !user?.verified) {
+      setShowPendingVerificationModal(true);
+      return false;
+    }
+
+    return true;
   };
 
   const advanceProfile = (direction, delayMs = 380) => {
@@ -59,6 +84,7 @@ export default function DiscoverPage() {
 
   const handleSkip = () => {
     if (exitDirection) return;
+    if (!checkCanInteract()) return;
     try {
       playWhoosh();
     } catch (e) {}
@@ -67,6 +93,7 @@ export default function DiscoverPage() {
 
   const handleLike = () => {
     if (exitDirection) return;
+    if (!checkCanInteract()) return;
     try {
       playPop();
     } catch (e) {}
@@ -81,6 +108,7 @@ export default function DiscoverPage() {
 
   const handleRose = () => {
     if (exitDirection) return;
+    if (!checkCanInteract()) return;
     try {
       playSuperlikeFanfare();
     } catch (e) {}
@@ -101,6 +129,7 @@ export default function DiscoverPage() {
 
   const handleComment = (itemType, itemIndex, text) => {
     if (exitDirection) return;
+    if (!checkCanInteract()) return;
     if (user.daily_likes_remaining > 0) {
       authDispatch({ type: 'USE_DAILY_LIKE' });
       advanceProfile('right', 380);
@@ -111,20 +140,10 @@ export default function DiscoverPage() {
   };
 
   /* ---------------------------------------------------------------
-     Swipe gestures.
-
-     Only two gestures exist: swipe RIGHT to like, swipe LEFT to pass.
-     Superlike is deliberately NOT a gesture — it is the star button only,
-     because it spends a scarce daily resource and used to fire by accident
-     whenever someone scrolled up to see more of a profile.
-
-     To make scrolling reliable we lock to an axis on the first few pixels
-     of movement. A mostly-vertical drag releases the card immediately so
-     the browser scrolls the profile natively; a mostly-horizontal drag
-     takes over as a swipe.
+     Swipe gestures with interactive guards
   --------------------------------------------------------------- */
-  const AXIS_LOCK_THRESHOLD = 8;   // px of movement before we commit to an axis
-  const SWIPE_COMMIT = 80;         // px needed to actually like / pass
+  const AXIS_LOCK_THRESHOLD = 8;
+  const SWIPE_COMMIT = 80;
 
   const handleDragStart = (e) => {
     if (exitDirection) return;
@@ -134,7 +153,7 @@ export default function DiscoverPage() {
       startX: clientX, startY: clientY,
       currentX: clientX, currentY: clientY,
       isDragging: true,
-      axis: null,               // null = undecided, 'x' = swiping, 'y' = scrolling
+      axis: null,
     });
   };
 
@@ -149,13 +168,16 @@ export default function DiscoverPage() {
       const dy = clientY - prev.startY;
       let axis = prev.axis;
 
-      if (axis === null && Math.hypot(dx, dy) > AXIS_LOCK_THRESHOLD) {
-        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if (!axis) {
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        if (absX >= AXIS_LOCK_THRESHOLD || absY >= AXIS_LOCK_THRESHOLD) {
+          axis = absX >= absY ? 'x' : 'y';
+        }
       }
 
-      // Vertical intent: hand the gesture back to the scroll container.
       if (axis === 'y') {
-        return { startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null };
+        return { ...prev, isDragging: false, axis: 'y' };
       }
 
       return { ...prev, currentX: clientX, currentY: clientY, axis };
@@ -163,54 +185,36 @@ export default function DiscoverPage() {
   };
 
   const handleDragEnd = () => {
-    if (!touchState.isDragging || exitDirection) return;
-    const dx = touchState.currentX - touchState.startX;
+    if (!touchState.isDragging || exitDirection) {
+      setTouchState(prev => ({ ...prev, isDragging: false, axis: null }));
+      return;
+    }
 
-    if (touchState.axis === 'x' && dx > SWIPE_COMMIT) {
-      handleLike();
-    } else if (touchState.axis === 'x' && dx < -SWIPE_COMMIT) {
-      handleSkip();
+    const deltaX = touchState.currentX - touchState.startX;
+    if (Math.abs(deltaX) > SWIPE_COMMIT && touchState.axis === 'x') {
+      if (!checkCanInteract()) {
+        setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
+        return;
+      }
+
+      if (deltaX > 0) {
+        handleLike();
+      } else {
+        handleSkip();
+      }
     } else {
-      // Not far enough, or never became a swipe — spring back.
       setTouchState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
     }
   };
 
-  // Only a committed horizontal drag moves the card, so scrolling a profile
-  // never drags it around the screen.
-  const isSwiping = touchState.isDragging && touchState.axis === 'x';
-  const deltaX = isSwiping ? touchState.currentX - touchState.startX : 0;
-  const dragRotation = deltaX * 0.08;
+  const deltaX = touchState.isDragging && touchState.axis === 'x' 
+    ? touchState.currentX - touchState.startX 
+    : 0;
 
-  const dragStyle = isSwiping && !exitDirection ? {
-    transform: `translate3d(${deltaX}px, 0, 0) rotate(${dragRotation}deg)`,
+  const dragStyle = touchState.isDragging && touchState.axis === 'x' ? {
+    transform: `translateX(${deltaX}px) rotate(${deltaX * 0.05}deg)`,
     transition: 'none',
   } : {};
-
-  const handleAddVibeSnap = () => {
-    playPop();
-    // Simulate user posting a 24h snap
-    const userSnap = {
-      id: "story_self_active",
-      userId: "user-self",
-      userName: "Your Vibe",
-      avatar: user?.photos?.[0] || "/profiles/ananya/1.jpg",
-      isSelf: true,
-      hasStory: true,
-      storyCount: 1,
-      stories: [
-        {
-          id: "s_user_1",
-          photo: user?.photos?.[0] || "/profiles/ananya/1.jpg",
-          timestamp: "Just now",
-          caption: "Sunday morning pour-over coffee & design mode ☕✨",
-          vibe: "Fresh Brew",
-        },
-      ],
-    };
-    setStoriesList(prev => [userSnap, ...prev.filter(s => !s.isSelf)]);
-    showToast("Your 24h Vibe Snap is live! 📸");
-  };
 
   const handleWobbleHourMatch = (candidate) => {
     playMatchChime();
@@ -279,7 +283,7 @@ export default function DiscoverPage() {
         </button>
 
         <span className="likes-counter-tag">
-          {user.daily_likes_remaining} likes left
+          {user?.daily_likes_remaining || 10} likes left
         </span>
       </div>
 
@@ -357,39 +361,35 @@ export default function DiscoverPage() {
           <ProfileCard 
             profile={currentProfile}
             onLike={handleLike}
-            onSkip={handleSkip}
             onComment={handleComment}
             isBlindMode={isBlindMode}
           />
         </div>
       ) : (
         <div className="discover-page empty-state">
-          <Compass size={80} className="empty-icon" />
-          <h2>You've seen everyone</h2>
-          <p>Check back later for new people</p>
+          <div className="empty-icon-wrap">
+            <Compass size={72} className="empty-icon" />
+          </div>
+          <h2>You've explored all nearby matches!</h2>
+          <p>Check back soon or expand your preferences in Settings.</p>
         </div>
       )}
 
-      {/* Action Floating Bar */}
-      {((!isDuoMode && currentProfile) || (isDuoMode && currentDuo)) && (
+      {/* Floating Action Bar */}
+      {currentProfile && !isDuoMode && (
         <ActionBar 
           onSkip={handleSkip}
-          onLike={handleLike}
           onRose={handleRose}
-          likesRemaining={user.daily_likes_remaining}
+          onLike={handleLike}
+          disabled={animatingOut}
         />
       )}
 
-      {/* Superlike / Rose Fullscreen Cosmic Celebration Effect */}
+      {/* Superlike Celebration */}
       {superlikeCelebration && (
-        <div 
-          className="superlike-celebration-overlay animate-fade-in"
-          onClick={() => setSuperlikeCelebration(null)}
-          title="Tap to dismiss"
-        >
+        <div className="superlike-celebration-overlay animate-fade-in">
           <div className="cosmic-light-column" />
           
-          {/* Shimmering floating particles burst */}
           <div className="particles-container">
             {['🌹', '⭐', '✨', '💖', '💫', '🌹', '🌟', '✨', '⭐', '🌹', '💫', '💖'].map((emoji, idx) => (
               <span 
@@ -414,6 +414,56 @@ export default function DiscoverPage() {
         </div>
       )}
 
+      {/* =========================================================
+          MODAL 1: COMPLETE YOUR PROFILE TO MATCH
+         ========================================================= */}
+      {showIncompleteModal && (
+        <div className="discover-guard-modal-overlay animate-fade-in" onClick={() => setShowIncompleteModal(false)}>
+          <div className="discover-guard-modal animate-scale-up-bounce" onClick={(e) => e.stopPropagation()}>
+            <button className="guard-close-btn" onClick={() => setShowIncompleteModal(false)}>
+              <X size={18} />
+            </button>
+            <div className="guard-icon-wrap">
+              <UserPlus size={32} color="#E8604C" />
+            </div>
+            <h3>Complete Your Profile to Match</h3>
+            <p>
+              You need to add your photos and prompts before you can like, match, or chat with people on Wobble Date.
+            </p>
+            <button className="btn-guard-primary" onClick={() => navigate('/app/setup')}>
+              <span>Set Up Profile Now</span>
+              <ArrowRight size={16} />
+            </button>
+            <button className="btn-guard-secondary" onClick={() => setShowIncompleteModal(false)}>
+              Browse Profiles for Now
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================
+          MODAL 2: VERIFICATION PENDING
+         ========================================================= */}
+      {showPendingVerificationModal && (
+        <div className="discover-guard-modal-overlay animate-fade-in" onClick={() => setShowPendingVerificationModal(false)}>
+          <div className="discover-guard-modal animate-scale-up-bounce" onClick={(e) => e.stopPropagation()}>
+            <button className="guard-close-btn" onClick={() => setShowPendingVerificationModal(false)}>
+              <X size={18} />
+            </button>
+            <div className="guard-icon-wrap pending">
+              <Clock size={32} color="#F59E0B" />
+            </div>
+            <h3>Verification Under Review ⏳</h3>
+            <p>
+              Your profile is currently being reviewed by our concierge team (~10–15 mins). You can browse the deck, and you'll receive an email confirmation once approved to start matching!
+            </p>
+            <button className="btn-guard-primary" onClick={() => setShowPendingVerificationModal(false)}>
+              <span>Got it</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Wobble Hour Live Chemistry Modal */}
       {showWobbleHour && (
         <WobbleHourModal 
@@ -431,4 +481,3 @@ export default function DiscoverPage() {
     </div>
   );
 }
-

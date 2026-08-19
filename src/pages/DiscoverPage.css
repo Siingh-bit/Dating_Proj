@@ -419,3 +419,111 @@
   border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
 }
 
+/* ========================================================
+   DISCOVER GUARD MODALS (INCOMPLETE & PENDING)
+   ======================================================== */
+
+.discover-guard-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(12, 10, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.discover-guard-modal {
+  width: 100%;
+  max-width: 380px;
+  background: #181424;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(232, 96, 76, 0.15);
+}
+
+.guard-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: #9B95A5;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.guard-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: rgba(232, 96, 76, 0.12);
+  border: 1px solid rgba(232, 96, 76, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.guard-icon-wrap.pending {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.discover-guard-modal h3 {
+  font-family: var(--font-display, 'DM Serif Display', serif);
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin: 0 0 8px;
+}
+
+.discover-guard-modal p {
+  font-size: 0.86rem;
+  color: #9B95A5;
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.btn-guard-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #E8604C 0%, #FF7B6B 100%);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 14px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(232, 96, 76, 0.35);
+  transition: all 0.2s;
+}
+
+.btn-guard-primary:hover {
+  transform: translateY(-1px);
+}
+
+.btn-guard-secondary {
+  background: transparent;
+  border: none;
+  color: #9B95A5;
+  font-size: 0.8rem;
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+
