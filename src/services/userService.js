@@ -37,6 +37,42 @@ function withTimeout(promise, ms = NETWORK_TIMEOUT_MS, label = 'request') {
 }
 
 /**
+ * A complete, usable profile built entirely on the client.
+ *
+ * Exported so sign-in can proceed immediately without waiting on the network:
+ * the database is a nice-to-have at that moment, not a prerequisite.
+ */
+export function buildLocalProfile(email, initialData = {}) {
+  const isAdmin = isSuperAdminEmail(email);
+  return {
+    email,
+    name: initialData.name || (email ? email.split('@')[0] : ''),
+    age: initialData.age || 24,
+    gender: initialData.gender || '',
+    interested_in: initialData.interested_in || '',
+    sexuality: initialData.sexuality || null,
+    location: initialData.location || '',
+    bio: '',
+    photos: [],
+    prompts: [],
+    interests: [],
+    languages: [],
+    vitals: {},
+    live_selfie_url: null,
+    govt_id_url: null,
+    govt_id_status: 'none',
+    tier: 'free',
+    verified: isAdmin,
+    verification_status: isAdmin ? 'approved' : 'unverified',
+    profile_completed: isAdmin,
+    is_admin: isAdmin,
+    daily_likes_remaining: 10,
+    weekly_ends_remaining: 2,
+    conversation_slots: 1,
+  };
+}
+
+/**
  * Get an existing user profile or create a clean, empty new user profile.
  *
  * Always resolves — on any failure it returns a usable local profile so the

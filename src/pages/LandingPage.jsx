@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import { sendBrevoOtpEmail } from '../services/emailService';
-import { getOrCreateUserProfile } from '../services/userService';
+import { getOrCreateUserProfile, buildLocalProfile, isSuperAdminEmail } from '../services/userService';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -120,34 +120,46 @@ export default function LandingPage() {
     setAuthErrorMsg('');
     setHeartAnim(true);
 
-    let userProfile;
+    // The code is already verified at this point, so the user IS signed in.
+    // Fetching their stored profile is an optimisation, never a gate — if the
+    // database is slow or unreachable we continue with a locally built
+    // profile and reconcile later. Nothing here can leave the user stranded
+    // on the "Opening your account" screen.
+    let userProfile = null;
     try {
-      userProfile = await getOrCreateUserProfile(authEmail);
+      userProfile = await Promise.race([
+        getOrCreateUserProfile(authEmail),
+        new Promise(resolve => setTimeout(() => resolve(null), 5000)),
+      ]);
     } catch (err) {
-      // Should not happen (the service swallows its own errors) but if the
-      // profile lookup ever fails hard we must not leave the user staring at
-      // an animation forever, which is what previously happened.
-      console.error('[Wobble Date] Sign-in failed:', err);
-      setHeartAnim(false);
-      setIsVerifying(false);
-      setAuthErrorMsg("We couldn't finish signing you in. Please check your connection and try again.");
-      return;
+      console.error('[Wobble Date] Profile lookup failed, continuing locally:', err);
+    }
+    if (!userProfile) {
+      console.warn('[Wobble Date] Using local profile — cloud lookup did not complete in time.');
+      userProfile = buildLocalProfile(authEmail);
     }
 
     const isAdmin = isSuperAdminEmail(authEmail);
-    setTimeout(() => {
+    try {
       authDispatch({ type: 'LOGIN', payload: userProfile });
       setShowAuthModal(false);
+      setHeartAnim(false);
       setIsVerifying(false);
+
       if (isAdmin) {
         sessionStorage.setItem('wobble_admin_auth', 'true');
-        navigate('/admin');
+        navigate('/admin', { replace: true });
       } else if (!userProfile.profile_completed) {
-        navigate('/app/setup');
+        navigate('/app/setup', { replace: true });
       } else {
-        navigate('/app/discover');
+        navigate('/app/discover', { replace: true });
       }
-    }, 2000);
+    } catch (err) {
+      console.error('[Wobble Date] Navigation after sign-in failed:', err);
+      setHeartAnim(false);
+      setIsVerifying(false);
+      setAuthErrorMsg('Signed in, but the app failed to open. Please refresh the page.');
+    }
   };
 
   /**
