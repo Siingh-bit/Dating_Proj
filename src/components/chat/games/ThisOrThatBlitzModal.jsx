@@ -124,7 +124,7 @@ export default function ThisOrThatBlitzModal({ onClose, onSendToChat }) {
     const rating = getSoulmateRating(soulmatePercentage);
     onSendToChat({
       type: 'this_or_that_blitz',
-      summaryText: `⚡ This or That Blitz: ${matches}/${partnerChoices.length} matched (${soulmatePercentage}%)! We are ${rating}!`,
+      summaryText: `This or That Blitz: ${matches}/${partnerChoices.length} matched (${soulmatePercentage}%)! We are ${rating}!`,
       score: soulmatePercentage,
       answered: matches,
       total: partnerChoices.length

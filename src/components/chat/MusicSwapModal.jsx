@@ -8,7 +8,7 @@ const CURATED_TRACKS = [
   { id: 2, title: 'Baarishein', artist: 'Anuv Jain', album: 'Baarishein', vibe: 'Acoustic Rain Vibe 🌧️' },
   { id: 3, title: 'Chaand Baaliyan', artist: 'Aditya A', album: 'Chaand Baaliyan', vibe: 'Upbeat & Sweet 🌙' },
   { id: 4, title: 'Kho Gaye Hum Kahan', artist: 'Jasleen Royal & Prateek Kuhad', album: 'Baar Baar Dekho', vibe: 'Dreamy Serenade ✨' },
-  { id: 5, title: 'Liggi', artist: 'Ritviz', album: 'DEV', vibe: 'High Energy Indie Electronic ⚡' },
+  { id: 5, title: 'Liggi', artist: 'Ritviz', album: 'DEV', vibe: 'High Energy Indie Electronic 🔥' },
   { id: 6, title: 'Sage', artist: 'Ritviz', album: 'VED', vibe: 'Sunset Drive Melody 🌅' },
   { id: 7, title: 'Alag Aasmaan', artist: 'Anuv Jain', album: 'Alag Aasmaan', vibe: 'Long Distance Acoustic ✈️' },
 ];

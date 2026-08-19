@@ -7,7 +7,7 @@ export default function WobbleMeter({ messageCount = 0, onTriggerDatePlanner }) 
   // Compute chemistry % based on messages & game rounds (up to 100)
   const chemistryPercent = Math.min(100, Math.max(35, 35 + messageCount * 8));
 
-  let tierLabel = "Sparking ⚡";
+  let tierLabel = "Sparking";
   let tierColor = "#7C4DFF";
   if (chemistryPercent >= 80) {
     tierLabel = "Magnetic 🔥";

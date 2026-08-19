@@ -41,10 +41,10 @@ export default function LandingPage() {
   }, []);
 
   const getChemistryVibe = (val) => {
-    if (val < 30) return { label: 'Sparking ⚡', color: '#6FD3E8', desc: 'Starting to click!' };
-    if (val < 65) return { label: 'In Sync 💫', color: '#7C4DFF', desc: 'Conversations flowing smoothly' };
-    if (val < 90) return { label: 'Magnetic 🔥', color: '#FF7B6B', desc: 'High chemistry detected' };
-    return { label: '100% Wobble Chemistry 🥂', color: '#FFD700', desc: 'Date #1 Itinerary Unlocked!' };
+    if (val < 30) return { label: 'Sparking', color: '#6FD3E8', desc: 'Starting to click' };
+    if (val < 65) return { label: 'In Sync', color: '#7C4DFF', desc: 'Conversations flowing smoothly' };
+    if (val < 90) return { label: 'Magnetic', color: '#FF7B6B', desc: 'High chemistry detected' };
+    return { label: '100% Chemistry', color: '#FFD700', desc: 'Date #1 Itinerary Unlocked' };
   };
 
   const currentVibe = getChemistryVibe(demoChemistry);
@@ -503,7 +503,7 @@ export default function LandingPage() {
               <div className="download-features-list">
                 <span><CheckCircle2 size={16} color="#5CB87A" /> 100% Free to Join</span>
                 <span><CheckCircle2 size={16} color="#5CB87A" /> No App Store Lock-in</span>
-                <span><CheckCircle2 size={16} color="#5CB87A" /> Hostinger Optimized</span>
+                <span><CheckCircle2 size={16} color="#5CB87A" /> Progressive Web App</span>
               </div>
             </div>
 
@@ -532,7 +532,7 @@ export default function LandingPage() {
                 The chemistry-first dating platform engineered for authentic connections and unforgettable first dates.
               </p>
               <div className="domain-pill">
-                <span>🌐 wobbledate.com</span>
+                <span>wobbledate.com</span>
               </div>
             </div>
 
@@ -562,8 +562,8 @@ export default function LandingPage() {
           </div>
 
           <div className="footer-bottom-bar">
-            <p>© 2026 Wobble Date (wobbledate.com). All rights reserved.</p>
-            <p className="hostinger-badge">Hosted with Hostinger & Vite Ultra-Fast CDN ⚡</p>
+            <p>© 2026 Wobble Date. All rights reserved.</p>
+            <p className="footer-badge-clean">Verified Profiles • PEGI 18</p>
           </div>
         </div>
       </footer>

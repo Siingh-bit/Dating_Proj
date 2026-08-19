@@ -162,7 +162,7 @@ export const PROFILES = [
     spotify: {
       anthem: "Liggi",
       artist: "Ritviz",
-      albumArt: "⚡",
+      albumArt: "🔥",
       topArtists: ["Ritviz", "Nucleya", "Chhavi Sodhani"],
     },
     smartSparks: [
