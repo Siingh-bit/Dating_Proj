@@ -656,10 +656,6 @@ export default function LandingPage() {
               </form>
             ) : (
               <div className="modal-otp-view">
-                <div className="dev-otp-pill">
-                  🔑 Developer Code: <strong>{generatedOtp}</strong>
-                </div>
-
                 <p className="otp-instruct">We sent a 6-digit code to <strong>{authEmail}</strong></p>
 
                 <div className="otp-digit-inputs">
@@ -668,6 +664,7 @@ export default function LandingPage() {
                       key={idx}
                       id={`landing-otp-${idx}`}
                       type="text"
+                      inputMode="numeric"
                       maxLength={1}
                       value={digit}
                       onChange={(e) => handleOtpInput(idx, e.target.value)}
@@ -676,10 +673,10 @@ export default function LandingPage() {
                   ))}
                 </div>
 
-                {otpError && <p className="otp-error-msg">Incorrect code. Please try again or use {generatedOtp}.</p>}
+                {otpError && <p className="otp-error-msg">Incorrect code. Please check your email and try again.</p>}
 
                 <button className="modal-primary-btn" onClick={handleVerifyOtp}>
-                  Verify & Enter App <Heart size={16} />
+                  <span>Verify & Continue</span> <ArrowRight size={16} />
                 </button>
 
                 <button className="btn-resend-link" onClick={() => handleContinueEmail({ preventDefault: () => {} })}>
@@ -690,9 +687,9 @@ export default function LandingPage() {
 
             {heartAnim && (
               <div className="auth-heart-celebration-overlay">
-                <div className="beating-heart-pulse">💖</div>
-                <h3>Welcome to Wobble Date!</h3>
-                <p>Opening your matchmaking deck...</p>
+                <WobbleLogo className="modal-wobble-logo animate-pulse" />
+                <h3>Welcome to Wobble Date</h3>
+                <p>Opening your account...</p>
               </div>
             )}
           </div>

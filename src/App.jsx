@@ -10,96 +10,73 @@ import ProfilePage from "./pages/ProfilePage";
 import PremiumPage from "./pages/PremiumPage";
 import SettingsPage from "./pages/SettingsPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import ProfileSetupPage from "./pages/ProfileSetupPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import VerificationPendingModal from "./components/auth/VerificationPendingModal";
-import ProfileVerificationWizard from "./components/auth/ProfileVerificationWizard";
 import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
-  const { isAuthenticated, user, dispatch } = useAuth();
-
-  // User needs to take their live verification selfie / upload ID
-  const needsVerificationSetup = isAuthenticated && 
-    !user?.is_admin && 
-    !user?.live_selfie_url && 
-    user?.verification_status !== 'approved';
-
-  // User finished wizard and is waiting for Creator review
-  const isPendingVerification = isAuthenticated && 
-    user?.verification_status === 'pending' && 
-    !user?.is_admin && 
-    !user?.verified &&
-    !needsVerificationSetup;
+  const { isAuthenticated, user } = useAuth();
 
   return (
-    <>
-      {needsVerificationSetup && (
-        <ProfileVerificationWizard 
-          onComplete={() => {
-            dispatch({
-              type: 'UPDATE_PROFILE',
-              payload: { verification_status: 'pending' }
-            });
-          }}
-        />
-      )}
+    <Routes>
+      {/* wobbledate.com Homepage Landing Hero */}
+      <Route path="/" element={<LandingPage />} />
 
-      {isPendingVerification && (
-        <VerificationPendingModal 
-          onApproved={() => {
-            dispatch({
-              type: 'UPDATE_PROFILE',
-              payload: { verification_status: 'approved', verified: true }
-            });
-          }}
-        />
-      )}
+      {/* Dedicated Auth Screen */}
+      <Route 
+        path="/auth" 
+        element={
+          <div className="app-container">
+            <AuthPage />
+          </div>
+        } 
+      />
 
-      <Routes>
-        {/* wobbledate.com Homepage Landing Hero */}
-        <Route path="/" element={<LandingPage />} />
-
-        {/* Dedicated Auth Screen */}
-        <Route 
-          path="/auth" 
-          element={
+      {/* Profile Onboarding / Setup */}
+      <Route 
+        path="/setup" 
+        element={
+          isAuthenticated ? (
             <div className="app-container">
-              <AuthPage />
+              <ProfileSetupPage />
             </div>
-          } 
-        />
+          ) : (
+            <Navigate to="/auth" replace />
+          )
+        } 
+      />
 
-        {/* Super Admin / Creator Verification Portal */}
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/creator" element={<AdminDashboardPage />} />
-        <Route path="/boss" element={<AdminDashboardPage />} />
+      {/* Super Admin / Creator Verification Portal */}
+      <Route path="/admin" element={<AdminDashboardPage />} />
+      <Route path="/creator" element={<AdminDashboardPage />} />
+      <Route path="/boss" element={<AdminDashboardPage />} />
 
-        {/* Main Dating Web App Shell */}
-        <Route
-          path="/app"
-          element={
-            isAuthenticated ? (
-              <div className="app-container">
-                <AppShell />
-              </div>
-            ) : (
-              <Navigate to="/auth" replace />
-            )
-          }
-        >
-          <Route index element={<Navigate to="discover" replace />} />
-          <Route path="discover" element={<DiscoverPage />} />
-          <Route path="likes" element={<LikesPage />} />
-          <Route path="matches" element={<MatchesPage />} />
-          <Route path="chat/:matchId" element={<ChatPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="premium" element={<PremiumPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="edit-profile" element={<EditProfilePage />} />
-        </Route>
+      {/* Main Dating Web App Shell */}
+      <Route
+        path="/app"
+        element={
+          isAuthenticated ? (
+            <div className="app-container">
+              <AppShell />
+            </div>
+          ) : (
+            <Navigate to="/auth" replace />
+          )
+        }
+      >
+        <Route index element={<Navigate to="discover" replace />} />
+        <Route path="discover" element={<DiscoverPage />} />
+        <Route path="likes" element={<LikesPage />} />
+        <Route path="matches" element={<MatchesPage />} />
+        <Route path="chat/:matchId" element={<ChatPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="premium" element={<PremiumPage />} />
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="edit-profile" element={<EditProfilePage />} />
+        <Route path="setup" element={<ProfileSetupPage />} />
+      </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

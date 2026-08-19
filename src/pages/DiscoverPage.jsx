@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Compass, Flame, Users, User, Eye, EyeOff, Sparkles, Plus } from 'lucide-react';
 import ProfileCard from '../components/profile/ProfileCard';
 import ActionBar from '../components/discover/ActionBar';
-import StoriesBar from '../components/discover/StoriesBar';
-import StoryViewerModal from '../components/discover/StoryViewerModal';
 import DuoCard from '../components/discover/DuoCard';
 import WobbleHourModal from '../components/wobble/WobbleHourModal';
-import { PROFILES, STORIES, DUO_PROFILES } from '../data/mockData';
+import { PROFILES, DUO_PROFILES } from '../data/mockData';
 import { useAuth } from '../contexts/AuthContext';
 import { useConversations } from '../contexts/ConversationContext';
 import { playPop, playWhoosh, playMatchChime, playSuperlikeFanfare } from '../utils/soundEffects';
@@ -24,13 +22,11 @@ export default function DiscoverPage() {
   const [superlikeCelebration, setSuperlikeCelebration] = useState(null);
   const [touchState, setTouchState] = useState({ startX: 0, startY: 0, currentX: 0, currentY: 0, isDragging: false, axis: null });
 
-  // New Feature States
-  const [activeStory, setActiveStory] = useState(null);
+  // Discovery Feature States
   const [showWobbleHour, setShowWobbleHour] = useState(false);
   const [isDuoMode, setIsDuoMode] = useState(false);
   const [duoIndex, setDuoIndex] = useState(0);
   const [isBlindMode, setIsBlindMode] = useState(false);
-  const [storiesList, setStoriesList] = useState(STORIES);
 
   useEffect(() => {
     // Filter out already matched profiles and filter by target gender (women for male user)
@@ -226,13 +222,6 @@ export default function DiscoverPage() {
 
   return (
     <div className="discover-page">
-      {/* 24h Vibe Snaps (Stories Bar) */}
-      <StoriesBar 
-        stories={storiesList}
-        onSelectStory={(s) => setActiveStory(s)}
-        onAddStory={handleAddVibeSnap}
-      />
-
       {/* The Wobble Hour Live Event Banner */}
       <div 
         className="wobble-hour-live-strip animate-pulse-subtle"
@@ -423,17 +412,6 @@ export default function DiscoverPage() {
             </p>
           </div>
         </div>
-      )}
-
-      {/* 24h Vibe Snap Fullscreen Story Viewer */}
-      {activeStory && (
-        <StoryViewerModal 
-          storyData={activeStory}
-          onClose={() => setActiveStory(null)}
-          onReply={({ userName, storyCaption, text }) => {
-            showToast(`Replied to ${userName}'s story: "${text}" 💌`);
-          }}
-        />
       )}
 
       {/* Wobble Hour Live Chemistry Modal */}

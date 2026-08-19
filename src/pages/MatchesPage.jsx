@@ -4,7 +4,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { useConversations } from '../contexts/ConversationContext';
 import { canStartConversation, getSlotDisplay, getEndsDisplay } from '../utils/conversationRules';
 import { timeAgo } from '../utils/helpers';
-import { PHASE_CONFIG } from '../data/mockData';
+import { PHASE_CONFIG, STORIES } from '../data/mockData';
+import StoriesBar from '../components/discover/StoriesBar';
+import StoryViewerModal from '../components/discover/StoryViewerModal';
 import { MoreVertical, Lock, X } from 'lucide-react';
 import './MatchesPage.css';
 
@@ -15,9 +17,15 @@ export default function MatchesPage() {
 
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [modalType, setModalType] = useState(null); // 'start', 'full', 'menu', 'phase'
+  const [activeStory, setActiveStory] = useState(null);
+  const [storiesList, setStoriesList] = useState(STORIES);
 
   const slotsFull = !canStartConversation(user, activeCount);
   const fillPercentage = (activeCount / user.conversation_slots) * 100;
+
+  const handleAddVibeSnap = (newStory) => {
+    setStoriesList(prev => [newStory, ...prev]);
+  };
 
   const sortedMatches = useMemo(() => {
     return [...matches].sort((a, b) => {
@@ -53,8 +61,15 @@ export default function MatchesPage() {
   return (
     <div className="page page-with-topbar matches-page">
       <header className="matches-header">
-        <h1>Matches <span>{matches.length}</span></h1>
+        <h1>Messages & Matches <span>{matches.length}</span></h1>
       </header>
+
+      {/* 24-Hour Active Match Stories Bar */}
+      <StoriesBar 
+        stories={storiesList}
+        onSelectStory={(s) => setActiveStory(s)}
+        onAddStory={handleAddVibeSnap}
+      />
 
       <div className="page-content">
         <div className="status-banners">
@@ -199,6 +214,17 @@ export default function MatchesPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* 24h Vibe Snap Fullscreen Story Viewer */}
+      {activeStory && (
+        <StoryViewerModal 
+          storyData={activeStory}
+          onClose={() => setActiveStory(null)}
+          onReply={({ userName, text }) => {
+            console.log(`Replied to ${userName}'s story: "${text}"`);
+          }}
+        />
       )}
     </div>
   );

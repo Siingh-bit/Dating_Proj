@@ -93,8 +93,12 @@ const AuthPage = () => {
       const userProfile = await getOrCreateUserProfile(email);
       setTimeout(() => {
         dispatch({ type: 'LOGIN', payload: userProfile });
-        navigate('/app/discover');
-      }, 4200); // Wait for full animation
+        if (!userProfile.profile_completed && !userProfile.is_admin) {
+          navigate('/app/setup');
+        } else {
+          navigate('/app/discover');
+        }
+      }, 4000); // Wait for full heart animation
     } else {
       setOtpError(true);
       setTimeout(() => setOtpError(false), 500); // Reset after shake
@@ -190,15 +194,8 @@ const AuthPage = () => {
       {step === 3 && (
         <div className="step-container step-3 slide-in-right">
           <div className="auth-form-header">
-            <h2>Enter your code</h2>
+            <h2>Enter verification code</h2>
             <p>We sent a 6-digit code to {email || 'your email'}</p>
-          </div>
-
-          {/* This build has no mail backend, so the code is surfaced here.
-              Presented as a deliberate demo affordance rather than a debug bar. */}
-          <div className="demo-code-hint">
-            <span className="demo-code-label">Demo mode</span>
-            <span className="demo-code-value">{generatedOtp}</span>
           </div>
 
           <div className={`otp-container ${otpError ? 'shake' : ''}`}>
