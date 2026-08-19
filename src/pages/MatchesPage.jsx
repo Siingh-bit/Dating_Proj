@@ -19,6 +19,7 @@ export default function MatchesPage() {
   const [modalType, setModalType] = useState(null); // 'start', 'full', 'menu', 'phase'
   const [activeStory, setActiveStory] = useState(null);
   const [storiesList, setStoriesList] = useState(STORIES);
+  const [storyReplyNote, setStoryReplyNote] = useState('');
 
   const slotsFull = !canStartConversation(user, activeCount);
   const fillPercentage = (activeCount / user.conversation_slots) * 100;
@@ -216,13 +217,31 @@ export default function MatchesPage() {
         </div>
       )}
 
+      {storyReplyNote && <div className="story-reply-note">{storyReplyNote}</div>}
+
       {/* 24h Vibe Snap Fullscreen Story Viewer */}
       {activeStory && (
         <StoryViewerModal 
           storyData={activeStory}
           onClose={() => setActiveStory(null)}
           onReply={({ userName, text }) => {
-            console.log(`Replied to ${userName}'s story: "${text}"`);
+            // This previously only console.logged, so a reply the user typed
+            // silently vanished. Deliver it into that person's conversation.
+            const target = matches.find(m => m.matchedWith?.name === userName);
+            if (!target) {
+              setStoryReplyNote(`You can message ${userName} once you match.`);
+              setTimeout(() => setStoryReplyNote(''), 3000);
+              return;
+            }
+            if (!target.isActiveConversation) {
+              dispatch({ type: 'START_CONVERSATION', payload: { matchId: target.id } });
+            }
+            dispatch({
+              type: 'SEND_MESSAGE',
+              payload: { matchId: target.id, text: `Replying to your snap: ${text}` },
+            });
+            setStoryReplyNote(`Sent to ${userName}.`);
+            setTimeout(() => setStoryReplyNote(''), 3000);
           }}
         />
       )}

@@ -20,6 +20,8 @@ const AuthPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [authErrorMsg, setAuthErrorMsg] = useState('');
   const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
   
   const { dispatch } = useAuth();
@@ -52,12 +54,22 @@ const AuthPage = () => {
     setIsSendingEmail(true);
 
     try {
-      await sendBrevoOtpEmail(email, code);
+      // sendBrevoOtpEmail RESOLVES with { success:false } on failure rather
+      // than throwing, so the result has to be inspected. Previously this
+      // advanced to the code screen regardless, leaving the user waiting for
+      // an email that was never going to arrive.
+      const result = await sendBrevoOtpEmail(email, code);
+      if (!result?.success) {
+        setAuthErrorMsg("We couldn't send your code right now. Please check the address and try again.");
+        return;
+      }
+      setAuthErrorMsg('');
+      setStep(3);
     } catch (err) {
-      console.warn('Brevo email failed or in offline mode:', err);
+      console.error('[Wobble Date] Could not send verification email:', err);
+      setAuthErrorMsg("We couldn't send your code right now. Please check the address and try again.");
     } finally {
       setIsSendingEmail(false);
-      setStep(3);
     }
   };
 
@@ -94,30 +106,45 @@ const AuthPage = () => {
   };
 
   const handleVerify = async () => {
+    if (isVerifying) return;
     const enteredOtp = otp.join('');
-    const isAdmin = isSuperAdminEmail(email);
-    const isValid = enteredOtp === generatedOtp || 
-                    enteredOtp === '123456' || 
-                    (isAdmin && (enteredOtp === 'wobble' || enteredOtp === 'admin1' || enteredOtp === '123456'));
 
-    if (isValid) {
-      setStep(4);
-      const userProfile = await getOrCreateUserProfile(email);
-      setTimeout(() => {
-        dispatch({ type: 'LOGIN', payload: userProfile });
-        if (isAdmin) {
-          sessionStorage.setItem('wobble_admin_auth', 'true');
-          navigate('/admin');
-        } else if (!userProfile.profile_completed) {
-          navigate('/app/setup');
-        } else {
-          navigate('/app/discover');
-        }
-      }, 3800); // Wait for full heart animation
-    } else {
+    // The emailed code is the only accepted credential — see LandingPage for
+    // the backdoors that used to live here.
+    if (!generatedOtp || enteredOtp !== generatedOtp) {
       setOtpError(true);
-      setTimeout(() => setOtpError(false), 500); // Reset after shake
+      setTimeout(() => setOtpError(false), 500); // reset after shake
+      return;
     }
+
+    setIsVerifying(true);
+    setAuthErrorMsg('');
+    setStep(4);
+
+    let userProfile;
+    try {
+      userProfile = await getOrCreateUserProfile(email);
+    } catch (err) {
+      console.error('[Wobble Date] Sign-in failed:', err);
+      setStep(3);
+      setIsVerifying(false);
+      setAuthErrorMsg("We couldn't finish signing you in. Please check your connection and try again.");
+      return;
+    }
+
+    const isAdmin = isSuperAdminEmail(email);
+    setTimeout(() => {
+      dispatch({ type: 'LOGIN', payload: userProfile });
+      setIsVerifying(false);
+      if (isAdmin) {
+        sessionStorage.setItem('wobble_admin_auth', 'true');
+        navigate('/admin');
+      } else if (!userProfile.profile_completed) {
+        navigate('/app/setup');
+      } else {
+        navigate('/app/discover');
+      }
+    }, 3800); // wait for the full heart animation
   };
 
   return (

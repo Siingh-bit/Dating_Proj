@@ -11,6 +11,25 @@ import { useConversations } from '../contexts/ConversationContext';
 import { playPop, playWhoosh, playMatchChime, playSuperlikeFanfare } from '../utils/soundEffects';
 import './DiscoverPage.css';
 
+/**
+ * Does a profile's gender satisfy the viewer's "show me" preference?
+ *
+ * Tolerates both the older seeded values ('female'/'male') and the values the
+ * setup flow now writes ('woman'/'man'/'non-binary'/'other'), so existing rows
+ * keep working after the identity fields were added.
+ */
+const WOMAN = new Set(['woman', 'women', 'female', 'f']);
+const MAN = new Set(['man', 'men', 'male', 'm']);
+
+export function matchesPreference(profileGender, preference) {
+  if (!preference || preference === 'everyone' || preference === 'all') return true;
+  const g = String(profileGender || '').toLowerCase();
+  if (preference === 'women') return WOMAN.has(g);
+  if (preference === 'men') return MAN.has(g);
+  // An unrecognised preference should never hide the whole deck.
+  return true;
+}
+
 export default function DiscoverPage() {
   const navigate = useNavigate();
   const { user, dispatch: authDispatch } = useAuth();
@@ -37,10 +56,12 @@ export default function DiscoverPage() {
   useEffect(() => {
     // Filter out already matched profiles and filter by target gender (women for male user)
     const matchedProfileIds = matches.map(m => m.matchedWith.id);
-    const targetGender = user?.interestedIn || (user?.gender === 'male' ? 'female' : 'male');
-    const availableProfiles = PROFILES.filter(p => 
-      !matchedProfileIds.includes(p.id) && 
-      (targetGender === 'all' || p.gender === targetGender)
+    // The preference field is `interested_in` on the profile. This used to read
+    // `user.interestedIn`, which never existed, so the filter silently fell
+    // back to guessing from gender and ignored what the user actually chose.
+    const preference = user?.interested_in || user?.interestedIn || 'everyone';
+    const availableProfiles = PROFILES.filter(p =>
+      !matchedProfileIds.includes(p.id) && matchesPreference(p.gender, preference)
     );
     setProfiles(availableProfiles);
   }, [matches, user]);
@@ -246,27 +267,31 @@ export default function DiscoverPage() {
 
       {/* Discovery Controls Bar */}
       <div className="discover-controls-bar">
-        {/* Mode Toggle: Solo vs Duo Date */}
-        <div className="mode-toggle-group">
-          <button 
-            className={`mode-toggle-btn ${!isDuoMode ? 'active' : ''}`}
-            onClick={() => {
-              playPop();
-              setIsDuoMode(false);
-            }}
-          >
-            <User size={13} /> Solo
-          </button>
-          <button 
-            className={`mode-toggle-btn ${isDuoMode ? 'active' : ''}`}
-            onClick={() => {
-              playPop();
-              setIsDuoMode(true);
-            }}
-          >
-            <Users size={13} /> Duo Mode
-          </button>
-        </div>
+        {/* Mode Toggle: Solo vs Duo Date.
+            Hidden entirely when there are no duo profiles available, so users
+            aren't offered a mode that can only ever show an empty state. */}
+        {DUO_PROFILES.length > 0 && (
+          <div className="mode-toggle-group">
+            <button
+              className={`mode-toggle-btn ${!isDuoMode ? 'active' : ''}`}
+              onClick={() => {
+                playPop();
+                setIsDuoMode(false);
+              }}
+            >
+              <User size={13} /> Solo
+            </button>
+            <button
+              className={`mode-toggle-btn ${isDuoMode ? 'active' : ''}`}
+              onClick={() => {
+                playPop();
+                setIsDuoMode(true);
+              }}
+            >
+              <Users size={13} /> Duo Mode
+            </button>
+          </div>
+        )}
 
         {/* Blind Impression Toggle */}
         <button 

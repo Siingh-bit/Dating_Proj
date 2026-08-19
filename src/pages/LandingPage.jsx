@@ -28,6 +28,8 @@ export default function LandingPage() {
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpError, setOtpError] = useState(false);
   const [heartAnim, setHeartAnim] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [authErrorMsg, setAuthErrorMsg] = useState('');
 
   // Live Wobble Hour Countdown simulation
   const [countdown, setCountdown] = useState({ min: 42, sec: 18 });
@@ -67,11 +69,27 @@ export default function LandingPage() {
     e.preventDefault();
     if (!authEmail || isSendingEmail) return;
     setIsSendingEmail(true);
+    setAuthErrorMsg('');
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(code);
-    await sendBrevoOtpEmail(authEmail, code);
-    setIsSendingEmail(false);
-    setAuthStep(2);
+
+    try {
+      // Resolves with { success:false } on failure rather than throwing, so
+      // the result must be checked — otherwise we send the user to the code
+      // screen for an email that never arrives.
+      const result = await sendBrevoOtpEmail(authEmail, code);
+      if (!result?.success) {
+        setAuthErrorMsg("We couldn't send your code right now. Please check the address and try again.");
+        return;
+      }
+      setGeneratedOtp(code);
+      setAuthOtp(['', '', '', '', '', '']);
+      setAuthStep(2);
+    } catch (err) {
+      console.error('[Wobble Date] Could not send verification email:', err);
+      setAuthErrorMsg("We couldn't send your code right now. Please check the address and try again.");
+    } finally {
+      setIsSendingEmail(false);
+    }
   };
 
   const handleOtpInput = (index, val) => {
@@ -87,41 +105,62 @@ export default function LandingPage() {
   };
 
   const handleVerifyOtp = async () => {
+    if (isVerifying) return;
     const entered = authOtp.join('');
-    const isAdmin = isSuperAdminEmail(authEmail);
-    const isValid = entered === generatedOtp || 
-                    entered === '123456' || 
-                    (isAdmin && (entered === 'wobble' || entered === 'admin1' || entered === '123456'));
 
-    if (isValid) {
-      setHeartAnim(true);
-      const userProfile = await getOrCreateUserProfile(authEmail);
-      setTimeout(() => {
-        authDispatch({ type: 'LOGIN', payload: userProfile });
-        setShowAuthModal(false);
-        if (isAdmin) {
-          sessionStorage.setItem('wobble_admin_auth', 'true');
-          navigate('/admin');
-        } else if (!userProfile.profile_completed) {
-          navigate('/app/setup');
-        } else {
-          navigate('/app/discover');
-        }
-      }, 2000);
-    } else {
+    // The emailed code is the only accepted credential. There used to be a
+    // hardcoded '123456' accepted for ANY address, plus 'wobble'/'admin1'
+    // for admin addresses — that let anyone sign in as anyone.
+    if (!generatedOtp || entered !== generatedOtp) {
       setOtpError(true);
+      return;
     }
-  };
 
-  const handleSocialLogin = async () => {
+    setIsVerifying(true);
+    setAuthErrorMsg('');
     setHeartAnim(true);
-    const demoEmail = 'user.' + Math.floor(1000 + Math.random() * 9000) + '@wobbledate.com';
-    const userProfile = await getOrCreateUserProfile(demoEmail);
+
+    let userProfile;
+    try {
+      userProfile = await getOrCreateUserProfile(authEmail);
+    } catch (err) {
+      // Should not happen (the service swallows its own errors) but if the
+      // profile lookup ever fails hard we must not leave the user staring at
+      // an animation forever, which is what previously happened.
+      console.error('[Wobble Date] Sign-in failed:', err);
+      setHeartAnim(false);
+      setIsVerifying(false);
+      setAuthErrorMsg("We couldn't finish signing you in. Please check your connection and try again.");
+      return;
+    }
+
+    const isAdmin = isSuperAdminEmail(authEmail);
     setTimeout(() => {
       authDispatch({ type: 'LOGIN', payload: userProfile });
       setShowAuthModal(false);
-      navigate('/app/discover');
-    }, 1200);
+      setIsVerifying(false);
+      if (isAdmin) {
+        sessionStorage.setItem('wobble_admin_auth', 'true');
+        navigate('/admin');
+      } else if (!userProfile.profile_completed) {
+        navigate('/app/setup');
+      } else {
+        navigate('/app/discover');
+      }
+    }, 2000);
+  };
+
+  /**
+   * Google / Apple sign-in is not wired to an OAuth provider yet.
+   *
+   * This previously minted a throwaway account (user.4821@wobbledate.com) and
+   * logged the visitor straight in with no authentication at all — anyone
+   * clicking the button got an unverified account on the live site. Until real
+   * OAuth is connected, the honest behaviour is to say so and send them to
+   * email sign-in, which actually verifies ownership.
+   */
+  const handleSocialLogin = () => {
+    setAuthErrorMsg('Social sign-in is coming soon. Please continue with your email for now.');
   };
 
   const scrollToSection = (e, sectionId) => {
@@ -589,9 +628,12 @@ export default function LandingPage() {
 
             <div className="footer-nav-col">
               <h4>Safety & Terms</h4>
-              <a href="#safety" onClick={(e) => { e.preventDefault(); alert("Wobble Date enforces verified photos, PEGI 18 age rating, zero harassment tolerance, and graceful anti-ghosting exit tools."); }}>Safety Guidelines</a>
-              <a href="#privacy" onClick={(e) => { e.preventDefault(); alert("Your privacy is protected. Wobble Date never sells personal user data."); }}>Privacy Policy</a>
-              <a href="#terms" onClick={(e) => { e.preventDefault(); alert("Wobble Date Terms of Service (2026 Edition)."); }}>Terms of Service</a>
+              {/* These were browser alert() popups. A live dating service
+                  needs real, linkable policy pages — see the note in the
+                  handover about hosting /safety, /privacy and /terms. */}
+              <a href="/safety">Safety Guidelines</a>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
               <a href="/WobbleDate.apk" download>Download APK</a>
             </div>
           </div>
@@ -632,8 +674,10 @@ export default function LandingPage() {
                   />
                 </div>
 
+                {authErrorMsg && <p className="otp-error-msg">{authErrorMsg}</p>}
+
                 <button type="submit" className="modal-primary-btn" disabled={isSendingEmail}>
-                  {isSendingEmail ? "Sending Code..." : "Continue with Email"} <ArrowRight size={16} />
+                  {isSendingEmail ? "Sending code…" : "Continue with Email"} <ArrowRight size={16} />
                 </button>
 
                 <div className="modal-divider">
@@ -686,9 +730,15 @@ export default function LandingPage() {
                 </div>
 
                 {otpError && <p className="otp-error-msg">Incorrect code. Please check your email and try again.</p>}
+                {authErrorMsg && <p className="otp-error-msg">{authErrorMsg}</p>}
 
-                <button className="modal-primary-btn" onClick={handleVerifyOtp}>
-                  <span>Verify & Continue</span> <ArrowRight size={16} />
+                <button
+                  className="modal-primary-btn"
+                  onClick={handleVerifyOtp}
+                  disabled={isVerifying || authOtp.join('').length !== 6}
+                >
+                  <span>{isVerifying ? 'Verifying…' : 'Verify & Continue'}</span>
+                  {!isVerifying && <ArrowRight size={16} />}
                 </button>
 
                 <button className="btn-resend-link" onClick={() => handleContinueEmail({ preventDefault: () => {} })}>

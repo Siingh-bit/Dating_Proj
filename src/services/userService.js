@@ -18,7 +18,29 @@ export function isSuperAdminEmail(email) {
 }
 
 /**
- * Get an existing user profile or create a clean, empty new user profile
+ * Never let a hung network call block the UI.
+ *
+ * supabase-js has no built-in request timeout, so if the database is slow,
+ * unreachable or blocked by a corporate/mobile network the promise simply
+ * never settles. Any `await` on it then hangs forever — which is exactly how
+ * login got stuck on the verification animation with no error shown.
+ */
+const NETWORK_TIMEOUT_MS = 8000;
+
+function withTimeout(promise, ms = NETWORK_TIMEOUT_MS, label = 'request') {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`Timed out: ${label}`)), ms)
+    ),
+  ]);
+}
+
+/**
+ * Get an existing user profile or create a clean, empty new user profile.
+ *
+ * Always resolves — on any failure it returns a usable local profile so the
+ * user can still get into the app rather than being stranded at the door.
  */
 export async function getOrCreateUserProfile(email, initialData = {}) {
   const isAdmin = isSuperAdminEmail(email);
@@ -54,11 +76,11 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
 
   try {
     // 1. Check if user profile already exists
-    const { data: existingUser, error: fetchErr } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('email', email)
-      .maybeSingle();
+    const { data: existingUser, error: fetchErr } = await withTimeout(
+      supabase.from('profiles').select('*').eq('email', email).maybeSingle(),
+      NETWORK_TIMEOUT_MS,
+      'profile lookup'
+    );
 
     if (existingUser && !fetchErr) {
       return {
@@ -76,16 +98,20 @@ export async function getOrCreateUserProfile(email, initialData = {}) {
 
     // 2. If new user, create a clean profile in Supabase
     const newProfile = {
-      id: crypto.randomUUID(),
+      // crypto.randomUUID needs a secure context and isn't in older iOS
+      // Safari / some in-app browsers — fall back rather than throw.
+      id: (typeof crypto !== 'undefined' && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : `u-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`,
       ...cleanEmptyTemplate,
       ...initialData,
     };
 
-    const { data: created, error: insertErr } = await supabase
-      .from('profiles')
-      .insert(newProfile)
-      .select()
-      .single();
+    const { data: created, error: insertErr } = await withTimeout(
+      supabase.from('profiles').insert(newProfile).select().single(),
+      NETWORK_TIMEOUT_MS,
+      'profile create'
+    );
 
     if (insertErr) {
       console.warn('[Wobble Date] Insert fallback:', insertErr);
@@ -108,10 +134,13 @@ export async function updateUserProfile(userId, updates) {
   }
 
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .update(updates)
-      .eq('id', userId);
+    // Callers await this before navigating, so an untimed request would strand
+    // the user on the setup screen exactly like the login hang did.
+    const { data, error } = await withTimeout(
+      supabase.from('profiles').update(updates).eq('id', userId),
+      NETWORK_TIMEOUT_MS,
+      'profile update'
+    );
 
     if (error) {
       console.warn('[Wobble Date] Profile update error in Supabase:', error);
@@ -153,37 +182,25 @@ export async function fetchDiscoverProfiles(currentUserId) {
  * Fetch all registered user profiles for the Super Admin review portal
  */
 export async function fetchAllAdminProfiles() {
+  // No invented reviewers. If the database isn't reachable the admin must see
+  // an empty queue, not fabricated "@wobblepreview.com" users with made-up
+  // verification states that could be actioned by mistake.
   if (!isSupabaseConfigured || !supabase) {
-    return PROFILES.map((p, idx) => ({
-      ...p,
-      email: `${p.name.toLowerCase()}@wobblepreview.com`,
-      verification_status: idx < 3 ? 'pending' : 'approved',
-      verified: idx >= 3,
-      live_selfie_url: p.photos?.[0],
-      govt_id_url: idx % 2 === 0 ? p.photos?.[1] : null,
-      govt_id_status: idx % 2 === 0 ? (idx >= 3 ? 'verified' : 'uploaded') : 'none',
-      created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
-    }));
+    return [];
   }
 
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await withTimeout(
+      supabase.from('profiles').select('*').order('created_at', { ascending: false }),
+      NETWORK_TIMEOUT_MS,
+      'admin profile list'
+    );
 
-    if (error || !data || data.length === 0) {
-      return PROFILES.map((p, idx) => ({
-        ...p,
-        email: `${p.name.toLowerCase()}@wobblepreview.com`,
-        verification_status: idx < 3 ? 'pending' : 'approved',
-        verified: idx >= 3,
-        live_selfie_url: p.photos?.[0],
-        govt_id_url: idx % 2 === 0 ? p.photos?.[1] : null,
-        govt_id_status: idx % 2 === 0 ? (idx >= 3 ? 'verified' : 'uploaded') : 'none',
-        created_at: new Date(Date.now() - idx * 3600000 * 4).toISOString(),
-      }));
+    if (error) {
+      console.error('[Wobble Date] Could not load admin profiles:', error);
+      return [];
     }
+    if (!data) return [];
 
     return data;
   } catch (err) {

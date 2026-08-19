@@ -421,7 +421,7 @@ export default function AdminDashboardPage() {
 
                   {/* 4-Photo Inspection Gallery */}
                   <div className="card-photos-gallery">
-                    {(profile.photos && profile.photos.length > 0 ? profile.photos : ['/profiles/isha/1.jpg']).map((imgUrl, pIdx) => (
+                    {(profile.photos && profile.photos.length > 0 ? profile.photos : []).map((imgUrl, pIdx) => (
                       <div 
                         key={pIdx} 
                         className="photo-thumb-container" 

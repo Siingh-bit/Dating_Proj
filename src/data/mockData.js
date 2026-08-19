@@ -218,250 +218,6 @@ export const PROFILES = [
       "Ask for her #1 indie song recommendation right now 🎧",
     ],
   },
-  {
-    id: "p4",
-    name: "Ananya",
-    age: 24,
-    gender: "female",
-    location: "Mumbai, India",
-    distance: "3 km away",
-    photos: [
-      "/profiles/ananya/1.jpg",
-      "/profiles/ananya/2.jpg",
-      "/profiles/ananya/3.jpg",
-      "/profiles/ananya/4.jpg",
-    ],
-    prompts: [
-      { question: "My simple pleasures are", answer: "Watching the rain from a café window with a warm cup of masala chai and nowhere to be." },
-      { question: "I'll fall for you if", answer: "You can hold a real conversation at 2am about things that actually matter to you." },
-      { question: "The hallmark of a good relationship is", answer: "Feeling safe enough to be your unfiltered, messy, real self." },
-    ],
-    vitals: {
-      height: "5'5\"",
-      work: "UX Researcher at Flipkart",
-      education: "IIT Bombay",
-      hometown: "Jaipur",
-      religion: "Hindu",
-      drinking: "Socially",
-      smoking: "Never",
-    },
-    intention: "Long-term relationship",
-    verified: true,
-    voicePrompt: {
-      question: "My simple pleasures in life ☕",
-      duration: 11,
-      durationLabel: "0:11",
-      caption: "Watching Mumbai rain with piping hot ginger chai and zero notifications.",
-    },
-    spotify: {
-      anthem: "Kho Gaye Hum Kahan",
-      artist: "Jasleen Royal & Prateek Kuhad",
-      albumArt: "🌧️",
-      topArtists: ["Prateek Kuhad", "Jasleen Royal", "Lauv"],
-    },
-    smartSparks: [
-      "Ask her about her favorite rainy day café in Mumbai ☕",
-      "Ask about her UX design research at Flipkart 💻",
-      "Ask what 2am topic she never gets tired of discussing 🌙",
-    ],
-  },
-  {
-    id: "p5",
-    name: "Meera",
-    age: 23,
-    gender: "female",
-    location: "Delhi, India",
-    distance: "7 km away",
-    photos: [
-      "/profiles/meera/1.jpg",
-      "/profiles/meera/2.jpg",
-      "/profiles/meera/3.jpg",
-      "/profiles/meera/4.jpg",
-    ],
-    prompts: [
-      { question: "A random fact I love is", answer: "Octopuses have three hearts and blue blood. If that's not the most romantic thing..." },
-      { question: "The way to win me over is", answer: "Cook me something — literally anything — and tell me the story behind the recipe." },
-      { question: "Together we could", answer: "Open a tiny bookshop that also serves really good espresso and play lo-fi all day." },
-    ],
-    vitals: {
-      height: "5'3\"",
-      work: "Graphic Designer at Zomato",
-      education: "NID Ahmedabad",
-      hometown: "Lucknow",
-      religion: "Hindu",
-      drinking: "Rarely",
-      smoking: "Never",
-    },
-    intention: "Life partner",
-    verified: true,
-    voicePrompt: {
-      question: "The dream bookshop café vibe 📚",
-      duration: 13,
-      durationLabel: "0:13",
-      caption: "Picture this: floor-to-ceiling wooden bookshelves, the smell of fresh espresso, and soft vinyl records spinning.",
-    },
-    spotify: {
-      anthem: "Liggi",
-      artist: "Ritviz",
-      albumArt: "🔥",
-      topArtists: ["Ritviz", "Nucleya", "Chhavi Sodhani"],
-    },
-    smartSparks: [
-      "Ask what dish she loves having cooked for her the most 🍳",
-      "Ask for her top 3 books that would be in her dream bookshop 📚",
-      "Ask about her graphic design work at Zomato 🎨",
-    ],
-  },
-  {
-    id: "p6",
-    name: "Rhea",
-    age: 24,
-    gender: "female",
-    location: "Pune, India",
-    distance: "5 km away",
-    photos: [
-      "/profiles/rhea/1.jpg",
-      "/profiles/rhea/2.jpg",
-      "/profiles/rhea/3.jpg",
-      "/profiles/rhea/4.jpg",
-    ],
-    prompts: [
-      { question: "My simple pleasures are", answer: "A quick elevator mirror selfie before heading out, cold brew, and loud indie rock in my car." },
-      { question: "Believe it or not, I", answer: "Designed a rooftop pavilion that won a national architectural student award." },
-      { question: "Something that's non-negotiable for me is", answer: "Real emotional intelligence. Say what you mean and mean what you say." },
-    ],
-    vitals: {
-      height: "5'6\"",
-      work: "Architect at Studio Mumbai",
-      education: "CEPT Ahmedabad",
-      hometown: "Pune",
-      religion: "Hindu",
-      drinking: "Socially",
-      smoking: "Never",
-    },
-    intention: "Long-term relationship",
-    verified: true,
-  },
-  {
-    id: "p7",
-    name: "Kavya",
-    age: 25,
-    gender: "female",
-    location: "Hyderabad, India",
-    distance: "8 km away",
-    photos: [
-      "/profiles/kavya/1.jpg",
-      "/profiles/kavya/2.jpg",
-      "/profiles/kavya/3.jpg",
-      "/profiles/kavya/4.jpg",
-    ],
-    prompts: [
-      { question: "Best travel story", answer: "Got lost in Gokarna at midnight, found a beach bonfire with local musicians. Best night ever." },
-      { question: "I'm convinced that", answer: "The best relationships start with genuine friendship, banter, and mutual respect." },
-      { question: "The key to my heart is", answer: "Remembering the random small details I mention in casual 1am conversations." },
-    ],
-    vitals: {
-      height: "5'5\"",
-      work: "Product Manager at Microsoft",
-      education: "IIIT Hyderabad",
-      hometown: "Vizag",
-      religion: "Hindu",
-      drinking: "Occasionally",
-      smoking: "Never",
-    },
-    intention: "Life partner",
-    verified: true,
-  },
-  {
-    id: "p8",
-    name: "Tanvi",
-    age: 23,
-    gender: "female",
-    location: "Mumbai, India",
-    distance: "2 km away",
-    photos: [
-      "/profiles/tanvi/1.jpg",
-      "/profiles/tanvi/2.jpg",
-      "/profiles/tanvi/3.jpg",
-      "/profiles/tanvi/4.jpg",
-    ],
-    prompts: [
-      { question: "A random fact I love is", answer: "Ootd mirror selfies taken at 45 degrees with phone covering half the face yield 100% confidence boost." },
-      { question: "My most irrational fear is", answer: "Running out of storage space on my phone right when taking a sunset picture." },
-      { question: "Two truths and a lie", answer: "I speak three languages fluently. I've run a half marathon. I've never tried matcha." },
-    ],
-    vitals: {
-      height: "5'4\"",
-      work: "Brand Strategist at Nykaa",
-      education: "St. Xavier's Mumbai",
-      hometown: "Mumbai",
-      religion: "Jain",
-      drinking: "Socially",
-      smoking: "Never",
-    },
-    intention: "Long-term relationship",
-    verified: true,
-  },
-  {
-    id: "p9",
-    name: "Ishita",
-    age: 26,
-    gender: "female",
-    location: "Delhi, India",
-    distance: "4 km away",
-    photos: [
-      "/profiles/ishita/1.jpg",
-      "/profiles/ishita/2.jpg",
-      "/profiles/ishita/3.jpg",
-      "/profiles/ishita/4.jpg",
-    ],
-    prompts: [
-      { question: "I geek out on", answer: "Vintage textile history, finding hidden cafe spots in Hauz Khas Village, and playlist curation." },
-      { question: "Typical Sunday for me", answer: "Late morning brunch → wandering through art galleries → iced americano → reading in the sun." },
-      { question: "The key to my heart is", answer: "Being unapologetically passionate about whatever weird hobby makes your eyes light up." },
-    ],
-    vitals: {
-      height: "5'7\"",
-      work: "Fashion Buyer at Nykaa Fashion",
-      education: "NIFT Delhi",
-      hometown: "Jaipur",
-      religion: "Hindu",
-      drinking: "Socially",
-      smoking: "Never",
-    },
-    intention: "Long-term relationship",
-    verified: true,
-  },
-  {
-    id: "p10",
-    name: "Sanjana",
-    age: 24,
-    gender: "female",
-    location: "Bangalore, India",
-    distance: "6 km away",
-    photos: [
-      "/profiles/sanjana/1.jpg",
-      "/profiles/sanjana/2.jpg",
-      "/profiles/sanjana/3.jpg",
-      "/profiles/sanjana/4.jpg",
-    ],
-    prompts: [
-      { question: "My love language is", answer: "Quality time, sharing boba tea in Indiranagar, and sending hilarious reels at 2am." },
-      { question: "Typical Sunday for me", answer: "Cubbon Park morning stroll → South Indian breakfast → coding side project → board game night." },
-      { question: "I'll fall for you if", answer: "You're witty, kind to service staff, and can hold your ground in a friendly debate." },
-    ],
-    vitals: {
-      height: "5'5\"",
-      work: "Data Scientist at Swiggy",
-      education: "RVCE Bangalore",
-      hometown: "Mysore",
-      religion: "Spiritual",
-      drinking: "Socially",
-      smoking: "Never",
-    },
-    intention: "Life partner",
-    verified: true,
-  },
 ];
 
 export const MATCHES = [
@@ -504,71 +260,6 @@ export const MATCHES = [
       read: true,
     },
   },
-  {
-    id: "m4",
-    matchedWith: PROFILES[3], // Ananya
-    matchedAt: "2026-08-08T08:00:00Z",
-    phase: "talking",
-    isActiveConversation: true,
-    lastMessage: {
-      text: "Mumbai rain with piping hot ginger chai is absolute peace ☕",
-      sender: "p4",
-      timestamp: "2026-08-08T14:10:00Z",
-      read: true,
-    },
-  },
-  {
-    id: "m5",
-    matchedWith: PROFILES[4], // Meera
-    matchedAt: "2026-08-08T09:30:00Z",
-    phase: "talking",
-    isActiveConversation: true,
-    lastMessage: {
-      text: "Opening a bookshop café with vinyl playing all day is the dream 📚",
-      sender: "p5",
-      timestamp: "2026-08-08T15:00:00Z",
-      read: true,
-    },
-  },
-  {
-    id: "m6",
-    matchedWith: PROFILES[5], // Rhea
-    matchedAt: "2026-08-08T10:15:00Z",
-    phase: "talking",
-    isActiveConversation: true,
-    lastMessage: {
-      text: "Elevator mirror selfie aesthetic is iconic! What indie rock songs are on loop?",
-      sender: "user-self",
-      timestamp: "2026-08-08T15:30:00Z",
-      read: true,
-    },
-  },
-  {
-    id: "m7",
-    matchedWith: PROFILES[6], // Kavya
-    matchedAt: "2026-08-08T11:00:00Z",
-    phase: "talking",
-    isActiveConversation: true,
-    lastMessage: {
-      text: "Gokarna at midnight sounds magical! Up for Date Night Lounge?",
-      sender: "p7",
-      timestamp: "2026-08-08T16:00:00Z",
-      read: true,
-    },
-  },
-  {
-    id: "m8",
-    matchedWith: PROFILES[7], // Tanvi
-    matchedAt: "2026-08-08T12:00:00Z",
-    phase: "talking",
-    isActiveConversation: true,
-    lastMessage: {
-      text: "45 degree mirror selfie angle is scientifically proven to boost confidence 📸",
-      sender: "user-self",
-      timestamp: "2026-08-08T16:45:00Z",
-      read: true,
-    },
-  },
 ];
 
 export const CONVERSATIONS = {
@@ -597,41 +288,6 @@ export const CONVERSATIONS = {
       { id: "msg302", sender: "p3", text: "That sunset rooftop pottery session in Hauz Khas sounds lovely ✨", timestamp: "2026-08-08T12:30:00Z" },
     ],
   },
-  m4: {
-    matchId: "m4",
-    messages: [
-      { id: "msg401", sender: "user-self", text: "Mumbai rain with piping hot ginger chai is absolute peace ☕", timestamp: "2026-08-08T14:10:00Z" },
-      { id: "msg402", sender: "p4", text: "So true! Nothing beats watching the sea at Marine Drive when it pours.", timestamp: "2026-08-08T14:25:00Z" },
-    ],
-  },
-  m5: {
-    matchId: "m5",
-    messages: [
-      { id: "msg501", sender: "user-self", text: "Opening a bookshop café with vinyl playing all day is the dream 📚", timestamp: "2026-08-08T14:40:00Z" },
-      { id: "msg502", sender: "p5", text: "Right?! Endless espresso and great books all day.", timestamp: "2026-08-08T15:00:00Z" },
-    ],
-  },
-  m6: {
-    matchId: "m6",
-    messages: [
-      { id: "msg601", sender: "user-self", text: "Elevator mirror selfie aesthetic is iconic! What indie rock songs are on loop?", timestamp: "2026-08-08T15:10:00Z" },
-      { id: "msg602", sender: "p6", text: "The Strokes, Arctic Monkeys, and PCRC! 🎸", timestamp: "2026-08-08T15:30:00Z" },
-    ],
-  },
-  m7: {
-    matchId: "m7",
-    messages: [
-      { id: "msg701", sender: "user-self", text: "Gokarna at midnight sounds magical! Up for Date Night Lounge?", timestamp: "2026-08-08T16:00:00Z" },
-      { id: "msg702", sender: "p7", text: "Always down for games! Let's do it 🎲✨", timestamp: "2026-08-08T16:15:00Z" },
-    ],
-  },
-  m8: {
-    matchId: "m8",
-    messages: [
-      { id: "msg801", sender: "user-self", text: "45 degree mirror selfie angle is scientifically proven to boost confidence 📸", timestamp: "2026-08-08T16:45:00Z" },
-      { id: "msg802", sender: "p8", text: "Haha 100%! Nykaa shoots taught me all the best angles 😂", timestamp: "2026-08-08T17:00:00Z" },
-    ],
-  },
 };
 
 export const INCOMING_LIKES = [
@@ -652,18 +308,6 @@ export const INCOMING_LIKES = [
     from: PROFILES[2], // Ishika
     likedItem: { type: "prompt", question: "The way to win me over is", comment: "Couldn't agree more 💛" },
     timestamp: "2026-08-07T15:00:00Z",
-  },
-  {
-    id: "like4",
-    from: PROFILES[3], // Ananya
-    likedItem: { type: "prompt", question: "My simple pleasures are", comment: "Pour-over coffee is elite!" },
-    timestamp: "2026-08-07T12:00:00Z",
-  },
-  {
-    id: "like5",
-    from: PROFILES[4], // Meera
-    likedItem: { type: "photo", photoIndex: 1, comment: "Great smile!" },
-    timestamp: "2026-08-06T18:00:00Z",
   },
 ];
 
@@ -746,7 +390,7 @@ export const STORIES = [
   },
   {
     id: "story_isha",
-    userId: "p9",
+    userId: "p1",
     userName: "Isha",
     avatar: "/profiles/isha/1.jpg",
     location: "Bandra, Mumbai",
@@ -770,7 +414,7 @@ export const STORIES = [
   },
   {
     id: "story_harshita",
-    userId: "p10",
+    userId: "p2",
     userName: "Harshita",
     avatar: "/profiles/harshita/1.jpg",
     location: "Indiranagar, Bangalore",
@@ -794,7 +438,7 @@ export const STORIES = [
   },
   {
     id: "story_ishika",
-    userId: "p11",
+    userId: "p3",
     userName: "Ishika",
     avatar: "/profiles/ishika/1.jpg",
     location: "Hauz Khas, Delhi",
@@ -816,118 +460,8 @@ export const STORIES = [
       },
     ],
   },
-  {
-    id: "story_ananya",
-    userId: "p1",
-    userName: "Ananya",
-    avatar: "/profiles/ananya/1.jpg",
-    location: "Mumbai",
-    storyCount: 1,
-    stories: [
-      {
-        id: "s_ananya_1",
-        photo: "/profiles/ananya/2.jpg",
-        timestamp: "6h ago",
-        caption: "Monsoon evening coffee watching the Arabian Sea 🌧️🌊",
-        vibe: "Monsoon Serenade",
-      },
-    ],
-  },
-  {
-    id: "story_meera",
-    userId: "p2",
-    userName: "Meera",
-    avatar: "/profiles/meera/1.jpg",
-    location: "Delhi",
-    storyCount: 1,
-    stories: [
-      {
-        id: "s_meera_1",
-        photo: "/profiles/meera/3.jpg",
-        timestamp: "8h ago",
-        caption: "New indie bookstore discovery in South Delhi 📚✨",
-        vibe: "Bookworm",
-      },
-    ],
-  },
 ];
 
-export const DUO_PROFILES = [
-  {
-    id: "duo_1",
-    duoName: "Isha & Rhea",
-    city: "Mumbai & Pune",
-    headline: "Designers, concert goers & rooftop lovers ✨",
-    person1: {
-      name: "Isha",
-      age: 24,
-      role: "UX Designer",
-      photo: "/profiles/isha/1.jpg",
-      vibe: "Iced matcha & vinyl records",
-    },
-    person2: {
-      name: "Rhea",
-      age: 24,
-      role: "Architect",
-      photo: "/profiles/rhea/1.jpg",
-      vibe: "Cold brew & loud indie rock",
-    },
-    jointPrompt: {
-      question: "Our ideal double date is",
-      answer: "A competitive board games & craft cocktails night followed by late-night street food!",
-    },
-    interests: ["Live Music", "Board Games", "Art Galleries", "Rooftops", "Coffee"],
-  },
-  {
-    id: "duo_2",
-    duoName: "Harshita & Tanvi",
-    city: "Bangalore & Mumbai",
-    headline: "Strategy minds, cafe hoppers & weekend roadtrippers 🚗",
-    person1: {
-      name: "Harshita",
-      age: 25,
-      role: "Brand Strategist",
-      photo: "/profiles/harshita/1.jpg",
-      vibe: "Cubbon Park & pasta dinners",
-    },
-    person2: {
-      name: "Tanvi",
-      age: 23,
-      role: "Marketing Lead",
-      photo: "/profiles/tanvi/1.jpg",
-      vibe: "Mirror selfies & comedy gigs",
-    },
-    jointPrompt: {
-      question: "You should swipe right if you and your friend",
-      answer: "Can handle witty banter, love spontaneous weekend trips, and have great playlist taste!",
-    },
-    interests: ["Standup Comedy", "Road Trips", "Italian Food", "Indie Music", "Fitness"],
-  },
-  {
-    id: "duo_3",
-    duoName: "Ishika & Ananya",
-    city: "Delhi & Mumbai",
-    headline: "Creative souls: Pottery, rain & deep 2am talks 🎨",
-    person1: {
-      name: "Ishika",
-      age: 23,
-      role: "Visual Artist",
-      photo: "/profiles/ishika/1.jpg",
-      vibe: "Pottery studio & sunset chai",
-    },
-    person2: {
-      name: "Ananya",
-      age: 24,
-      role: "UX Researcher",
-      photo: "/profiles/ananya/1.jpg",
-      vibe: "Rainy cafe windows & books",
-    },
-    jointPrompt: {
-      question: "Best double date activity",
-      answer: "A pottery painting workshop followed by trying the best wood-fired pizza spot in town.",
-    },
-    interests: ["Pottery", "Art Workshops", "Sunset Chilling", "Craft Beer", "Boba"],
-  },
-];
+export const DUO_PROFILES = [];
 
 

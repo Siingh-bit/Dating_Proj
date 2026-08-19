@@ -22,6 +22,32 @@ import { updateUserProfile } from '../services/userService';
 import WobbleLogo from '../components/shared/WobbleLogo';
 import './ProfileSetupPage.css';
 
+/* Identity options. `interested_in` values line up with the `gender` values so
+   Discover can filter on them directly. */
+const GENDER_OPTIONS = [
+  { value: 'woman', label: 'Woman' },
+  { value: 'man', label: 'Man' },
+  { value: 'non-binary', label: 'Non-binary' },
+  { value: 'other', label: 'Other' },
+];
+
+const INTERESTED_IN_OPTIONS = [
+  { value: 'women', label: 'Women' },
+  { value: 'men', label: 'Men' },
+  { value: 'everyone', label: 'Everyone' },
+];
+
+const SEXUALITY_OPTIONS = [
+  { value: 'straight', label: 'Straight' },
+  { value: 'gay', label: 'Gay' },
+  { value: 'lesbian', label: 'Lesbian' },
+  { value: 'bisexual', label: 'Bisexual' },
+  { value: 'pansexual', label: 'Pansexual' },
+  { value: 'asexual', label: 'Asexual' },
+  { value: 'queer', label: 'Queer' },
+  { value: 'questioning', label: 'Questioning' },
+];
+
 export default function ProfileSetupPage() {
   const navigate = useNavigate();
   const { user, dispatch } = useAuth();
@@ -30,8 +56,14 @@ export default function ProfileSetupPage() {
   // Step 1 State: Basics & Photos
   const [name, setName] = useState(user?.name || '');
   const [age, setAge] = useState(user?.age || 24);
-  const [gender, setGender] = useState(user?.gender || 'male');
+  const [gender, setGender] = useState(user?.gender || '');
+  const [interestedIn, setInterestedIn] = useState(user?.interested_in || '');
+  const [sexuality, setSexuality] = useState(user?.sexuality || '');
+  const [showSexualityOnProfile, setShowSexualityOnProfile] = useState(
+    user?.show_sexuality ?? false
+  );
   const [location, setLocation] = useState(user?.location || '');
+  const [step1Error, setStep1Error] = useState('');
   const [photos, setPhotos] = useState(user?.photos?.length ? user?.photos : []);
 
   // Step 2 State: Bio & Prompts
@@ -151,14 +183,24 @@ export default function ProfileSetupPage() {
   // Finish setup
   const handleSaveAndComplete = async () => {
     const updatedProfile = {
-      name: name || user?.name || 'Alex',
+      // No demo fallbacks here. This previously defaulted to the name "Alex",
+      // the city "Mumbai, India" and — worst of all — assigned a seeded demo
+      // profile's photo as the user's own face if they uploaded none.
+      name: (name || user?.name || '').trim(),
       age: parseInt(age, 10) || 24,
       gender,
-      location: location || 'Mumbai, India',
-      photos: photos.length > 0 ? photos : ['/profiles/ananya/1.jpg'],
+      interested_in: interestedIn,
+      sexuality: sexuality || null,
+      show_sexuality: Boolean(sexuality) && showSexualityOnProfile,
+      location: location.trim(),
+      photos,
       bio,
       prompts,
-      live_selfie_url: capturedSelfie || (photos.length > 0 ? photos[0] : null),
+      // Must be null when no live capture happened. This previously fell back
+      // to the user's first uploaded photo, so a reviewer could grant a
+      // "liveness verified" badge on the strength of an ordinary gallery
+      // upload — which defeats the point of the selfie check.
+      live_selfie_url: capturedSelfie || null,
       govt_id_url: capturedId || null,
       govt_id_status: capturedId ? 'uploaded' : 'none',
       profile_completed: true,
@@ -170,8 +212,14 @@ export default function ProfileSetupPage() {
       payload: updatedProfile,
     });
 
+    // The local profile is already updated above, so a failed or slow cloud
+    // save must never block the user from finishing setup.
     if (user?.id) {
-      await updateUserProfile(user.id, updatedProfile);
+      try {
+        await updateUserProfile(user.id, updatedProfile);
+      } catch (err) {
+        console.error('[Wobble Date] Could not sync profile to cloud:', err);
+      }
     }
 
     navigate('/app/discover');
@@ -229,16 +277,74 @@ export default function ProfileSetupPage() {
                 <label>City / Location</label>
                 <div className="input-with-icon">
                   <MapPin size={16} />
-                  <input 
-                    type="text" 
-                    value={location} 
-                    onChange={(e) => setLocation(e.target.value)} 
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g. Bandra, Mumbai"
                     className="setup-input"
                   />
                 </div>
               </div>
             </div>
+
+            {/* Identity. Gender was previously defaulted to 'male' with no way
+                for the user to set it, and matching preference was never asked
+                at all — so everyone was matched as a straight man by default. */}
+            <label className="section-subtitle">I am</label>
+            <div className="choice-chip-row">
+              {GENDER_OPTIONS.map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`choice-chip ${gender === opt.value ? 'selected' : ''}`}
+                  onClick={() => setGender(opt.value)}
+                  aria-pressed={gender === opt.value}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            <label className="section-subtitle">Show me</label>
+            <div className="choice-chip-row">
+              {INTERESTED_IN_OPTIONS.map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`choice-chip ${interestedIn === opt.value ? 'selected' : ''}`}
+                  onClick={() => setInterestedIn(opt.value)}
+                  aria-pressed={interestedIn === opt.value}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            <label className="section-subtitle">
+              Sexuality <span className="label-optional">optional</span>
+            </label>
+            <div className="choice-chip-row">
+              {SEXUALITY_OPTIONS.map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`choice-chip ${sexuality === opt.value ? 'selected' : ''}`}
+                  onClick={() => setSexuality(sexuality === opt.value ? '' : opt.value)}
+                  aria-pressed={sexuality === opt.value}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            <label className="inline-check">
+              <input
+                type="checkbox"
+                checked={showSexualityOnProfile}
+                onChange={(e) => setShowSexualityOnProfile(e.target.checked)}
+              />
+              <span>Show my sexuality on my profile</span>
+            </label>
 
             <label className="section-subtitle">Profile Photos (Upload 1–4 photos)</label>
             <div className="photos-preview-strip">
@@ -271,13 +377,18 @@ export default function ProfileSetupPage() {
               })}
             </div>
 
-            <button 
-              className="btn-setup-continue" 
+            {step1Error && <p className="setup-error-msg">{step1Error}</p>}
+
+            <button
+              className="btn-setup-continue"
               onClick={() => {
-                if (!name.trim()) {
-                  alert('Please enter your name to continue');
-                  return;
-                }
+                // Inline validation instead of a browser alert(), and gender /
+                // preference are now required rather than silently defaulted.
+                if (!name.trim()) return setStep1Error('Please enter your name to continue.');
+                if (!gender) return setStep1Error('Please tell us how you identify.');
+                if (!interestedIn) return setStep1Error('Please choose who you want to be shown.');
+                if (photos.length === 0) return setStep1Error('Please add at least one photo.');
+                setStep1Error('');
                 setStep(2);
               }}
             >

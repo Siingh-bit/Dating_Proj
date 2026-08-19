@@ -1,5 +1,4 @@
 import { createContext, useContext, useReducer } from "react";
-import { CURRENT_USER } from "../data/mockData";
 
 const AuthContext = createContext(null);
 
@@ -26,7 +25,13 @@ const initialState = {
 function authReducer(state, action) {
   switch (action.type) {
     case "LOGIN": {
-      const user = action.payload || CURRENT_USER;
+      // A LOGIN with no payload used to fall back to the seeded demo account,
+      // which would sign a real visitor in as someone else's profile.
+      const user = action.payload;
+      if (!user) {
+        console.error('[Wobble Date] LOGIN dispatched without a user payload — ignoring.');
+        return state;
+      }
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
       } catch (err) {

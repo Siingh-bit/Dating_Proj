@@ -170,13 +170,16 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
   const apiKey = import.meta.env.VITE_BREVO_API_KEY || (typeof window !== 'undefined' ? window.__BREVO_API_KEY__ : null);
 
   if (!apiKey) {
-    console.warn(
-      '[Wobble Date Email Service] VITE_BREVO_API_KEY is not set. Using dev fallback code mode.'
+    // This used to return success:true in "dev fallback" mode, which meant a
+    // live deploy with a missing key told users "we sent a code" and then
+    // never sent one. Failing loudly is the only safe behaviour in production.
+    console.error(
+      '[Wobble Date Email Service] VITE_BREVO_API_KEY is not set — cannot send verification emails.'
     );
     return {
-      success: true,
-      mode: 'fallback',
-      message: `Developer mode: OTP is ${otpCode}`,
+      success: false,
+      mode: 'not_configured',
+      error: 'Email service is not configured.',
     };
   }
 
@@ -192,6 +195,11 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
     textContent: `Your Wobble Date verification code is: ${otpCode}. It will expire in 10 minutes.`,
   };
 
+  // Abort rather than hang forever if the mail API is unreachable — a stalled
+  // request here freezes the sign-in screen.
+  const controller = new AbortController();
+  const abortTimer = setTimeout(() => controller.abort(), 12000);
+
   try {
     const response = await fetch(BREVO_API_URL, {
       method: 'POST',
@@ -201,6 +209,7 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
         'api-key': apiKey,
       },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -214,7 +223,6 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
     }
 
     const data = await response.json().catch(() => ({}));
-    console.log('[Wobble Date Email Service] Email sent successfully via Brevo:', data);
     return {
       success: true,
       messageId: data.messageId,
@@ -224,9 +232,11 @@ export async function sendBrevoOtpEmail(recipientEmail, otpCode) {
     console.error('[Wobble Date Email Service] Network error sending email:', err);
     return {
       success: false,
-      error: err.message,
-      mode: 'network_error',
+      error: err.name === 'AbortError' ? 'Request timed out.' : err.message,
+      mode: err.name === 'AbortError' ? 'timeout' : 'network_error',
     };
+  } finally {
+    clearTimeout(abortTimer);
   }
 }
 

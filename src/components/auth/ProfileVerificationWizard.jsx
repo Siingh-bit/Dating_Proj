@@ -24,17 +24,15 @@ export default function ProfileVerificationWizard({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(1); // 1: Photos & Prompts, 2: Live Selfie, 3: Govt ID
 
   // Step 1: Photos & Prompts State
-  const [photos, setPhotos] = useState(user?.photos?.length ? user?.photos : [
-    '/profiles/isha/1.jpg',
-    '/profiles/isha/2.jpg',
-    '/profiles/isha/3.jpg',
-    '/profiles/isha/4.jpg',
-  ]);
-  const [bio, setBio] = useState(user?.bio || 'Lover of good coffee, spontaneous road trips, and 2am vinyl sessions.');
-  const [prompts, setPrompts] = useState(user?.prompts?.length ? user?.prompts : [
-    { question: 'My simple pleasures are', answer: 'Iced matcha latte and watching Mumbai rain from a cozy cafe window.' },
-    { question: "I'll fall for you if", answer: 'You can hold a real conversation at 2am about things that actually matter to you.' },
-    { question: 'The hallmark of a good relationship is', answer: 'Feeling safe enough to be your unfiltered, messy, real self.' },
+  // Starts empty. This used to pre-fill a new user with a seeded profile's
+  // four photos, bio and prompt answers — publishing someone else's face and
+  // words as their own if they didn't overwrite every field.
+  const [photos, setPhotos] = useState(user?.photos?.length ? user.photos : []);
+  const [bio, setBio] = useState(user?.bio || '');
+  const [prompts, setPrompts] = useState(user?.prompts?.length ? user.prompts : [
+    { question: 'My simple pleasures are', answer: '' },
+    { question: "I'll fall for you if", answer: '' },
+    { question: 'The hallmark of a good relationship is', answer: '' },
   ]);
 
   // Step 2: Live Selfie Camera State
